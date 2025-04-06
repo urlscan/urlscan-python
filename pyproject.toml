@@ -27,6 +27,11 @@ docs = [
 [tool.uv]
 default-groups = ["dev", "docs"]
 
+[project.urls]
+Repository = "https://github.com/urlscan/urlscan-python/"
+Homepage = "https://github.com/urlscan/urlscan-python/"
+Documentation = "https://urlscan.github.io/urlscan-python/"
+
 [build-system]
 requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"

@@ -1,6 +1,6 @@
 [project]
 name = "urlscan-python"
-version = "0.1.0"
+dynamic = ["version"]
 description = "The official Python API client for urlscan.io"
 readme = "README.md"
 requires-python = ">=3.10"

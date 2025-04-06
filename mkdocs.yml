@@ -1,0 +1,32 @@
+site_name: urlscan-python
+repo_name: urlscan/urlscan-python
+repo_url: https://github.com/urlscan/urlscan-python/
+site_url: https://urlscan.github.io/urscan-python/
+
+theme:
+  name: "material"
+
+plugins:
+  search:
+  autorefs:
+  mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        options:
+          show_root_heading: true
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.extra
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/urlscan/urlscan-python/

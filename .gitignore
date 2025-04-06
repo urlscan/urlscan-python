@@ -175,3 +175,5 @@ cython_debug/
 
 # version file
 src/urlscan/_version.py
+
+.python-version

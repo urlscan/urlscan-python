@@ -35,7 +35,7 @@ Scan a URL:
 Get a scan result:
 
 ```py
->>> client.get_result("...")
+>>> client.get_result("<uuid>")
 ```
 
 `urlscan.Client.search()` returns an iterator to iterate search results:

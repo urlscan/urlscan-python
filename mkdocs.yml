@@ -1,7 +1,7 @@
 site_name: urlscan-python
 repo_name: urlscan/urlscan-python
 repo_url: https://github.com/urlscan/urlscan-python/
-site_url: https://urlscan.github.io/urscan-python/
+site_url: https://urlscan.github.io/urlscan-python/
 
 theme:
   name: "material"

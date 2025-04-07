@@ -1,0 +1,26 @@
+name: Publish package
+
+on:
+  release:
+    types: ["created"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: "pip"
+      - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-3.12-${{ hashFiles('uv.lock') }}
+      - run: uv sync --frozen
+      - run: uv build
+      - name: publish
+        uses: pypa/gh-action-pypi-publish@release/v1

@@ -172,3 +172,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# version file
+src/urlscan/_version.py
+
+.python-version

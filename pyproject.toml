@@ -1,0 +1,72 @@
+[project]
+name = "urlscan-python"
+dynamic = ["version"]
+description = "The official Python API client for urlscan.io"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["httpx~=0.27"]
+
+[dependency-groups]
+dev = [
+  "lefthook>=1.11.6",
+  "loguru>=0.7.3",
+  "mypy>=1.15.0",
+  "pytest>=8.3.5",
+  "pytest-httpserver>=1.1.2",
+  "pytest-pretty>=1.2.0",
+  "pytest-randomly>=3.16.0",
+  "ruff>=0.11.4",
+  "uv-sort>=0.5.0",
+]
+docs = [
+  "mkdocs>=1.6.1",
+  "mkdocs-material>=9.6.11",
+  "mkdocstrings[python]>=0.29.1",
+]
+
+[tool.uv]
+default-groups = ["dev", "docs"]
+
+[project.urls]
+Repository = "https://github.com/urlscan/urlscan-python/"
+Homepage = "https://github.com/urlscan/urlscan-python/"
+Documentation = "https://urlscan.github.io/urlscan-python/"
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.hatch.build.hooks.version]
+path = "src/urlscan/_version.py"
+template = '''
+version = "{version}"
+'''
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/urlscan"]
+
+[tool.ruff.lint]
+select = [
+  "B",   # flake8-bugbear
+  "C",   # flake8-comprehensions
+  "E",   # pycodestyle errors
+  "F",   # pyflakes
+  "FA",  # flake8-future-annotations
+  "I",   # isort
+  "N",   # pep8-naming
+  "RET", # flake8-return
+  "RUF", # Ruff-specific rules
+  "SIM", # flake8-simplify
+  "T20", # flake8-print
+  "W",   # pycodestyle warnings
+]
+ignore = [
+  "E501", # line too long
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+check_untyped_defs = true

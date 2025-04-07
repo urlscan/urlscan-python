@@ -1,0 +1,3 @@
+::: urlscan.APIError
+
+::: urlscan.RateLimitError

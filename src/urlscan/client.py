@@ -161,7 +161,7 @@ class Client:
         res = ClientResponse(session.get(path, params=params))
         return self._response_to_str(res)
 
-    def get_result(self, uuid: str) -> dict:
+    def result(self, uuid: str) -> dict:
         """Get a result of a scan by UUID.
 
         Args:
@@ -175,7 +175,7 @@ class Client:
         """
         return self.get_json(f"/api/v1/result/{uuid}/")
 
-    def get_screenshot(self, uuid: str) -> BytesIO:
+    def screenshot(self, uuid: str) -> BytesIO:
         """Get a screenshot of a scan by UUID.
 
         Args:
@@ -193,7 +193,7 @@ class Client:
         bio.name = res.basename
         return bio
 
-    def get_dom(self, uuid: str) -> str:
+    def dom(self, uuid: str) -> str:
         """Get a DOM of a scan by UUID.
 
         Args:

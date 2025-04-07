@@ -25,7 +25,7 @@ API_KEY = os.getenv("URLSCAN_API_KEY")
 def get_result_with_retry(client: urlscan.Client, uuid: str):
     """Get the result of a scan."""
     try:
-        return client.get_result(uuid)
+        return client.result(uuid)
     except urlscan.RateLimitError as exc:
         print(f"Rate limit error hit: {exc}")  # noqa: T201
         print(f"Wait {exc.rate_limit_reset_after} seconds before retrying...")  # noqa: T201

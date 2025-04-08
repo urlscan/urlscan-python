@@ -5,6 +5,7 @@ from pytest_httpserver import HTTPServer
 from werkzeug import Request, Response
 
 from urlscan import Client
+from urlscan.error import RateLimitError
 
 
 @pytest.fixture
@@ -107,3 +108,15 @@ def test_retry(client: Client, httpserver: HTTPServer):
     assert got._res.status_code == 200
     # it should have two requests & responses
     assert len(httpserver.log) == 2
+
+
+def test_without_retry(client: Client, httpserver: HTTPServer):
+    httpserver.expect_request(
+        "/dummy",
+        method="GET",
+    ).respond_with_json(
+        {"message": "Rate limit exceeded", "status": 429},
+        status=429,
+    )
+    with pytest.raises(RateLimitError):
+        client.get_json("/dummy")

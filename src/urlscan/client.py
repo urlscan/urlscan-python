@@ -84,7 +84,7 @@ class Client:
             trust_env (bool, optional): Enable or disable usage of environment variables for configuration. Defaults to False.
             timeout (TimeoutTypes, optional): timeout configuration to use when sending request. Defaults to 60.
             proxy (str | None, optional): Proxy URL where all the traffic should be routed. Defaults to None.
-            verify (bool, optional): Either `True` to use an SSL context with the default CA bundle, `False` to disable verification,. Defaults to True.
+            verify (bool, optional): Either `True` to use an SSL context with the default CA bundle, `False` to disable verification. Defaults to True.
             retry (bool, optional): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry. Defaults to False.
         """
         self._api_key = api_key

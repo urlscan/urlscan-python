@@ -1,13 +1,17 @@
+import logging
 import os
+import time
 from io import BytesIO
 from typing import Any, BinaryIO
 
 import httpx
-from httpx._types import QueryParamTypes, RequestData
+from httpx._types import QueryParamTypes, RequestData, TimeoutTypes
 
 from ._version import version
 from .error import APIError, RateLimitError
 from .iterator import SearchIterator
+
+logger = logging.getLogger("urlscan-python")
 
 BASE_URL = os.environ.get("URLSCAN_BASE_URL", "https://urlscan.io")
 USER_AGENT = f"urlscan-py/{version}"
@@ -16,6 +20,25 @@ USER_AGENT = f"urlscan-py/{version}"
 def _compact(d: dict) -> dict:
     """Remove empty values from a dictionary."""
     return {k: v for k, v in d.items() if v is not None}
+
+
+class RetryTransport(httpx.HTTPTransport):
+    def handle_request(self, request: httpx.Request) -> httpx.Response:
+        res = super().handle_request(request)
+        if res.status_code == 429:
+            rate_limit_reset_after: str | None = res.headers.get(
+                "X-Rate-Limit-Reset-After"
+            )
+            if rate_limit_reset_after is None:
+                return res
+
+            logger.info(
+                f"Rate limit error hit. Wait {rate_limit_reset_after} seconds before retrying..."
+            )
+            time.sleep(float(rate_limit_reset_after))
+            return self.handle_request(request)
+
+        return res
 
 
 class ClientResponse:
@@ -48,17 +71,30 @@ class Client:
         base_url: str = BASE_URL,
         user_agent: str = USER_AGENT,
         trust_env: bool = False,
-        timeout: int = 60,
+        timeout: TimeoutTypes = 60,
         proxy: str | None = None,
-        verify_ssl: bool = True,
+        verify: bool = True,
+        retry: bool = False,
     ):
+        """
+        Args:
+            api_key (str): Your urlscan.io API key.
+            base_url (str, optional): Base URL. Defaults to BASE_URL.
+            user_agent (str, optional): User agent. Defaults to USER_AGENT.
+            trust_env (bool, optional): Enable or disable usage of environment variables for configuration. Defaults to False.
+            timeout (TimeoutTypes, optional): timeout configuration to use when sending request. Defaults to 60.
+            proxy (str | None, optional): Proxy URL where all the traffic should be routed. Defaults to None.
+            verify (bool, optional): Either `True` to use an SSL context with the default CA bundle, `False` to disable verification. Defaults to True.
+            retry (bool, optional): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry. Defaults to False.
+        """
         self._api_key = api_key
         self._base_url = base_url
         self._user_agent = user_agent
         self._trust_env = trust_env
         self._timeout = timeout
         self._proxy = proxy
-        self._verify_ssl = verify_ssl
+        self._verify = verify
+        self._retry = retry
 
         self._session: httpx.Client | None = None
 
@@ -83,13 +119,18 @@ class Client:
                 "API-Key": self._api_key,
             }
         )
+        transport: httpx.HTTPTransport | None = None
+        if self._retry:
+            transport = RetryTransport()
+
         self._session = httpx.Client(
             base_url=self._base_url,
             headers=headers,
             timeout=self._timeout,
             proxy=self._proxy,
-            verify=self._verify_ssl,
+            verify=self._verify,
             trust_env=self._trust_env,
+            transport=transport,
         )
         return self._session
 

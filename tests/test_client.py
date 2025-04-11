@@ -2,8 +2,10 @@ import tempfile
 
 import pytest
 from pytest_httpserver import HTTPServer
+from werkzeug import Request, Response
 
 from urlscan import Client
+from urlscan.error import RateLimitError
 
 
 @pytest.fixture
@@ -84,3 +86,37 @@ def test_search(client: Client, httpserver: HTTPServer):
     assert len(got) == 1
     # but it should make two requests
     assert len(httpserver.log) == 2
+
+
+def test_retry(client: Client, httpserver: HTTPServer):
+    def handler(_: Request):
+        # return 429 if it's the first request
+        if len(httpserver.log) == 0:
+            return Response("", status=429, headers={"X-Rate-Limit-Reset-After": "0"})
+
+        # return 200 for the second request
+        return Response("", status=200)
+
+    httpserver.expect_request(
+        "/dummy",
+        method="GET",
+    ).respond_with_handler(handler)
+
+    client._retry = True
+
+    got = client.get("/dummy")
+    assert got._res.status_code == 200
+    # it should have two requests & responses
+    assert len(httpserver.log) == 2
+
+
+def test_without_retry(client: Client, httpserver: HTTPServer):
+    httpserver.expect_request(
+        "/dummy",
+        method="GET",
+    ).respond_with_json(
+        {"message": "Rate limit exceeded", "status": 429},
+        status=429,
+    )
+    with pytest.raises(RateLimitError):
+        client.get_json("/dummy")

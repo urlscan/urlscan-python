@@ -10,11 +10,13 @@ from httpx._types import QueryParamTypes, RequestData, TimeoutTypes
 from ._version import version
 from .error import APIError, RateLimitError
 from .iterator import SearchIterator
+from .utils import cast_as_bool
 
 logger = logging.getLogger("urlscan-python")
 
 BASE_URL = os.environ.get("URLSCAN_BASE_URL", "https://urlscan.io")
 USER_AGENT = f"urlscan-py/{version}"
+RETRY: bool = cast_as_bool(os.environ.get("URLSCAN_RETRY")) or False
 
 
 def _compact(d: dict) -> dict:
@@ -74,7 +76,7 @@ class Client:
         timeout: TimeoutTypes = 60,
         proxy: str | None = None,
         verify: bool = True,
-        retry: bool = False,
+        retry: bool | None = None,
     ):
         """
         Args:
@@ -85,7 +87,7 @@ class Client:
             timeout (TimeoutTypes, optional): timeout configuration to use when sending request. Defaults to 60.
             proxy (str | None, optional): Proxy URL where all the traffic should be routed. Defaults to None.
             verify (bool, optional): Either `True` to use an SSL context with the default CA bundle, `False` to disable verification. Defaults to True.
-            retry (bool, optional): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry. Defaults to False.
+            retry (bool | None, optional): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry. Defaults to None.
         """
         self._api_key = api_key
         self._base_url = base_url
@@ -94,7 +96,7 @@ class Client:
         self._timeout = timeout
         self._proxy = proxy
         self._verify = verify
-        self._retry = retry
+        self._retry: bool = retry or RETRY
 
         self._session: httpx.Client | None = None
 

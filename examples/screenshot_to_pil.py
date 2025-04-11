@@ -27,7 +27,7 @@ def main(
     api_key = api_key or API_KEY
     assert api_key
 
-    with urlscan.Client(api_key) as client:
+    with urlscan.Client(api_key, retry=False) as client:
         screenshot = client.get_screenshot(uuid)
         image = Image.open(screenshot)
         image.show()

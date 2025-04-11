@@ -16,7 +16,9 @@ def api_key():
 @pytest.fixture
 def client(httpserver: HTTPServer, api_key: str):
     with Client(
-        api_key=api_key, base_url=f"http://{httpserver.host}:{httpserver.port}"
+        api_key=api_key,
+        base_url=f"http://{httpserver.host}:{httpserver.port}",
+        retry=False,
     ) as client:
         yield client
 

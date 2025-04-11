@@ -68,13 +68,13 @@ class Client:
     def __init__(
         self,
         api_key: str,
+        retry: bool,
         base_url: str = BASE_URL,
         user_agent: str = USER_AGENT,
         trust_env: bool = False,
         timeout: TimeoutTypes = 60,
         proxy: str | None = None,
         verify: bool = True,
-        retry: bool = False,
     ):
         """
         Args:
@@ -85,7 +85,7 @@ class Client:
             timeout (TimeoutTypes, optional): timeout configuration to use when sending request. Defaults to 60.
             proxy (str | None, optional): Proxy URL where all the traffic should be routed. Defaults to None.
             verify (bool, optional): Either `True` to use an SSL context with the default CA bundle, `False` to disable verification. Defaults to True.
-            retry (bool, optional): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry. Defaults to False.
+            retry (bool): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry.
         """
         self._api_key = api_key
         self._base_url = base_url

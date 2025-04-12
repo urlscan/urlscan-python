@@ -63,7 +63,7 @@ def test_search(client: Client, httpserver: HTTPServer):
 
     # set first request & response
     httpserver.expect_request(
-        "/api/v1/search",
+        "/api/v1/search/",
         method="GET",
         query_string={"q": q, "size": "100"},
     ).respond_with_json(
@@ -74,7 +74,7 @@ def test_search(client: Client, httpserver: HTTPServer):
     )
     # set second requests & response
     httpserver.expect_request(
-        "/api/v1/search",
+        "/api/v1/search/",
         method="GET",
         query_string={"q": q, "size": "100", "search_after": "1,dummy"},
     ).respond_with_json(

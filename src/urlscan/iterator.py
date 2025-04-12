@@ -49,7 +49,7 @@ class SearchIterator:
 
     def _get(self):
         data = self._client.get_json(
-            "/api/v1/search",
+            "/api/v1/search/",
             params={
                 "q": self._q,
                 "size": self._size,

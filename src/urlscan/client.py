@@ -204,6 +204,14 @@ class Client:
 
         res = ClientResponse(session.send(request))
 
+        # infer action based on response if action is None & request is POST against scan API endpoint
+        if (
+            action is None
+            and request.method == "POST"
+            and request.url.path == "/api/v1/scan/"
+        ):
+            action = res._res.json().get("visibility")
+
         if action:
             remaining = res._res.headers.get("X-Rate-Limit-Remaining")
             reset = res._res.headers.get("X-Rate-Limit-Reset")
@@ -343,6 +351,9 @@ class Client:
 
         Returns:
             SearchIterator: Search iterator.
+
+        Reference:
+            https://urlscan.io/docs/api/#search
         """
         return SearchIterator(
             self,
@@ -355,24 +366,39 @@ class Client:
     def scan(
         self,
         url: str,
+        visibility: str | None = None,
         tags: list[str] | None = None,
-        options: dict | None = None,
+        customagent: str | None = None,
+        referer: str | None = None,
+        override_safety: Any = None,
+        country: str | None = None,
     ) -> dict:
         """Scan a given URL.
 
         Args:
             url (str): URL to scan.
+            visibility (str | None, optional): Visibility of the scan. Can be "public", "private", or "unlisted". Defaults to None.
             tags (list[str] | None, optional): Tags to be attached. Defaults to None.
-            options (dict | None, optional): Options. See https://urlscan.io/docs/api/#submission for details. Defaults to None.
+            customagent (str | None, optional): Custom user agent. Defaults to None.
+            referer (str | None, optional): Referer. Defaults to None.
+            override_safety (Any, optional): If set to any value, this will disable reclassification of URLs with potential PII in them. Defaults to None.
+            country (str | None, optional): Specify which country the scan should be performed from (2-Letter ISO-3166-1 alpha-2 country. Defaults to None.
 
         Returns:
             dict: Scan response.
+
+        Reference:
+            https://urlscan.io/docs/api/#scan
         """
         data = _compact(
             {
                 "url": url,
                 "tags": tags,
-                "options": options,
+                "visibility": visibility,
+                "customagent": customagent,
+                "referer": referer,
+                "overrideSafety": override_safety,
+                "country": country,
             }
         )
         res = self.post("/api/v1/scan/", json=data)

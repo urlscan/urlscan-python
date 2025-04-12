@@ -24,6 +24,7 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.highlight
   - pymdownx.extra
+  - pymdownx.magiclink
 
 extra:
   generator: false

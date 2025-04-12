@@ -14,7 +14,7 @@ from httpx._types import QueryParamTypes, RequestData, TimeoutTypes
 from ._version import version
 from .error import APIError, RateLimitError, RateLimitRemainingError
 from .iterator import SearchIterator
-from .types import ActionType
+from .types import ActionType, VisibilityType
 from .utils import parse_datetime
 
 logger = logging.getLogger("urlscan-python")
@@ -124,6 +124,8 @@ class Client:
             "retrieve": None,
             "search": None,
         }
+        # memo to store default visibility for scan
+        self._visibility: VisibilityType | None = None
 
     def __enter__(self):
         return self
@@ -181,7 +183,10 @@ class Client:
 
             with contextlib.suppress(json.JSONDecodeError):
                 data: dict = json.loads(request.content)
-                return data.get("visibility")
+                return data.get("visibility", self._visibility)
+
+            # no way to reach this point, but just in case
+            return self._visibility
 
         return None
 
@@ -210,7 +215,11 @@ class Client:
             and request.method == "POST"
             and request.url.path == "/api/v1/scan/"
         ):
-            action = res._res.json().get("visibility")
+            visibility = res._res.json().get("visibility")
+            if visibility:
+                action = visibility
+                # memo visibility for future requests
+                self._visibility = visibility
 
         if action:
             remaining = res._res.headers.get("X-Rate-Limit-Remaining")

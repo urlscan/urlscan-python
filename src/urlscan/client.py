@@ -203,7 +203,7 @@ class Client:
                 utcnow = datetime.datetime.now(datetime.timezone.utc)
                 if rate_limit.remaining == 0 and rate_limit.reset > utcnow:
                     raise RateLimitRemainingError(
-                        f"Rate limit for {action} is reached. Wait until {utcnow}."
+                        f"{action} is rate limited. Wait until {utcnow}."
                     )
 
         res = ClientResponse(session.send(request))

@@ -225,6 +225,8 @@ class Client:
                 # memo visibility for future requests
                 self._visibility = visibility
 
+        # use action in response headers
+        action = res.headers.get("X-Rate-Limit-Action")
         if action:
             remaining = res.headers.get("X-Rate-Limit-Remaining")
             reset = res.headers.get("X-Rate-Limit-Reset")

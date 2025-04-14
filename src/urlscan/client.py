@@ -66,6 +66,10 @@ class ClientResponse:
     def text(self) -> str:
         return self._res.text
 
+    @property
+    def headers(self):
+        return self._res.headers
+
     def raise_for_status(self) -> None:
         self._res.raise_for_status()
 
@@ -215,15 +219,15 @@ class Client:
             and request.method == "POST"
             and request.url.path == "/api/v1/scan/"
         ):
-            visibility = res._res.json().get("visibility")
+            visibility = res.json().get("visibility")
             if visibility:
                 action = visibility
                 # memo visibility for future requests
                 self._visibility = visibility
 
         if action:
-            remaining = res._res.headers.get("X-Rate-Limit-Remaining")
-            reset = res._res.headers.get("X-Rate-Limit-Reset")
+            remaining = res.headers.get("X-Rate-Limit-Remaining")
+            reset = res.headers.get("X-Rate-Limit-Reset")
             if remaining and reset:
                 self._rate_limit_memo[action] = RateLimit(
                     remaining=int(remaining),

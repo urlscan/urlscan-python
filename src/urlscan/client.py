@@ -128,8 +128,6 @@ class Client:
             "retrieve": None,
             "search": None,
         }
-        # memo to store default visibility for scan
-        self._visibility: VisibilityType | None = None
 
     def __enter__(self):
         return self
@@ -187,10 +185,7 @@ class Client:
 
             with contextlib.suppress(json.JSONDecodeError):
                 data: dict = json.loads(request.content)
-                return data.get("visibility", self._visibility)
-
-            # no way to reach this point, but just in case
-            return self._visibility
+                return data.get("visibility")
 
         return None
 
@@ -212,18 +207,6 @@ class Client:
                     )
 
         res = ClientResponse(session.send(request))
-
-        # infer action based on response if action is None & request is POST against scan API endpoint
-        if (
-            action is None
-            and request.method == "POST"
-            and request.url.path == "/api/v1/scan/"
-        ):
-            visibility = res.json().get("visibility")
-            if visibility:
-                action = visibility
-                # memo visibility for future requests
-                self._visibility = visibility
 
         # use action in response headers
         action = res.headers.get("X-Rate-Limit-Action")
@@ -381,7 +364,8 @@ class Client:
     def scan(
         self,
         url: str,
-        visibility: str | None = None,
+        *,
+        visibility: VisibilityType,
         tags: list[str] | None = None,
         customagent: str | None = None,
         referer: str | None = None,
@@ -392,7 +376,7 @@ class Client:
 
         Args:
             url (str): URL to scan.
-            visibility (str | None, optional): Visibility of the scan. Can be "public", "private", or "unlisted". Defaults to None.
+            visibility (VisibilityType): Visibility of the scan. Can be "public", "private", or "unlisted".
             tags (list[str] | None, optional): Tags to be attached. Defaults to None.
             customagent (str | None, optional): Custom user agent. Defaults to None.
             referer (str | None, optional): Referer. Defaults to None.
@@ -417,7 +401,13 @@ class Client:
             }
         )
         res = self.post("/api/v1/scan/", json=data)
-        return self._response_to_json(res)
+        json_res = self._response_to_json(res)
+
+        json_visibility = json_res.get("visibility")
+        if json_visibility is not None and json_visibility != visibility:
+            logger.warning(f"Visibility is enforced to {json_visibility}.")
+
+        return json_res
 
     def _get_error(self, res: ClientResponse) -> APIError | None:
         try:

@@ -5,9 +5,11 @@ pre-commit:
     uv-lock:
       glob: "pyproject.toml"
       run: uv lock
+      stage_fixed: true
     uv-sort:
       glob: "pyproject.toml"
       run: uv run uv-sort
+      stage_fixed: true
     ruff:
       glob: "*.py"
       run: uv run ruff check --fix {staged_files}

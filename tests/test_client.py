@@ -136,6 +136,7 @@ def test_rate_limit_remaining_error(
                 json.dumps({}),
                 status=200,
                 headers={
+                    "X-Rate-Limit-Action": "retrieve",
                     "X-Rate-Limit-Remaining": "0",
                     "X-Rate-Limit-Reset": "2020-01-02T00:00:00.000Z",
                 },
@@ -146,6 +147,7 @@ def test_rate_limit_remaining_error(
                 json.dumps({}),
                 status=200,
                 headers={
+                    "X-Rate-Limit-Action": "retrieve",
                     "X-Rate-Limit-Remaining": "0",
                     "X-Rate-Limit-Reset": "2020-01-03T00:00:00.000Z",
                 },

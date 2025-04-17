@@ -1,15 +1,21 @@
+import contextlib
+import datetime
+import json
 import logging
 import os
 import time
+from dataclasses import dataclass
 from io import BytesIO
-from typing import Any, BinaryIO
+from typing import Any, BinaryIO, TypedDict
 
 import httpx
 from httpx._types import QueryParamTypes, RequestData, TimeoutTypes
 
 from ._version import version
-from .error import APIError, RateLimitError
+from .error import APIError, RateLimitError, RateLimitRemainingError
 from .iterator import SearchIterator
+from .types import ActionType, VisibilityType
+from .utils import parse_datetime
 
 logger = logging.getLogger("urlscan-python")
 
@@ -60,8 +66,26 @@ class ClientResponse:
     def text(self) -> str:
         return self._res.text
 
+    @property
+    def headers(self):
+        return self._res.headers
+
     def raise_for_status(self) -> None:
         self._res.raise_for_status()
+
+
+@dataclass
+class RateLimit:
+    remaining: int
+    reset: datetime.datetime
+
+
+class RateLimitMemo(TypedDict):
+    public: RateLimit | None
+    private: RateLimit | None
+    unlisted: RateLimit | None
+    retrieve: RateLimit | None
+    search: RateLimit | None
 
 
 class Client:
@@ -97,6 +121,13 @@ class Client:
         self._retry = retry
 
         self._session: httpx.Client | None = None
+        self._rate_limit_memo: RateLimitMemo = {
+            "public": None,
+            "private": None,
+            "unlisted": None,
+            "retrieve": None,
+            "search": None,
+        }
 
     def __enter__(self):
         return self
@@ -134,6 +165,62 @@ class Client:
         )
         return self._session
 
+    def _get_action(self, request: httpx.Request) -> ActionType | None:
+        path = request.url.path
+        if request.method == "GET":
+            if path == "/api/v1/search/":
+                return "search"
+
+            if path.startswith("/api/v1/result/"):
+                return "retrieve"
+
+            return None
+
+        if request.method == "POST":
+            if path != "/api/v1/scan/":
+                return None
+
+            if request.headers.get("Content-Type") != "application/json":
+                return None
+
+            with contextlib.suppress(json.JSONDecodeError):
+                data: dict = json.loads(request.content)
+                return data.get("visibility")
+
+        return None
+
+    def _send_request(
+        self, session: httpx.Client, request: httpx.Request
+    ) -> ClientResponse:
+        # let it automatic retry if retry is enabled
+        if self._retry:
+            return ClientResponse(session.send(request))
+
+        action = self._get_action(request)
+        if action:
+            rate_limit: RateLimit | None = self._rate_limit_memo.get(action)
+            if rate_limit:
+                utcnow = datetime.datetime.now(datetime.timezone.utc)
+                if rate_limit.remaining == 0 and rate_limit.reset > utcnow:
+                    raise RateLimitRemainingError(
+                        f"{action} is rate limited. Wait until {utcnow}."
+                    )
+
+        res = ClientResponse(session.send(request))
+
+        # use action in response headers
+        action = res.headers.get("X-Rate-Limit-Action")
+        if action:
+            remaining = res.headers.get("X-Rate-Limit-Remaining")
+            reset = res.headers.get("X-Rate-Limit-Reset")
+            if remaining and reset:
+                self._rate_limit_memo[action] = RateLimit(
+                    remaining=int(remaining),
+                    reset=parse_datetime(reset),
+                )
+
+        return res
+
     def get(self, path: str, params: QueryParamTypes | None = None) -> ClientResponse:
         """Send a GET request to a given API endpoint.
 
@@ -145,11 +232,11 @@ class Client:
             ClientResponse: Response.
         """
         session = self._get_session()
-        return ClientResponse(session.get(path, params=params))
+        req = session.build_request("GET", path, params=params)
+        return self._send_request(session, req)
 
     def get_json(self, path: str, params: QueryParamTypes | None = None) -> dict:
-        session = self._get_session()
-        res = ClientResponse(session.get(path, params=params))
+        res = self.get(path, params=params)
         return self._response_to_json(res)
 
     def post(
@@ -166,10 +253,11 @@ class Client:
             data (RequestData | None, optional): Dict to send in request body. Defaults to None.
 
         Returns:
-            ClientResponse: _description_
+            ClientResponse: Response.
         """
         session = self._get_session()
-        return ClientResponse(session.post(path, json=json, data=data))
+        req = session.build_request("POST", path, json=json, data=data)
+        return self._send_request(session, req)
 
     def download(
         self,
@@ -187,19 +275,16 @@ class Client:
         Returns:
             BytesIO: File content.
         """
-        session = self._get_session()
-        res = ClientResponse(session.get(path, params=params))
+        res = self.get(path, params=params)
         file.write(res.content)
         return
 
     def get_content(self, path: str, params: QueryParamTypes | None = None) -> bytes:
-        session = self._get_session()
-        res = ClientResponse(session.get(path, params=params))
+        res = self.get(path, params=params)
         return self._response_to_content(res)
 
     def get_text(self, path: str, params: QueryParamTypes | None = None) -> str:
-        session = self._get_session()
-        res = ClientResponse(session.get(path, params=params))
+        res = self.get(path, params=params)
         return self._response_to_str(res)
 
     def get_result(self, uuid: str) -> dict:
@@ -228,8 +313,7 @@ class Client:
         Reference:
             https://urlscan.io/docs/api/#screenshot
         """
-        session = self._get_session()
-        res = ClientResponse(session.get(f"/screenshots/{uuid}.png"))
+        res = self.get(f"/screenshots/{uuid}.png")
         bio = BytesIO(res.content)
         bio.name = res.basename
         return bio
@@ -265,6 +349,9 @@ class Client:
 
         Returns:
             SearchIterator: Search iterator.
+
+        Reference:
+            https://urlscan.io/docs/api/#search
         """
         return SearchIterator(
             self,
@@ -277,28 +364,50 @@ class Client:
     def scan(
         self,
         url: str,
+        *,
+        visibility: VisibilityType,
         tags: list[str] | None = None,
-        options: dict | None = None,
+        customagent: str | None = None,
+        referer: str | None = None,
+        override_safety: Any = None,
+        country: str | None = None,
     ) -> dict:
         """Scan a given URL.
 
         Args:
             url (str): URL to scan.
+            visibility (VisibilityType): Visibility of the scan. Can be "public", "private", or "unlisted".
             tags (list[str] | None, optional): Tags to be attached. Defaults to None.
-            options (dict | None, optional): Options. See https://urlscan.io/docs/api/#submission for details. Defaults to None.
+            customagent (str | None, optional): Custom user agent. Defaults to None.
+            referer (str | None, optional): Referer. Defaults to None.
+            override_safety (Any, optional): If set to any value, this will disable reclassification of URLs with potential PII in them. Defaults to None.
+            country (str | None, optional): Specify which country the scan should be performed from (2-Letter ISO-3166-1 alpha-2 country. Defaults to None.
 
         Returns:
             dict: Scan response.
+
+        Reference:
+            https://urlscan.io/docs/api/#scan
         """
         data = _compact(
             {
                 "url": url,
                 "tags": tags,
-                "options": options,
+                "visibility": visibility,
+                "customagent": customagent,
+                "referer": referer,
+                "overrideSafety": override_safety,
+                "country": country,
             }
         )
         res = self.post("/api/v1/scan/", json=data)
-        return self._response_to_json(res)
+        json_res = self._response_to_json(res)
+
+        json_visibility = json_res.get("visibility")
+        if json_visibility is not None and json_visibility != visibility:
+            logger.warning(f"Visibility is enforced to {json_visibility}.")
+
+        return json_res
 
     def _get_error(self, res: ClientResponse) -> APIError | None:
         try:

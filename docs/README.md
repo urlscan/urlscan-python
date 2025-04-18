@@ -52,5 +52,6 @@ See [Examples](https://github.com/urlscan/urlscan-python/tree/main/examples/).
 ## References
 
 - [Client](./references/client/)
+- [AyncClient](./references/async_client/)
 - [Iterator](./references/iterator/)
 - [Errors](./references/errors/)

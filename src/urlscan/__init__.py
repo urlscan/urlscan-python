@@ -5,6 +5,7 @@ try:
 except ImportError:
     __version__ = "0.0.0"
 
+from .async_client import AsyncClient  # noqa: F401
 from .client import Client  # noqa: F401
 from .error import APIError, RateLimitError  # noqa: F401
 from .iterator import SearchIterator  # noqa: F401

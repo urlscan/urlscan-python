@@ -1,9 +1,11 @@
-import time
+import asyncio
 from io import BytesIO
 from typing import Any, BinaryIO
 
 import httpx
 from httpx._types import QueryParamTypes, RequestData, TimeoutTypes
+
+from urlscan.types import VisibilityType
 
 from .base import (
     BASE_URL,
@@ -13,13 +15,12 @@ from .base import (
     _compact,
     logger,
 )
-from .iterator import SearchIterator
-from .types import VisibilityType
+from .iterator import AsyncSearchIterator
 
 
-class RetryTransport(httpx.HTTPTransport):
-    def handle_request(self, request: httpx.Request) -> httpx.Response:
-        res = super().handle_request(request)
+class AsyncRetryTransport(httpx.AsyncHTTPTransport):
+    async def handle_request(self, request: httpx.Request) -> httpx.Response:
+        res = await super().handle_async_request(request)
         if res.status_code == 429:
             rate_limit_reset_after: str | None = res.headers.get(
                 "X-Rate-Limit-Reset-After"
@@ -30,13 +31,13 @@ class RetryTransport(httpx.HTTPTransport):
             logger.info(
                 f"Rate limit error hit. Wait {rate_limit_reset_after} seconds before retrying..."
             )
-            time.sleep(float(rate_limit_reset_after))
-            return self.handle_request(request)
+            await asyncio.sleep(float(rate_limit_reset_after))
+            return await self.handle_async_request(request)
 
         return res
 
 
-class Client(BaseClient):
+class AsyncClient(BaseClient):
     def __init__(
         self,
         api_key: str,
@@ -70,20 +71,20 @@ class Client(BaseClient):
             retry=retry,
         )
 
-        self._session: httpx.Client | None = None
+        self._session: httpx.AsyncClient | None = None
 
-    def __enter__(self):
+    async def __aenter__(self):
         return self
 
-    def __exit__(self, item_type: Any, value: Any, traceback: Any):
-        self.close()
+    async def __aexit__(self, item_type: Any, value: Any, traceback: Any):
+        await self.close()
 
-    def close(self):
+    async def close(self):
         if self._session:
-            self._session.close()
+            await self._session.aclose()
             self._session = None
 
-    def _get_session(self) -> httpx.Client:
+    def _get_session(self) -> httpx.AsyncClient:
         if self._session:
             return self._session
 
@@ -93,11 +94,11 @@ class Client(BaseClient):
                 "API-Key": self._api_key,
             }
         )
-        transport: httpx.HTTPTransport | None = None
+        transport: httpx.AsyncHTTPTransport | None = None
         if self._retry:
-            transport = RetryTransport()
+            transport = AsyncRetryTransport()
 
-        self._session = httpx.Client(
+        self._session = httpx.AsyncClient(
             base_url=self._base_url,
             headers=headers,
             timeout=self._timeout,
@@ -108,20 +109,21 @@ class Client(BaseClient):
         )
         return self._session
 
-    def _send_request(
-        self, session: httpx.Client, request: httpx.Request
+    async def _send_request(
+        self, session: httpx.AsyncClient, request: httpx.Request
     ) -> ClientResponse:
-        # let it automatic retry if retry is enabled
         if self._retry:
-            return ClientResponse(session.send(request))
+            return ClientResponse(await session.send(request))
 
         self._check_before_action(request)
-        res = ClientResponse(session.send(request))
+        res = ClientResponse(await session.send(request))
         self._check_after_action(res)
 
         return res
 
-    def get(self, path: str, params: QueryParamTypes | None = None) -> ClientResponse:
+    async def get(
+        self, path: str, params: QueryParamTypes | None = None
+    ) -> ClientResponse:
         """Send a GET request to a given API endpoint.
 
         Args:
@@ -133,13 +135,13 @@ class Client(BaseClient):
         """
         session = self._get_session()
         req = session.build_request("GET", path, params=params)
-        return self._send_request(session, req)
+        return await self._send_request(session, req)
 
-    def get_json(self, path: str, params: QueryParamTypes | None = None) -> dict:
-        res = self.get(path, params=params)
+    async def get_json(self, path: str, params: QueryParamTypes | None = None) -> dict:
+        res = await self.get(path, params=params)
         return self._response_to_json(res)
 
-    def post(
+    async def post(
         self,
         path: str,
         json: Any | None = None,
@@ -157,9 +159,9 @@ class Client(BaseClient):
         """
         session = self._get_session()
         req = session.build_request("POST", path, json=json, data=data)
-        return self._send_request(session, req)
+        return await self._send_request(session, req)
 
-    def download(
+    async def download(
         self,
         path: str,
         file: BinaryIO,
@@ -175,19 +177,21 @@ class Client(BaseClient):
         Returns:
             BytesIO: File content.
         """
-        res = self.get(path, params=params)
+        res = await self.get(path, params=params)
         file.write(res.content)
         return
 
-    def get_content(self, path: str, params: QueryParamTypes | None = None) -> bytes:
-        res = self.get(path, params=params)
+    async def get_content(
+        self, path: str, params: QueryParamTypes | None = None
+    ) -> bytes:
+        res = await self.get(path, params=params)
         return self._response_to_content(res)
 
-    def get_text(self, path: str, params: QueryParamTypes | None = None) -> str:
-        res = self.get(path, params=params)
+    async def get_text(self, path: str, params: QueryParamTypes | None = None) -> str:
+        res = await self.get(path, params=params)
         return self._response_to_str(res)
 
-    def get_result(self, uuid: str) -> dict:
+    async def get_result(self, uuid: str) -> dict:
         """Get a result of a scan by UUID.
 
         Args:
@@ -199,9 +203,9 @@ class Client(BaseClient):
         Reference:
             https://urlscan.io/docs/api/#result
         """
-        return self.get_json(f"/api/v1/result/{uuid}/")
+        return await self.get_json(f"/api/v1/result/{uuid}/")
 
-    def get_screenshot(self, uuid: str) -> BytesIO:
+    async def get_screenshot(self, uuid: str) -> BytesIO:
         """Get a screenshot of a scan by UUID.
 
         Args:
@@ -213,12 +217,12 @@ class Client(BaseClient):
         Reference:
             https://urlscan.io/docs/api/#screenshot
         """
-        res = self.get(f"/screenshots/{uuid}.png")
+        res = await self.get(f"/screenshots/{uuid}.png")
         bio = BytesIO(res.content)
         bio.name = res.basename
         return bio
 
-    def get_dom(self, uuid: str) -> str:
+    async def get_dom(self, uuid: str) -> str:
         """Get a DOM of a scan by UUID.
 
         Args:
@@ -230,7 +234,7 @@ class Client(BaseClient):
         Reference:
             https://urlscan.io/docs/api/#dom
         """
-        return self.get_text(f"/dom/{uuid}/")
+        return await self.get_text(f"/dom/{uuid}/")
 
     def search(
         self,
@@ -238,7 +242,7 @@ class Client(BaseClient):
         size: int = 100,
         limit: int | None = None,
         search_after: str | None = None,
-    ) -> SearchIterator:
+    ) -> AsyncSearchIterator:
         """Search.
 
         Args:
@@ -248,12 +252,12 @@ class Client(BaseClient):
             search_after (str | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
 
         Returns:
-            SearchIterator: Search iterator.
+            AsyncSearchIterator: Search iterator.
 
         Reference:
             https://urlscan.io/docs/api/#search
         """
-        return SearchIterator(
+        return AsyncSearchIterator(
             self,
             q=q,
             size=size,
@@ -261,7 +265,7 @@ class Client(BaseClient):
             search_after=search_after,
         )
 
-    def scan(
+    async def scan(
         self,
         url: str,
         *,
@@ -276,12 +280,12 @@ class Client(BaseClient):
 
         Args:
             url (str): URL to scan.
-            visibility (VisibilityType): Visibility of the scan. Can be "public", "private", or "unlisted".
+            visibility (VisibilityType): Visibility of the scan. Can be "public", "private", or "unlisted"
             tags (list[str] | None, optional): Tags to be attached. Defaults to None.
             customagent (str | None, optional): Custom user agent. Defaults to None.
             referer (str | None, optional): Referer. Defaults to None.
             override_safety (Any, optional): If set to any value, this will disable reclassification of URLs with potential PII in them. Defaults to None.
-            country (str | None, optional): Specify which country the scan should be performed from (2-Letter ISO-3166-1 alpha-2 country. Defaults to None.
+            country (str | None, optional): Specify which country the scan should be performed from (2-Letter ISO-3166-1 alpha-2 country). Defaults to None.
 
         Returns:
             dict: Scan response.
@@ -300,7 +304,7 @@ class Client(BaseClient):
                 "country": country,
             }
         )
-        res = self.post("/api/v1/scan/", json=data)
+        res = await self.post("/api/v1/scan/", json=data)
         json_res = self._response_to_json(res)
 
         json_visibility = json_res.get("visibility")

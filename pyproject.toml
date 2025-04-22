@@ -32,6 +32,7 @@ default-groups = ["dev", "docs"]
 Repository = "https://github.com/urlscan/urlscan-python/"
 Homepage = "https://github.com/urlscan/urlscan-python/"
 Documentation = "https://urlscan.github.io/urlscan-python/"
+Issues = "https://github.com/urlscan/urlscan-python/issues/"
 
 [build-system]
 requires = ["hatchling", "uv-dynamic-versioning"]

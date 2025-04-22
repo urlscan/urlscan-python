@@ -54,3 +54,7 @@ See [Examples](https://github.com/urlscan/urlscan-python/tree/main/examples/).
 - [Client](./references/client/)
 - [Iterator](./references/iterator/)
 - [Errors](./references/errors/)
+
+## Help Wanted?
+
+Please feel free to to [open an issue](https://github.com/urlscan/urlscan-python/issues/new) if you find a bug or some feature that you want to see implemented.

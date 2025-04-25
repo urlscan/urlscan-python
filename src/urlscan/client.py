@@ -70,6 +70,10 @@ class ClientResponse:
     def headers(self):
         return self._res.headers
 
+    @property
+    def status_code(self) -> int:
+        return self._res.status_code
+
     def raise_for_status(self) -> None:
         self._res.raise_for_status()
 
@@ -408,6 +412,30 @@ class Client:
             logger.warning(f"Visibility is enforced to {json_visibility}.")
 
         return json_res
+
+    def wait_for_result(
+        self, uuid: str, timeout: float = 60.0, interval: float = 1.0
+    ) -> None:
+        """Wait for a scan result to be available.
+
+        Args:
+            uuid (str): UUID of a result.
+            timeout (float, optional): Timeout in seconds. Defaults to 60.0.
+            interval (float, optional): Interval in seconds. Defaults to 1.0.
+        """
+        session = self._get_session()
+        req = session.build_request("HEAD", f"/api/v1/result/{uuid}/")
+
+        start_time = time.time()
+        while True:
+            res = self._send_request(session, req)
+            if res.status_code == 200:
+                return
+
+            if time.time() - start_time > timeout:
+                raise TimeoutError("Timeout waiting for scan result.")
+
+            time.sleep(interval)
 
     def _get_error(self, res: ClientResponse) -> APIError | None:
         try:

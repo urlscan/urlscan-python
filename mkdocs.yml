@@ -15,6 +15,7 @@ plugins:
       python:
         options:
           show_root_heading: true
+  include-markdown:
 
 markdown_extensions:
   - toc:

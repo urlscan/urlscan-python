@@ -413,7 +413,7 @@ class Client:
         if json_visibility is not None and json_visibility != visibility:
             logger.warning(f"Visibility is enforced to {json_visibility}.")
 
-        # memoize the scan UUID
+        # memoize the scan UUID & timestamp
         uuid = json_res.get("uuid")
         if isinstance(uuid, str):
             self._scan_uuid_timestamp_memo[uuid] = time.time()

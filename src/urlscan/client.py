@@ -133,6 +133,8 @@ class Client:
             "search": None,
         }
 
+        self._scan_uuid_memo: set[str] = set()
+
     def __enter__(self):
         return self
 
@@ -411,10 +413,19 @@ class Client:
         if json_visibility is not None and json_visibility != visibility:
             logger.warning(f"Visibility is enforced to {json_visibility}.")
 
+        # memoize the scan UUID
+        uuid = json_res.get("uuid")
+        if isinstance(uuid, str):
+            self._scan_uuid_memo.add(uuid)
+
         return json_res
 
     def wait_for_result(
-        self, uuid: str, timeout: float = 60.0, interval: float = 1.0
+        self,
+        uuid: str,
+        timeout: float = 60.0,
+        interval: float = 1.0,
+        initial_wait: float | None = 10.0,
     ) -> None:
         """Wait for a scan result to be available.
 
@@ -422,14 +433,19 @@ class Client:
             uuid (str): UUID of a result.
             timeout (float, optional): Timeout in seconds. Defaults to 60.0.
             interval (float, optional): Interval in seconds. Defaults to 1.0.
+            initial_wait (float | None, optional): Initial wait time in seconds. Set None to disable. Defaults to 10.0.
         """
         session = self._get_session()
         req = session.build_request("HEAD", f"/api/v1/result/{uuid}/")
+
+        if uuid in self._scan_uuid_memo and initial_wait is not None:
+            time.sleep(initial_wait)
 
         start_time = time.time()
         while True:
             res = self._send_request(session, req)
             if res.status_code == 200:
+                self._scan_uuid_memo.discard(uuid)
                 return
 
             if time.time() - start_time > timeout:

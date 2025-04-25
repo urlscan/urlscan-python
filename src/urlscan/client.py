@@ -133,7 +133,7 @@ class Client:
             "search": None,
         }
 
-        self._scan_uuid_memo: dict[str, float] = {}
+        self._scan_uuid_timestamp_memo: dict[str, float] = {}
 
     def __enter__(self):
         return self
@@ -416,7 +416,7 @@ class Client:
         # memoize the scan UUID
         uuid = json_res.get("uuid")
         if isinstance(uuid, str):
-            self._scan_uuid_memo[uuid] = time.time()
+            self._scan_uuid_timestamp_memo[uuid] = time.time()
 
         return json_res
 
@@ -438,7 +438,7 @@ class Client:
         session = self._get_session()
         req = session.build_request("HEAD", f"/api/v1/result/{uuid}/")
 
-        scanned_at = self._scan_uuid_memo.get(uuid)
+        scanned_at = self._scan_uuid_timestamp_memo.get(uuid)
         if scanned_at and initial_wait:
             elapsed = time.time() - scanned_at
             if elapsed < initial_wait:
@@ -448,7 +448,7 @@ class Client:
         while True:
             res = self._send_request(session, req)
             if res.status_code == 200:
-                self._scan_uuid_memo.pop(uuid, None)
+                self._scan_uuid_timestamp_memo.pop(uuid, None)
                 return
 
             if time.time() - start_time > timeout:

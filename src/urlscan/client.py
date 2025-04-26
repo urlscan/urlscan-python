@@ -70,6 +70,10 @@ class ClientResponse:
     def headers(self):
         return self._res.headers
 
+    @property
+    def status_code(self) -> int:
+        return self._res.status_code
+
     def raise_for_status(self) -> None:
         self._res.raise_for_status()
 
@@ -128,6 +132,8 @@ class Client:
             "retrieve": None,
             "search": None,
         }
+
+        self._scan_uuid_timestamp_memo: dict[str, float] = {}
 
     def __enter__(self):
         return self
@@ -407,7 +413,48 @@ class Client:
         if json_visibility is not None and json_visibility != visibility:
             logger.warning(f"Visibility is enforced to {json_visibility}.")
 
+        # memoize the scan UUID & timestamp
+        uuid = json_res.get("uuid")
+        if isinstance(uuid, str):
+            self._scan_uuid_timestamp_memo[uuid] = time.time()
+
         return json_res
+
+    def wait_for_result(
+        self,
+        uuid: str,
+        timeout: float = 60.0,
+        interval: float = 1.0,
+        initial_wait: float | None = 10.0,
+    ) -> None:
+        """Wait for a scan result to be available.
+
+        Args:
+            uuid (str): UUID of a result.
+            timeout (float, optional): Timeout in seconds. Defaults to 60.0.
+            interval (float, optional): Interval in seconds. Defaults to 1.0.
+            initial_wait (float | None, optional): Initial wait time in seconds. Set None to disable. Defaults to 10.0.
+        """
+        session = self._get_session()
+        req = session.build_request("HEAD", f"/api/v1/result/{uuid}/")
+
+        scanned_at = self._scan_uuid_timestamp_memo.get(uuid)
+        if scanned_at and initial_wait:
+            elapsed = time.time() - scanned_at
+            if elapsed < initial_wait:
+                time.sleep(initial_wait - elapsed)
+
+        start_time = time.time()
+        while True:
+            res = self._send_request(session, req)
+            if res.status_code == 200:
+                self._scan_uuid_timestamp_memo.pop(uuid, None)
+                return
+
+            if time.time() - start_time > timeout:
+                raise TimeoutError("Timeout waiting for scan result.")
+
+            time.sleep(interval)
 
     def _get_error(self, res: ClientResponse) -> APIError | None:
         try:

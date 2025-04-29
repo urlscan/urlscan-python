@@ -211,7 +211,9 @@ def test_bulk_scan(client: Client, httpserver: HTTPServer):
         visibility="public",
     )
     assert len(got) == 2
-    assert all(i["uuid"] == "dummy" for i in got)
+
+    responses = [r for _, r in got]
+    assert all(r["uuid"] == "dummy" for r in responses)
 
 
 @pytest.mark.timeout(10)
@@ -284,4 +286,5 @@ def test_bulk_scan_and_get_results(client: Client, httpserver: HTTPServer):
         initial_wait=0.0,
     )
     assert len(got) == 2
-    assert all(i["task"]["uuid"] == "dummy" for i in got)
+    results = [r for _, r in got]
+    assert all(r["task"]["uuid"] == "dummy" for r in results)

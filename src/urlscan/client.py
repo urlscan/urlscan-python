@@ -430,7 +430,7 @@ class Client:
         referer: str | None = None,
         override_safety: Any = None,
         country: str | None = None,
-    ) -> list[dict]:
+    ) -> list[tuple[str, dict]]:
         """Scan multiple URLs in bulk.
 
         Args:
@@ -443,20 +443,23 @@ class Client:
             country (str | None, optional): Specify which country the scan should be performed from (2-Letter ISO-3166-1 alpha-2 country. Defaults to None.
 
         Returns:
-            list[dict]: Scan responses.
+            list[tuple[str, dict]]: A list of tuples of (url, scan response).
 
         Reference:
             https://urlscan.io/docs/api/#scan
         """
         return [
-            self.scan(
+            (
                 url,
-                visibility=visibility,
-                tags=tags,
-                customagent=customagent,
-                referer=referer,
-                override_safety=override_safety,
-                country=country,
+                self.scan(
+                    url,
+                    visibility=visibility,
+                    tags=tags,
+                    customagent=customagent,
+                    referer=referer,
+                    override_safety=override_safety,
+                    country=country,
+                ),
             )
             for url in urls
         ]
@@ -557,7 +560,7 @@ class Client:
         timeout: float = 60.0,
         interval: float = 1.0,
         initial_wait: float | None = 10.0,
-    ):
+    ) -> list[tuple[str, dict]]:
         """Scan URLs, wait for results and get them.
 
         Args:
@@ -573,23 +576,26 @@ class Client:
             initial_wait (float | None, optional): Initial wait time in seconds. Set None to disable. Defaults to 10.0.
 
         Returns:
-            list[dict]: Scan results.
+            list[tuple[str, dict]]: A list of tuples of (url, result).
 
         Reference:
             https://urlscan.io/docs/api/#scan
         """
         return [
-            self.scan_and_get_result(
+            (
                 url,
-                visibility=visibility,
-                tags=tags,
-                customagent=customagent,
-                referer=referer,
-                override_safety=override_safety,
-                country=country,
-                timeout=timeout,
-                interval=interval,
-                initial_wait=initial_wait,
+                self.scan_and_get_result(
+                    url,
+                    visibility=visibility,
+                    tags=tags,
+                    customagent=customagent,
+                    referer=referer,
+                    override_safety=override_safety,
+                    country=country,
+                    timeout=timeout,
+                    interval=interval,
+                    initial_wait=initial_wait,
+                ),
             )
             for url in urls
         ]

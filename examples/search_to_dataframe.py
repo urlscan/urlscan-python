@@ -3,6 +3,7 @@
 # dependencies = [
 #    "itables",
 #    "pandas",
+#    "python-dotenv",
 #    "typer",
 #    "urlscan-python",
 # ]
@@ -15,24 +16,30 @@
 import os
 import webbrowser
 from pathlib import Path
+from typing import Annotated
 
 import itables
 import pandas as pd
 import typer
+from dotenv import load_dotenv
 
 import urlscan
+
+load_dotenv()
 
 API_KEY = os.getenv("URLSCAN_API_KEY")
 
 
 def main(
-    query: str = typer.Argument(..., help="Search query"),
-    limit: int = typer.Option(10, help="Limit of search results"),
-    api_key: str | None = typer.Option(None, help="Your API key"),
-    path: Path = typer.Option(  # noqa: B008
-        Path("report.html"),
-        help="Path to save a dataframe as an HTML file",
-    ),
+    query: Annotated[str, typer.Argument(help="Search query")],
+    api_key: Annotated[
+        str | None,
+        typer.Option(help="Your API key, defaults to URLSCAN_API_KEY env"),
+    ] = None,
+    limit: Annotated[int, typer.Option(help="Limit of search results")] = 100,
+    path: Annotated[
+        Path, typer.Option(help="Path to save a dataframe as an HTML file")
+    ] = Path("report.html"),
 ) -> None:
     api_key = api_key or API_KEY
     assert api_key

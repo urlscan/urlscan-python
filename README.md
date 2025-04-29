@@ -51,7 +51,7 @@ Bulk scan:
 >>> client.bulk_scan(["<url>", "<url>"], visibility="public")
 ```
 
-Alternatively, you can use `_get_result(s)` suffixed methods to do scan, wait and get at once.
+Alternatively, you can use `_and_get_result(s)` suffixed methods to do scan, wait and get at once.
 
 ```py
 >>> client.scan_and_get_result("<url>", visibility="public")

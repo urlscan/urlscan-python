@@ -39,13 +39,14 @@ class SearchIterator:
 
         self._results: list[dict] = []
         self._limit = limit
-        self._has_more = True
         self._count = 0
+        self._has_more = True
+        self._total: int | None = None
 
-    def _parse_response(self, data: dict):
+    def _parse_response(self, data: dict) -> tuple[list[dict], int]:
         results: list[dict] = data["results"]
-        has_more: bool = data["has_more"]
-        return results, has_more
+        total: int = data["total"]
+        return results, total
 
     def _get(self):
         data = self._client.get_json(
@@ -65,8 +66,17 @@ class SearchIterator:
         if self._limit and self._count >= self._limit:
             raise StopIteration()
 
+        if self._total:
+            self._has_more = self._total > self._count
+            if not self._has_more:
+                raise StopIteration()
+
         if not self._results and (self._count == 0 or self._has_more):
-            self._results, self._has_more = self._get()
+            self._results, total = self._get()
+
+            # NOTE: _total should be set only once (don't consider newer search results created after the first request)
+            self._total = self._total or total
+
             if len(self._results) > 0:
                 last_result = self._results[-1]
                 sort: list[str | int] = last_result["sort"]

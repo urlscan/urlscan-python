@@ -69,7 +69,7 @@ def test_search(client: Client, httpserver: HTTPServer):
     ).respond_with_json(
         {
             "results": [{"sort": [1, "dummy"]}],
-            "has_more": True,
+            "total": 1,
         }
     )
     # set second requests & response
@@ -80,13 +80,46 @@ def test_search(client: Client, httpserver: HTTPServer):
     ).respond_with_json(
         {
             "results": [],
-            "has_more": False,
+            "total": 1,
         }
     )
 
     got = list(client.search(q))
     # it should return 1 result
     assert len(got) == 1
+    # it should make exactly one request
+    assert len(httpserver.log) == 1
+
+
+def test_search_with_iteration(client: Client, httpserver: HTTPServer):
+    q = "foo"
+
+    # set first request & response
+    httpserver.expect_request(
+        "/api/v1/search/",
+        method="GET",
+        query_string={"q": q, "size": "100"},
+    ).respond_with_json(
+        {
+            "results": [{"sort": [1, "dummy"]}],
+            "total": 2,
+        }
+    )
+    # set second requests & response
+    httpserver.expect_request(
+        "/api/v1/search/",
+        method="GET",
+        query_string={"q": q, "size": "100", "search_after": "1,dummy"},
+    ).respond_with_json(
+        {
+            "results": [{"sort": [1, "dummy"]}],
+            "total": 1,
+        }
+    )
+
+    got = list(client.search(q))
+    # it should return 2 results
+    assert len(got) == 2
     # but it should make two requests
     assert len(httpserver.log) == 2
 

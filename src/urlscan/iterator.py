@@ -42,6 +42,7 @@ class SearchIterator:
         self._results: list[dict] = []
         self._limit = limit
         self._count = 0
+        self._total: int | None = None
         self._has_more: bool = True
 
     def _parse_response(self, data: dict) -> tuple[list[dict], int]:
@@ -70,8 +71,10 @@ class SearchIterator:
         if not self._results and (self._count == 0 or self._has_more):
             self._results, total = self._get()
 
-            if total != MAX_TOTAL:
-                self._has_more = total > (self._count + len(self._results))
+            # NOTE: total should be set only once (to ignore newly added results after the first request)
+            self._total = self._total or total
+            if self._total != MAX_TOTAL:
+                self._has_more = self._total > (self._count + len(self._results))
 
             if len(self._results) > 0:
                 last_result = self._results[-1]

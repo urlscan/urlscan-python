@@ -67,28 +67,90 @@ def test_search(client: Client, httpserver: HTTPServer):
         method="GET",
         query_string={"q": q, "size": "100"},
     ).respond_with_json(
+        {"results": [{"sort": [1, "dummy"]}], "has_more": False, "total": 1}
+    )
+
+    got = list(client.search(q))
+    # it should return 1 result
+    assert len(got) == 1
+    # but it should make 1 request
+    assert len(httpserver.log) == 1
+
+
+def test_search_with_iteration_within_10000_results(
+    client: Client, httpserver: HTTPServer
+):
+    q = "foo"
+
+    # set first request & response
+    httpserver.expect_request(
+        "/api/v1/search/",
+        method="GET",
+        query_string={"q": q, "size": "1"},
+    ).respond_with_json(
+        {"results": [{"sort": [1, "dummy"]}], "has_more": False, "total": 2}
+    )
+    # set second requests & response
+    httpserver.expect_request(
+        "/api/v1/search/",
+        method="GET",
+        query_string={"q": q, "size": "1", "search_after": "1,dummy"},
+    ).respond_with_json(
+        {"results": [{"sort": [2, "dummy"]}], "has_more": False, "total": 2}
+    )
+
+    got = list(client.search(q, size=1))
+    assert len(got) == 2
+    assert len(httpserver.log) == 2
+
+
+def test_search_with_iteration_over_10000_results(
+    client: Client, httpserver: HTTPServer
+):
+    q = "foo"
+
+    # set first request & response
+    httpserver.expect_request(
+        "/api/v1/search/",
+        method="GET",
+        query_string={"q": q, "size": "10000"},
+    ).respond_with_json(
         {
-            "results": [{"sort": [1, "dummy"]}],
+            "results": [{"sort": [i, "dummy"]} for i in range(1, 10001)],
             "has_more": True,
+            "total": 10000,
         }
     )
     # set second requests & response
     httpserver.expect_request(
         "/api/v1/search/",
         method="GET",
-        query_string={"q": q, "size": "100", "search_after": "1,dummy"},
+        query_string={"q": q, "size": "10000", "search_after": "10000,dummy"},
+    ).respond_with_json(
+        {
+            "results": [
+                {"sort": [10001, "dummy"]},
+            ],
+            "has_more": True,
+            "total": 10000,
+        }
+    )
+    # set third requests & response (it stops iteration because of empty results)
+    httpserver.expect_request(
+        "/api/v1/search/",
+        method="GET",
+        query_string={"q": q, "size": "10000", "search_after": "10001,dummy"},
     ).respond_with_json(
         {
             "results": [],
-            "has_more": False,
+            "has_more": True,
+            "total": 10000,
         }
     )
 
-    got = list(client.search(q))
-    # it should return 1 result
-    assert len(got) == 1
-    # but it should make two requests
-    assert len(httpserver.log) == 2
+    got = list(client.search(q, size=10000))
+    assert len(got) == 10001
+    assert len(httpserver.log) == 3
 
 
 def test_retry(client: Client, httpserver: HTTPServer):

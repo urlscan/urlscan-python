@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .client import Client
 
+MAX_TOTAL = 10_000
+
 
 class SearchIterator:
     """
@@ -39,13 +41,13 @@ class SearchIterator:
 
         self._results: list[dict] = []
         self._limit = limit
-        self._has_more = True
         self._count = 0
+        self._has_more: bool = True
 
-    def _parse_response(self, data: dict):
+    def _parse_response(self, data: dict) -> tuple[list[dict], int]:
         results: list[dict] = data["results"]
-        has_more: bool = data["has_more"]
-        return results, has_more
+        total: int = data["total"]
+        return results, total
 
     def _get(self):
         data = self._client.get_json(
@@ -66,7 +68,11 @@ class SearchIterator:
             raise StopIteration()
 
         if not self._results and (self._count == 0 or self._has_more):
-            self._results, self._has_more = self._get()
+            self._results, total = self._get()
+
+            if total != MAX_TOTAL:
+                self._has_more = total > (self._count + len(self._results))
+
             if len(self._results) > 0:
                 last_result = self._results[-1]
                 sort: list[str | int] = last_result["sort"]

@@ -75,6 +75,8 @@ class SearchIterator:
             self._total = self._total or total
             if self._total != MAX_TOTAL:
                 self._has_more = self._total > (self._count + len(self._results))
+            else:
+                self._has_more = len(self._results) >= self._size
 
             if len(self._results) > 0:
                 last_result = self._results[-1]

@@ -150,7 +150,7 @@ def test_search_with_iteration_over_10000_results(
 
     got = list(client.search(q, size=10000))
     assert len(got) == 10001
-    assert len(httpserver.log) == 3
+    assert len(httpserver.log) == 2
 
 
 def test_retry(client: Client, httpserver: HTTPServer):

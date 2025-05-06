@@ -11,6 +11,7 @@ dev = [
   "lefthook>=1.11.6",
   "loguru>=0.7.3",
   "mypy>=1.15.0",
+  "nbstripout>=0.8.1",
   "pytest>=8.3.5",
   "pytest-freezer>=0.4.9",
   "pytest-httpserver>=1.1.2",

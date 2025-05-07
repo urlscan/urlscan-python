@@ -583,30 +583,27 @@ class Client:
             https://urlscan.io/docs/api/#scan
         """
 
-        def inner(url: str) -> dict | Exception:
-            try:
-                return self.scan_and_get_result(
-                    url,
-                    visibility=visibility,
-                    tags=tags,
-                    customagent=customagent,
-                    referer=referer,
-                    override_safety=override_safety,
-                    country=country,
-                    timeout=timeout,
-                    interval=interval,
-                    initial_wait=initial_wait,
-                )
-            except Exception as e:
-                return e
+        responses = self.bulk_scan(
+            urls,
+            visibility=visibility,
+            tags=tags,
+            customagent=customagent,
+            referer=referer,
+            override_safety=override_safety,
+            country=country,
+        )
 
-        return [
-            (
-                url,
-                inner(url),
+        def mapping(res_or_error: dict | Exception) -> dict | Exception:
+            if isinstance(res_or_error, Exception):
+                return res_or_error
+
+            uuid: str = res_or_error["uuid"]
+            self.wait_for_result(
+                uuid, timeout=timeout, interval=interval, initial_wait=initial_wait
             )
-            for url in urls
-        ]
+            return self.get_result(uuid)
+
+        return [(url, mapping(res_or_error)) for url, res_or_error in responses]
 
     def _get_error(self, res: ClientResponse) -> APIError | None:
         try:

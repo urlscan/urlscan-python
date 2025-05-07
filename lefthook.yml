@@ -21,3 +21,7 @@ pre-commit:
     mypy:
       glob: "*.py"
       run: uv run mypy {staged_files}
+    nbstripout:
+      glob: "*.ipynb"
+      run: uv run nbstripout {staged_files}
+      stage_fixed: true

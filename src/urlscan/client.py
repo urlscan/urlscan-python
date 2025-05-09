@@ -420,6 +420,51 @@ class Client:
 
         return json_res
 
+    def bulk_scan(
+        self,
+        urls: list[str],
+        *,
+        visibility: VisibilityType,
+        tags: list[str] | None = None,
+        customagent: str | None = None,
+        referer: str | None = None,
+        override_safety: Any = None,
+        country: str | None = None,
+    ) -> list[tuple[str, dict | Exception]]:
+        """Scan multiple URLs in bulk.
+
+        Args:
+            urls (list[str]): List of URLs to scan.
+            visibility (VisibilityType): Visibility of the scan. Can be "public", "private", or "unlisted".
+            tags (list[str] | None, optional): Tags to be attached. Defaults to None.
+            customagent (str | None, optional): Custom user agent. Defaults to None.
+            referer (str | None, optional): Referer. Defaults to None.
+            override_safety (Any, optional): If set to any value, this will disable reclassification of URLs with potential PII in them. Defaults to None.
+            country (str | None, optional): Specify which country the scan should be performed from (2-Letter ISO-3166-1 alpha-2 country. Defaults to None.
+
+        Returns:
+            list[tuple[str, dict | Exception]]: A list of tuples of (url, scan response or error).
+
+        Reference:
+            https://urlscan.io/docs/api/#scan
+        """
+
+        def inner(url: str) -> dict | Exception:
+            try:
+                return self.scan(
+                    url,
+                    visibility=visibility,
+                    tags=tags,
+                    customagent=customagent,
+                    referer=referer,
+                    override_safety=override_safety,
+                    country=country,
+                )
+            except Exception as e:
+                return e
+
+        return [(url, inner(url)) for url in urls]
+
     def wait_for_result(
         self,
         uuid: str,
@@ -455,6 +500,110 @@ class Client:
                 raise TimeoutError("Timeout waiting for scan result.")
 
             time.sleep(interval)
+
+    def scan_and_get_result(
+        self,
+        url: str,
+        visibility: VisibilityType,
+        tags: list[str] | None = None,
+        customagent: str | None = None,
+        referer: str | None = None,
+        override_safety: Any = None,
+        country: str | None = None,
+        timeout: float = 60.0,
+        interval: float = 1.0,
+        initial_wait: float | None = 10.0,
+    ):
+        """Scan a given URL, wait for a result and get it.
+
+        Args:
+            url (str): URL to scan.
+            visibility (VisibilityType): Visibility of the scan. Can be "public", "private", or "unlisted".
+            tags (list[str] | None, optional): Tags to be attached. Defaults to None.
+            customagent (str | None, optional): Custom user agent. Defaults to None.
+            referer (str | None, optional): Referer. Defaults to None.
+            override_safety (Any, optional): If set to any value, this will disable reclassification of URLs with potential PII in them. Defaults to None.
+            country (str | None, optional): Specify which country the scan should be performed from (2-Letter ISO-3166-1 alpha-2 country. Defaults to None.
+            timeout (float, optional): Timeout for waiting a result in seconds. Defaults to 60.0.
+            interval (float, optional): Interval in seconds. Defaults to 1.0.
+            initial_wait (float | None, optional): Initial wait time in seconds. Set None to disable. Defaults to 10.0.
+
+        Returns:
+            dict: Scan result.
+
+        Reference:
+            https://urlscan.io/docs/api/#scan
+        """
+        res = self.scan(
+            url,
+            visibility=visibility,
+            tags=tags,
+            customagent=customagent,
+            referer=referer,
+            override_safety=override_safety,
+            country=country,
+        )
+        uuid: str = res["uuid"]
+        self.wait_for_result(
+            uuid, timeout=timeout, interval=interval, initial_wait=initial_wait
+        )
+        return self.get_result(uuid)
+
+    def bulk_scan_and_get_results(
+        self,
+        urls: list[str],
+        visibility: VisibilityType,
+        tags: list[str] | None = None,
+        customagent: str | None = None,
+        referer: str | None = None,
+        override_safety: Any = None,
+        country: str | None = None,
+        timeout: float = 60.0,
+        interval: float = 1.0,
+        initial_wait: float | None = 10.0,
+    ) -> list[tuple[str, dict | Exception]]:
+        """Scan URLs, wait for results and get them.
+
+        Args:
+            urls (list[str]): URLs to scan.
+            visibility (VisibilityType): Visibility of the scan. Can be "public", "private", or "unlisted".
+            tags (list[str] | None, optional): Tags to be attached. Defaults to None.
+            customagent (str | None, optional): Custom user agent. Defaults to None.
+            referer (str | None, optional): Referer. Defaults to None.
+            override_safety (Any, optional): If set to any value, this will disable reclassification of URLs with potential PII in them. Defaults to None.
+            country (str | None, optional): Specify which country the scan should be performed from (2-Letter ISO-3166-1 alpha-2 country. Defaults to None.
+            timeout (float, optional): Timeout for waiting a result in seconds. Defaults to 60.0.
+            interval (float, optional): Interval in seconds. Defaults to 1.0.
+            initial_wait (float | None, optional): Initial wait time in seconds. Set None to disable. Defaults to 10.0.
+
+        Returns:
+            list[tuple[str, dict | Exception]]: A list of tuples of (url, result or error).
+
+        Reference:
+            https://urlscan.io/docs/api/#scan
+        """
+
+        responses = self.bulk_scan(
+            urls,
+            visibility=visibility,
+            tags=tags,
+            customagent=customagent,
+            referer=referer,
+            override_safety=override_safety,
+            country=country,
+        )
+
+        def mapping(res_or_error: dict | Exception) -> dict | Exception:
+            if isinstance(res_or_error, Exception):
+                return res_or_error
+
+            uuid: str = res_or_error["uuid"]
+            self.wait_for_result(
+                uuid, timeout=timeout, interval=interval, initial_wait=initial_wait
+            )
+            return self.get_result(uuid)
+
+        return [(url, mapping(res_or_error)) for url, res_or_error in responses]
 
     def _get_error(self, res: ClientResponse) -> APIError | None:
         try:

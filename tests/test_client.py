@@ -236,3 +236,121 @@ def test_rate_limit_remaining_error(
     assert client.get_result("dummy") is not None
     with pytest.raises(RateLimitRemainingError):
         client.get_result("dummy")
+
+
+def test_scan(client: Client, httpserver: HTTPServer):
+    httpserver.expect_request(
+        "/api/v1/scan/",
+        method="POST",
+    ).respond_with_json(
+        {
+            "uuid": "dummy",
+        }
+    )
+
+    got = client.scan(
+        "http://example.com",
+        visibility="public",
+    )
+    assert got["uuid"] == "dummy"
+
+
+def test_bulk_scan(client: Client, httpserver: HTTPServer):
+    httpserver.expect_request(
+        "/api/v1/scan/",
+        method="POST",
+    ).respond_with_json(
+        {
+            "uuid": "dummy",
+        }
+    )
+
+    got = client.bulk_scan(
+        [
+            "http://example.com",
+            "http://example.org",
+        ],
+        visibility="public",
+    )
+    assert len(got) == 2
+
+    responses = [r for _, r in got]
+    for r in responses:
+        assert isinstance(r, dict)
+        assert r["uuid"] == "dummy"
+
+
+@pytest.mark.timeout(10)
+def test_wait_for_result(client: Client, httpserver: HTTPServer):
+    httpserver.expect_request(
+        "/api/v1/result/dummy/",
+        method="HEAD",
+    ).respond_with_response(Response("", status=200))
+    assert client.wait_for_result("dummy", initial_wait=0.0) is None  # type: ignore
+
+
+@pytest.mark.timeout(10)
+def test_scan_and_get_result(client: Client, httpserver: HTTPServer):
+    httpserver.expect_request(
+        "/api/v1/scan/",
+        method="POST",
+    ).respond_with_json(
+        {
+            "uuid": "dummy",
+        }
+    )
+    httpserver.expect_request(
+        "/api/v1/result/dummy/",
+        method="HEAD",
+    ).respond_with_response(Response("", status=200))
+    httpserver.expect_request(
+        "/api/v1/result/dummy/",
+        method="GET",
+    ).respond_with_json(
+        {
+            "task": {"uuid": "dummy"},
+        }
+    )
+
+    got = client.scan_and_get_result(
+        "http://example.com", visibility="public", initial_wait=0.0
+    )
+    assert got["task"]["uuid"] == "dummy"
+
+
+@pytest.mark.timeout(10)
+def test_bulk_scan_and_get_results(client: Client, httpserver: HTTPServer):
+    httpserver.expect_request(
+        "/api/v1/scan/",
+        method="POST",
+    ).respond_with_json(
+        {
+            "uuid": "dummy",
+        }
+    )
+    httpserver.expect_request(
+        "/api/v1/result/dummy/",
+        method="HEAD",
+    ).respond_with_response(Response("", status=200))
+    httpserver.expect_request(
+        "/api/v1/result/dummy/",
+        method="GET",
+    ).respond_with_json(
+        {
+            "task": {"uuid": "dummy"},
+        }
+    )
+
+    got = client.bulk_scan_and_get_results(
+        [
+            "http://example.com",
+            "http://example.org",
+        ],
+        visibility="public",
+        initial_wait=0.0,
+    )
+    assert len(got) == 2
+    results = [r for _, r in got]
+    for r in results:
+        assert isinstance(r, dict)
+        assert r["task"]["uuid"] == "dummy"

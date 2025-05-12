@@ -3,13 +3,14 @@ name: Publish docs
 on:
   release:
     types: ["created"]
-  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fetch all commits/branches (otherwise "mike deploy" fails)
       - uses: actions/setup-python@v5
         with:
           python-version: 3.13
@@ -20,5 +21,12 @@ jobs:
           path: ~/.cache/uv
           key: uv-3.13-${{ hashFiles('uv.lock') }}
       - run: uv sync --frozen
-      - name: Build and publish
-        run: uv run mkdocs gh-deploy --force
+      - name: git config for "mike deploy"
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+      - name: deploy docs by mike
+        run: |
+          VERSION=$(uv run python scripts/convert_to_pep440_version.py "${{ github.event.release.tag_name }}")
+          uv run mike deploy "$VERSION" latest --update-aliases --push
+          uv run mike set-default latest --push

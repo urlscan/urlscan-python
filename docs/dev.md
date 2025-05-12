@@ -32,11 +32,11 @@ uv run pytest
 
 ## Docs
 
-This project uses [MkDocs](https://www.mkdocs.org/) as a documentation tool.
+This project uses [MkDocs](https://www.mkdocs.org/) as a documentation tool and uses [Mike](https://github.com/jimporter/mike) for versioning.
 
 ```bash
 # run the dev server
-uv run mkdocs serve
+uv run mike serve
 # or build the docs
-uv run mkdocs build
+uv run mke build
 ```

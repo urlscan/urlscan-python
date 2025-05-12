@@ -16,6 +16,8 @@ plugins:
         options:
           show_root_heading: true
   include-markdown:
+  mike:
+    canonical_version: latest
 
 markdown_extensions:
   - toc:
@@ -32,3 +34,5 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/urlscan/urlscan-python/
+  version:
+    provider: mike

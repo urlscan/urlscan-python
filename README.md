@@ -1,5 +1,7 @@
 # urlscan-python
 
+[![PyPI version](https://badge.fury.io/py/urlscan-python.svg)](https://badge.fury.io/py/urlscan-python)
+
 The official Python API client for urlscan.io.
 
 ## Requirements

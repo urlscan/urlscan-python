@@ -350,8 +350,8 @@ class Client:
         Args:
             q (str): Query term. Defaults to "".
             size (int, optional): Number of results returned in a search. Defaults to 100.
-            limit (int | None, optional): . Defaults to None.
-            search_after (str | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
+            limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
+            search_after (str | None, optional): Search after to retrieve next results. Defaults to None.
 
         Returns:
             SearchIterator: Search iterator.

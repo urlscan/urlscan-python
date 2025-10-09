@@ -6,7 +6,7 @@ import os
 import time
 from dataclasses import dataclass
 from io import BytesIO
-from typing import Any, BinaryIO, TypedDict
+from typing import Any, BinaryIO, Literal, TypedDict, cast
 
 import httpx
 from httpx._types import QueryParamTypes, RequestData, TimeoutTypes
@@ -90,6 +90,9 @@ class RateLimitMemo(TypedDict):
     unlisted: RateLimit | None
     retrieve: RateLimit | None
     search: RateLimit | None
+
+
+RateLimitKey = Literal["public", "private", "unlisted", "retrieve", "search"]
 
 
 class Client:
@@ -215,7 +218,7 @@ class Client:
         res = ClientResponse(session.send(request))
 
         # use action in response headers
-        action = res.headers.get("X-Rate-Limit-Action")
+        action = cast(RateLimitKey | None, res.headers.get("X-Rate-Limit-Action"))
         if action:
             remaining = res.headers.get("X-Rate-Limit-Remaining")
             reset = res.headers.get("X-Rate-Limit-Reset")

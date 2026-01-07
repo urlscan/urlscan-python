@@ -8,3 +8,5 @@ except ImportError:
 from .client import Client  # noqa: F401
 from .error import APIError, RateLimitError  # noqa: F401
 from .iterator import SearchIterator  # noqa: F401
+from .pro import Pro  # noqa: F401
+from .types import LiveScanResourceType, VisibilityType  # noqa: F401

@@ -95,7 +95,7 @@ class RateLimitMemo(TypedDict):
 RateLimitKey = Literal["public", "private", "unlisted", "retrieve", "search"]
 
 
-class Client:
+class BaseClient:
     def __init__(
         self,
         api_key: str,
@@ -268,6 +268,44 @@ class Client:
         req = session.build_request("POST", path, json=json, data=data)
         return self._send_request(session, req)
 
+    def put(
+        self,
+        path: str,
+        json: Any | None = None,
+        data: RequestData | None = None,
+    ) -> ClientResponse:
+        """Send a PUT request to a given API endpoint.
+
+        Args:
+            path (str): Path.
+            json (Any | None, optional): Dict to send in request body as JSON. Defaults to None.
+            data (RequestData | None, optional): Dict to send in request body. Defaults to None.
+
+        Returns:
+            ClientResponse: Response.
+        """
+        session = self._get_session()
+        req = session.build_request("PUT", path, json=json, data=data)
+        return self._send_request(session, req)
+
+    def delete(
+        self,
+        path: str,
+        params: QueryParamTypes | None = None,
+    ) -> ClientResponse:
+        """Send a DELETE request to a given API endpoint.
+
+        Args:
+            path (str): Path.
+            params (QueryParamTypes | None, optional): Query parameters. Defaults to None.
+
+        Returns:
+            ClientResponse: Response.
+        """
+        session = self._get_session()
+        req = session.build_request("DELETE", path, params=params)
+        return self._send_request(session, req)
+
     def download(
         self,
         path: str,
@@ -296,6 +334,54 @@ class Client:
         res = self.get(path, params=params)
         return self._response_to_str(res)
 
+    def _get_error(self, res: ClientResponse) -> APIError | None:
+        try:
+            res.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            data: dict = exc.response.json()
+            message: str = data["message"]
+            description: str | None = data.get("description")
+            status: int = data["status"]
+
+            # ref. https://urlscan.io/docs/api/#ratelimit
+            if status == 429:
+                rate_limit_reset_after = float(
+                    exc.response.headers.get("X-Rate-Limit-Reset-After", 0)
+                )
+                return RateLimitError(
+                    message,
+                    description=description,
+                    status=status,
+                    rate_limit_reset_after=rate_limit_reset_after,
+                )
+
+            return APIError(message, description=description, status=status)
+
+        return None
+
+    def _response_to_json(self, res: ClientResponse) -> dict:
+        error = self._get_error(res)
+        if error:
+            raise error
+
+        return res.json()
+
+    def _response_to_str(self, res: ClientResponse) -> str:
+        error = self._get_error(res)
+        if error:
+            raise error
+
+        return res.text
+
+    def _response_to_content(self, res: ClientResponse) -> bytes:
+        error = self._get_error(res)
+        if error:
+            raise error
+
+        return res.content
+
+
+class Client(BaseClient):
     def get_result(self, uuid: str) -> dict:
         """Get a result of a scan by UUID.
 
@@ -607,49 +693,3 @@ class Client:
             return self.get_result(uuid)
 
         return [(url, mapping(res_or_error)) for url, res_or_error in responses]
-
-    def _get_error(self, res: ClientResponse) -> APIError | None:
-        try:
-            res.raise_for_status()
-        except httpx.HTTPStatusError as exc:
-            data: dict = exc.response.json()
-            message: str = data["message"]
-            description: str | None = data.get("description")
-            status: int = data["status"]
-
-            # ref. https://urlscan.io/docs/api/#ratelimit
-            if status == 429:
-                rate_limit_reset_after = float(
-                    exc.response.headers.get("X-Rate-Limit-Reset-After", 0)
-                )
-                return RateLimitError(
-                    message,
-                    description=description,
-                    status=status,
-                    rate_limit_reset_after=rate_limit_reset_after,
-                )
-
-            return APIError(message, description=description, status=status)
-
-        return None
-
-    def _response_to_json(self, res: ClientResponse) -> dict:
-        error = self._get_error(res)
-        if error:
-            raise error
-
-        return res.json()
-
-    def _response_to_str(self, res: ClientResponse) -> str:
-        error = self._get_error(res)
-        if error:
-            raise error
-
-        return res.text
-
-    def _response_to_content(self, res: ClientResponse) -> bytes:
-        error = self._get_error(res)
-        if error:
-            raise error
-
-        return res.content

@@ -11,19 +11,6 @@ from urlscan import Client
 from urlscan.error import RateLimitError, RateLimitRemainingError
 
 
-@pytest.fixture
-def api_key():
-    return "dummy"
-
-
-@pytest.fixture
-def client(httpserver: HTTPServer, api_key: str):
-    with Client(
-        api_key=api_key, base_url=f"http://{httpserver.host}:{httpserver.port}"
-    ) as client:
-        yield client
-
-
 def test_get(client: Client, httpserver: HTTPServer):
     data = {"foo": "bar"}
     httpserver.expect_request("/dummy").respond_with_json(data)

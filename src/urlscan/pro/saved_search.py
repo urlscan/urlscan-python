@@ -6,10 +6,10 @@ from urlscan.types import PermissionType, SavedSearchDataSource, TLPType
 
 class SavedSearch(BaseClient):
     def get_list(self) -> dict:
-        """Get a list of saved searches.
+        """Get a list of Saved Searches for the current user.
 
         Returns:
-            dict: List of saved searches.
+            dict: Response containing an array of saved searches with their properties.
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-get
@@ -28,20 +28,29 @@ class SavedSearch(BaseClient):
         user_tags: list[str] | None = None,
         permissions: list[PermissionType] | None = None,
     ) -> dict:
-        """Create a new saved search.
+        """Create a Saved Search.
 
         Args:
-            datasource (SavedSearchDataSource): Data source to search ("hostnames" or "scans").
+            datasource (SavedSearchDataSource): Which data this Saved Search operates on
+                ("hostnames" or "scans").
             query (str): Search API query string.
-            name (str): User-facing name for the saved search.
+            name (str): User-facing short name for the saved search.
             description (str | None, optional): Short description. Defaults to None.
-            long_description (str | None, optional): Detailed description. Defaults to None.
-            tlp (TLPType | None, optional): Traffic Light Protocol level. Defaults to None.
-            user_tags (list[str] | None, optional): Tags with visibility prefixes. Defaults to None.
-            permissions (list[PermissionType] | None, optional): Access permissions. Defaults to None.
+            long_description (str | None, optional): Long description. Defaults to None.
+            tlp (TLPType | None, optional): TLP (Traffic Light Protocol) indicator for
+                other users on the urlscan Pro platform. Valid values: "red", "amber+strict",
+                "amber", "green", "clear". Defaults to None.
+            user_tags (list[str] | None, optional): User-supplied tags to be applied to
+                matching items. Apply the following prefixes to tags to define their
+                visibility scope: `pro.` (urlscan Pro users), `public.` (all registered
+                users), `private.` (only you), or `team.` (you and team members).
+                Defaults to None.
+            permissions (list[PermissionType] | None, optional): Determine whether only
+                other users on the same team or everyone on urlscan Pro can see the search.
+                Valid values: "public:read", "team:read", "team:write". Defaults to None.
 
         Returns:
-            dict: Created saved search object.
+            dict: Created saved search object containing the search properties and unique _id.
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-post
@@ -75,21 +84,30 @@ class SavedSearch(BaseClient):
         user_tags: list[str] | None = None,
         permissions: list[PermissionType] | None = None,
     ) -> dict:
-        """Update an existing saved search.
+        """Update a Saved Search.
 
         Args:
-            search_id (str): ID of the saved search to update.
-            datasource (SavedSearchDataSource): Data source to search ("hostnames" or "scans").
+            search_id (str): Unique ID of the saved search to update.
+            datasource (SavedSearchDataSource): Which data this Saved Search operates on
+                ("hostnames" or "scans").
             query (str): Search API query string.
-            name (str): User-facing name for the saved search.
+            name (str): User-facing short name for the saved search.
             description (str | None, optional): Short description. Defaults to None.
-            long_description (str | None, optional): Detailed description. Defaults to None.
-            tlp (TLPType | None, optional): Traffic Light Protocol level. Defaults to None.
-            user_tags (list[str] | None, optional): Tags with visibility prefixes. Defaults to None.
-            permissions (list[PermissionType] | None, optional): Access permissions. Defaults to None.
+            long_description (str | None, optional): Long description. Defaults to None.
+            tlp (TLPType | None, optional): TLP (Traffic Light Protocol) indicator for
+                other users on the urlscan Pro platform. Valid values: "red", "amber+strict",
+                "amber", "green", "clear". Defaults to None.
+            user_tags (list[str] | None, optional): User-supplied tags to be applied to
+                matching items. Apply the following prefixes to tags to define their
+                visibility scope: `pro.` (urlscan Pro users), `public.` (all registered
+                users), `private.` (only you), or `team.` (you and team members).
+                Defaults to None.
+            permissions (list[PermissionType] | None, optional): Determine whether only
+                other users on the same team or everyone on urlscan Pro can see the search.
+                Valid values: "public:read", "team:read", "team:write". Defaults to None.
 
         Returns:
-            dict: Updated saved search object.
+            dict: Updated saved search object containing the search properties and unique _id.
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-put
@@ -111,10 +129,10 @@ class SavedSearch(BaseClient):
         return self._response_to_json(res)
 
     def remove(self, search_id: str) -> dict:
-        """Delete a saved search.
+        """Delete a Saved Search.
 
         Args:
-            search_id (str): ID of the saved search to delete.
+            search_id (str): Unique ID of the saved search to delete.
 
         Returns:
             dict: Empty JSON object on success.
@@ -126,13 +144,14 @@ class SavedSearch(BaseClient):
         return self._response_to_json(res)
 
     def get_results(self, search_id: str) -> dict:
-        """Get results for a saved search.
+        """Get the search results for a specific Saved Search.
 
         Args:
-            search_id (str): ID of the saved search.
+            search_id (str): Unique ID of the saved search.
 
         Returns:
-            dict: Search results matching the saved query.
+            dict: Search results matching the saved query. The structure depends on the
+                datasource (hostnames or scans) specified in the saved search.
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-results

@@ -21,3 +21,5 @@ IncidentWatchKeyType = Literal[
     "hostnames/ip",
     "hostnames/domain",
 ]
+ScanIntervalModeType = Literal["automatic", "manual"]
+WatchedAttributeType = Literal["detections", "tls", "dns", "labels", "page", "meta", "ip"]

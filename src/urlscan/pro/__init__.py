@@ -1,5 +1,6 @@
 from urlscan.client import BASE_URL, USER_AGENT, BaseClient, TimeoutTypes
 
+from .incident import Incident
 from .livescan import LiveScan
 from .subscription import Subscription
 
@@ -50,6 +51,17 @@ class Pro(BaseClient):
         )
 
         self.subscription = Subscription(
+            api_key=api_key,
+            base_url=base_url,
+            user_agent=user_agent,
+            trust_env=trust_env,
+            timeout=timeout,
+            proxy=proxy,
+            verify=verify,
+            retry=retry,
+        )
+
+        self.incident = Incident(
             api_key=api_key,
             base_url=base_url,
             user_agent=user_agent,

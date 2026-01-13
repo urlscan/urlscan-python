@@ -142,9 +142,9 @@ class BaseClient:
         return self
 
     def __exit__(self, item_type: Any, value: Any, traceback: Any):
-        self.close()
+        self._close()
 
-    def close(self):
+    def _close(self):
         if self._session:
             self._session.close()
             self._session = None

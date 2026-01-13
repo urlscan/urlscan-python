@@ -15,7 +15,7 @@ def test_get(client: Client, httpserver: HTTPServer):
     data = {"foo": "bar"}
     httpserver.expect_request("/dummy").respond_with_json(data)
 
-    got = client.get("/dummy")
+    got = client._get("/dummy")
     assert got.json() == data
 
     # confirm whether the API key is set or not
@@ -31,7 +31,7 @@ def test_post(client: Client, httpserver: HTTPServer):
         method="POST",
     ).respond_with_json(data)
 
-    got = client.post("/dummy")
+    got = client._post("/dummy")
     assert got.json() == data
 
 
@@ -156,7 +156,7 @@ def test_retry(client: Client, httpserver: HTTPServer):
 
     client._retry = True
 
-    got = client.get("/dummy")
+    got = client._get("/dummy")
     assert got._res.status_code == 200
     # it should have two requests & responses
     assert len(httpserver.log) == 2

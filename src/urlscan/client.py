@@ -230,7 +230,7 @@ class BaseClient:
 
         return res
 
-    def get(self, path: str, params: QueryParamTypes | None = None) -> ClientResponse:
+    def _get(self, path: str, params: QueryParamTypes | None = None) -> ClientResponse:
         """Send a GET request to a given API endpoint.
 
         Args:
@@ -245,10 +245,10 @@ class BaseClient:
         return self._send_request(session, req)
 
     def get_json(self, path: str, params: QueryParamTypes | None = None) -> dict:
-        res = self.get(path, params=params)
+        res = self._get(path, params=params)
         return self._response_to_json(res)
 
-    def post(
+    def _post(
         self,
         path: str,
         json: Any | None = None,
@@ -268,7 +268,7 @@ class BaseClient:
         req = session.build_request("POST", path, json=json, data=data)
         return self._send_request(session, req)
 
-    def put(
+    def _put(
         self,
         path: str,
         json: Any | None = None,
@@ -288,7 +288,7 @@ class BaseClient:
         req = session.build_request("PUT", path, json=json, data=data)
         return self._send_request(session, req)
 
-    def delete(
+    def _delete(
         self,
         path: str,
         params: QueryParamTypes | None = None,
@@ -322,16 +322,16 @@ class BaseClient:
         Returns:
             BytesIO: File content.
         """
-        res = self.get(path, params=params)
+        res = self._get(path, params=params)
         file.write(res.content)
         return
 
     def get_content(self, path: str, params: QueryParamTypes | None = None) -> bytes:
-        res = self.get(path, params=params)
+        res = self._get(path, params=params)
         return self._response_to_content(res)
 
     def get_text(self, path: str, params: QueryParamTypes | None = None) -> str:
-        res = self.get(path, params=params)
+        res = self._get(path, params=params)
         return self._response_to_str(res)
 
     def _get_error(self, res: ClientResponse) -> APIError | None:
@@ -408,7 +408,7 @@ class Client(BaseClient):
         Reference:
             https://urlscan.io/docs/api/#screenshot
         """
-        res = self.get(f"/screenshots/{uuid}.png")
+        res = self._get(f"/screenshots/{uuid}.png")
         bio = BytesIO(res.content)
         bio.name = res.basename
         return bio
@@ -495,7 +495,7 @@ class Client(BaseClient):
                 "country": country,
             }
         )
-        res = self.post("/api/v1/scan/", json=data)
+        res = self._post("/api/v1/scan/", json=data)
         json_res = self._response_to_json(res)
 
         json_visibility = json_res.get("visibility")

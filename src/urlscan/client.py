@@ -15,17 +15,12 @@ from ._version import version
 from .error import APIError, RateLimitError, RateLimitRemainingError
 from .iterator import SearchIterator
 from .types import ActionType, VisibilityType
-from .utils import parse_datetime
+from .utils import _compact, parse_datetime
 
 logger = logging.getLogger("urlscan-python")
 
 BASE_URL = os.environ.get("URLSCAN_BASE_URL", "https://urlscan.io")
 USER_AGENT = f"urlscan-py/{version}"
-
-
-def _compact(d: dict) -> dict:
-    """Remove empty values from a dictionary."""
-    return {k: v for k, v in d.items() if v is not None}
 
 
 class RetryTransport(httpx.HTTPTransport):
@@ -450,6 +445,7 @@ class Client(BaseClient):
         """
         return SearchIterator(
             self,
+            path="/api/v1/search/",
             q=q,
             size=size,
             limit=limit,

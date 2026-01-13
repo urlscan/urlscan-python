@@ -1,4 +1,5 @@
 from urlscan.client import BASE_URL, USER_AGENT, BaseClient, TimeoutTypes
+from urlscan.iterator import SearchIterator
 
 from .livescan import LiveScan
 from .subscription import Subscription
@@ -58,4 +59,28 @@ class Pro(BaseClient):
             proxy=proxy,
             verify=verify,
             retry=retry,
+        )
+
+    def structure_search(
+        self,
+        scan_id: str,
+        *,
+        q: str | None = None,
+        size: int = 100,
+        search_after: str | None = None,
+    ) -> SearchIterator:
+        """Get structurally similar results to a specific scan
+
+        Args:
+            scan_id (str): The original scan to compare to.
+            q (str | None, optional): Additional query filter.
+            size (int): Maximum results per call. Defaults to 100.
+            search_after (str | None, optional): Parameter to iterate over older results. Defaults to None.
+        """
+        return SearchIterator(
+            client=self,
+            path=f"/api/v1/pro/result/{scan_id}/similar/",
+            q=q,
+            size=size,
+            search_after=search_after,
         )

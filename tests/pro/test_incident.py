@@ -174,5 +174,5 @@ def test_get_incident_states(pro: Pro, httpserver: HTTPServer):
         method="GET",
     ).respond_with_json(data)
 
-    got = pro.incident.get_incident_states(incident_id=incident_id)
+    got = pro.incident.get_states(incident_id=incident_id)
     assert got == data

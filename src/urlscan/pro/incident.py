@@ -246,7 +246,7 @@ class Incident(BaseClient):
         """
         return self.get_json("/api/v1/user/watchableAttributes")
 
-    def get_incident_states(self, incident_id: str) -> dict:
+    def get_states(self, incident_id: str) -> dict:
         """Retrieve individual incident states of an incident.
 
         Args:

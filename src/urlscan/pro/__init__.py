@@ -69,7 +69,7 @@ class Pro(BaseClient):
         size: int = 100,
         search_after: str | None = None,
     ) -> SearchIterator:
-        """Get structurally similar results to a specific scan
+        """Get results structurally similar to a specific scan
 
         Args:
             scan_id (str): The original scan to compare to.

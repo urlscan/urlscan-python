@@ -41,7 +41,7 @@ class Channel(BaseClient):
         Args:
             channel_type (ChannelTypeType): Type of channel ("webhook" or "email").
             name (str): Name of the channel.
-            webhook_url (str | None, optional): Webhook URL (required when channel_type is "webhook"). Defaults to None.
+            webhook_url (str | None, optional): Webhook URL receiving notifications (required when channel_type is "webhook"). Defaults to None.
             frequency (FrequencyType | None, optional): Frequency of notifications ("live", "hourly", or "daily"). Defaults to None.
             email_addresses (list[str] | None, optional): Email addresses receiving the notifications (required when channel_type is "email"). Defaults to None.
             utc_time (str | None, optional): 24 hour UTC time that daily emails are sent (e.g. 09:00). Defaults to None.
@@ -113,7 +113,7 @@ class Channel(BaseClient):
             channel_id (str): Channel ID.
             channel_type (ChannelTypeType): Type of channel ("webhook" or "email").
             name (str): Name of the channel.
-            webhook_url (str | None, optional): Webhook URL (required when channel_type is "webhook"). Defaults to None.
+            webhook_url (str | None, optional): Webhook URL receiving notifications (required when channel_type is "webhook"). Defaults to None.
             frequency (FrequencyType | None, optional): Frequency of notifications ("live", "hourly", or "daily"). Defaults to None.
             email_addresses (list[str] | None, optional): Email addresses receiving the notifications (required when channel_type is "email"). Defaults to None.
             utc_time (str | None, optional): 24 hour UTC time that daily emails are sent (e.g. 09:00). Defaults to None.

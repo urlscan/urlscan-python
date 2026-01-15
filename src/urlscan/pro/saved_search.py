@@ -68,7 +68,7 @@ class SavedSearch(BaseClient):
             }
         )
 
-        res = self.post("/api/v1/user/searches/", json=data)
+        res = self._post("/api/v1/user/searches/", json=data)
         return self._response_to_json(res)
 
     def update(
@@ -125,7 +125,7 @@ class SavedSearch(BaseClient):
             }
         )
 
-        res = self.put(f"/api/v1/user/searches/{search_id}/", json=data)
+        res = self._put(f"/api/v1/user/searches/{search_id}/", json=data)
         return self._response_to_json(res)
 
     def remove(self, search_id: str) -> dict:
@@ -140,7 +140,7 @@ class SavedSearch(BaseClient):
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-delete
         """
-        res = super().delete(f"/api/v1/user/searches/{search_id}/")
+        res = super()._delete(f"/api/v1/user/searches/{search_id}/")
         return self._response_to_json(res)
 
     def get_results(self, search_id: str) -> dict:

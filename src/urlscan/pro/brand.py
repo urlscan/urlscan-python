@@ -14,9 +14,8 @@ class Brand(BaseClient):
         return self.get_json("/api/v1/pro/availableBrands")
 
     def get_brands(self) -> dict:
-        """Get a list of brands that we are able to detect phishing pages.
+        """Get a list of brands that we are able to detect phishing pages with the total number of detected pages and the latest hit for each brand.
 
-        The total number of detected pages and the latest hit for each brand.
         This is slower than the get_available method.
 
         Returns:

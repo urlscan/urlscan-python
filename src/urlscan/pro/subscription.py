@@ -2,10 +2,10 @@ from typing import Any
 
 from urlscan.client import BaseClient, _compact
 from urlscan.types import (
+    FrequencyType,
     IncidentCreationModeType,
     IncidentVisibilityType,
     IncidentWatchKeyType,
-    SubscriptionFrequencyType,
     SubscriptionPermissionType,
     WeekDaysType,
 )
@@ -27,7 +27,7 @@ class Subscription(BaseClient):
         self,
         *,
         search_ids: list[str],
-        frequency: SubscriptionFrequencyType,
+        frequency: FrequencyType,
         email_addresses: list[str],
         name: str,
         is_active: bool,
@@ -46,7 +46,7 @@ class Subscription(BaseClient):
 
         Args:
             search_ids (list[str]): Array of search IDs associated with this subscription.
-            frequency (SubscriptionFrequencyType): Frequency of notifications ("live", "hourly", or "daily").
+            frequency (FrequencyType): Frequency of notifications ("live", "hourly", or "daily").
             email_addresses (list[str]): Email addresses receiving the notifications.
             name (str): Name of the subscription.
             is_active (bool): Whether the subscription is active.
@@ -96,7 +96,7 @@ class Subscription(BaseClient):
         *,
         subscription_id: str,
         search_ids: list[str],
-        frequency: SubscriptionFrequencyType,
+        frequency: FrequencyType,
         email_addresses: list[str],
         name: str,
         is_active: bool,
@@ -116,7 +116,7 @@ class Subscription(BaseClient):
         Args:
             subscription_id (str): Subscription ID.
             search_ids (list[str]): Array of search IDs associated with this subscription.
-            frequency (SubscriptionFrequencyType): Frequency of notifications ("live", "hourly", or "daily").
+            frequency (FrequencyType): Frequency of notifications ("live", "hourly", or "daily").
             email_addresses (list[str]): Email addresses receiving the notifications.
             name (str): Name of the subscription.
             is_active (bool): Whether the subscription is active.

@@ -1,7 +1,9 @@
 from typing import TYPE_CHECKING
 
+from .utils import _compact
+
 if TYPE_CHECKING:
-    from .client import Client
+    from .client import BaseClient
 
 MAX_TOTAL = 10_000
 
@@ -19,9 +21,10 @@ class SearchIterator:
 
     def __init__(
         self,
-        client: "Client",
+        client: "BaseClient",
         *,
-        q: str,
+        path: str,
+        q: str | None = None,
         search_after: str | None = None,
         size: int = 100,
         limit: int | None = None,
@@ -29,12 +32,13 @@ class SearchIterator:
         """
         Args:
             client (Client): Client.
-            q (str): Search query.
+            q (str | None, optional): Search query. Defaults to None.
             search_after (str | None, optional): Search after to retrieve next results. Defaults to None.
             size (int, optional): Number of results returned in a search. Defaults to 100.
             limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
         """
         self._client = client
+        self._path = path
         self._size = size
         self._q = q
         self._search_after = search_after
@@ -52,12 +56,14 @@ class SearchIterator:
 
     def _get(self):
         data = self._client.get_json(
-            "/api/v1/search/",
-            params={
-                "q": self._q,
-                "size": self._size,
-                "search_after": self._search_after,
-            },
+            self._path,
+            params=_compact(
+                {
+                    "q": self._q,
+                    "size": self._size,
+                    "search_after": self._search_after,
+                }
+            ),
         )
         return self._parse_response(data)
 

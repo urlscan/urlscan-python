@@ -37,7 +37,7 @@ class Incident(BaseClient):
             visibility (IncidentVisibilityType): Scan visibility ("unlisted" or "private").
             channels (list[str]): Channels subscribed to this incident.
             scan_interval (int | None, optional): Interval (seconds) between triggering full website scans. Defaults to None.
-            scan_interval_mode (ScanIntervalModeType | None, optional): If this is set to manual then scanIntervalAfterSuspended and scanIntervalAfterMalicious will not have an effect ("manual" or "automatic"). Defaults to None.
+            scan_interval_mode (ScanIntervalModeType | None, optional): If this is set to manual then scan_interval_after_suspended and scan_interval_after_malicious will not have an effect ("manual" or "automatic"). Defaults to None.
             watched_attributes (list[WatchedAttributeType] | None, optional): Determine which items will be monitored for (detections, tls, dns, labels, page, meta, ip). Defaults to None.
             user_agents (list[str] | None, optional): Browser User-Agents to use during scanning. Defaults to None.
             user_agents_per_interval (int | None, optional): How many userAgents to use per scanInterval. Defaults to None.
@@ -127,7 +127,7 @@ class Incident(BaseClient):
             visibility (IncidentVisibilityType): Scan visibility ("unlisted" or "private").
             channels (list[str]): Channels subscribed to this incident.
             scan_interval (int | None, optional): Interval (seconds) between triggering full website scans. Defaults to None.
-            scan_interval_mode (ScanIntervalModeType | None, optional): If this is set to manual then scanIntervalAfterSuspended and scanIntervalAfterMalicious will not have an effect ("manual" or "automatic"). Defaults to None.
+            scan_interval_mode (ScanIntervalModeType | None, optional): If this is set to manual then scan_interval_after_suspended and scan_interval_after_malicious will not have an effect ("manual" or "automatic"). Defaults to None.
             watched_attributes (list[WatchedAttributeType] | None, optional): Determine which items will be monitored for (detections, tls, dns, labels, page, meta, ip). Defaults to None.
             user_agents (list[str] | None, optional): Browser User-Agents to use during scanning. Defaults to None.
             user_agents_per_interval (int | None, optional): How many userAgents to use per scanInterval. Defaults to None.

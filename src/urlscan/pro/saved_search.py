@@ -9,7 +9,7 @@ class SavedSearch(BaseClient):
         """Get a list of Saved Searches for the current user.
 
         Returns:
-            dict: Response containing an array of saved searches with their properties.
+            dict: Response containing an array of Saved Search objects with their properties.
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-get
@@ -50,7 +50,7 @@ class SavedSearch(BaseClient):
                 Valid values: "public:read", "team:read", "team:write". Defaults to None.
 
         Returns:
-            dict: Created saved search object containing the search properties and unique _id.
+            dict: Created Saved Search object containing the search properties and unique _id.
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-post
@@ -107,7 +107,7 @@ class SavedSearch(BaseClient):
                 Valid values: "public:read", "team:read", "team:write". Defaults to None.
 
         Returns:
-            dict: Updated saved search object containing the search properties and unique _id.
+            dict: Updated Saved Search object containing the search properties and unique _id.
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-put

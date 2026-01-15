@@ -88,7 +88,7 @@ class Subscription(BaseClient):
         )
         data = {"subscription": subscription}
 
-        res = self.post("/api/v1/user/subscriptions/", json=data)
+        res = self._post("/api/v1/user/subscriptions/", json=data)
         return self._response_to_json(res)
 
     def update(
@@ -158,7 +158,7 @@ class Subscription(BaseClient):
         )
         data = {"subscription": subscription}
 
-        res = self.put(f"/api/v1/user/subscriptions/{subscription_id}/", json=data)
+        res = self._put(f"/api/v1/user/subscriptions/{subscription_id}/", json=data)
         return self._response_to_json(res)
 
     def delete_subscription(self, *, subscription_id: str) -> dict:
@@ -173,7 +173,7 @@ class Subscription(BaseClient):
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsdelete
         """
-        res = self.delete(f"/api/v1/user/subscriptions/{subscription_id}/")
+        res = self._delete(f"/api/v1/user/subscriptions/{subscription_id}/")
         return self._response_to_json(res)
 
     def get_results(self, *, subscription_id: str, datasource: str) -> dict:

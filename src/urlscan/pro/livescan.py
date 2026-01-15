@@ -65,7 +65,7 @@ class LiveScan(BaseClient):
         )
         data: dict[str, Any] = _compact({"task": task, "scanner": scanner})
 
-        res = self.post(f"/api/v1/livescan/{scanner_id}/task/", json=data)
+        res = self._post(f"/api/v1/livescan/{scanner_id}/task/", json=data)
         return self._response_to_json(res)
 
     def scan(
@@ -115,7 +115,7 @@ class LiveScan(BaseClient):
         )
         data: dict[str, Any] = _compact({"task": task, "scanner": scanner})
 
-        res = self.post(f"/api/v1/livescan/{scanner_id}/scan/", json=data)
+        res = self._post(f"/api/v1/livescan/{scanner_id}/scan/", json=data)
         return self._response_to_json(res)
 
     def get_resource(
@@ -149,7 +149,7 @@ class LiveScan(BaseClient):
         if resource_type == "dom":
             return self.get_text(path)
 
-        return self.get(path)
+        return self._get(path)
 
     def store(
         self,
@@ -169,7 +169,7 @@ class LiveScan(BaseClient):
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanstore
         """
         data = {"task": {"visibility": visibility}}
-        res = self.put(f"/api/v1/livescan/{scanner_id}/{scan_id}/", json=data)
+        res = self._put(f"/api/v1/livescan/{scanner_id}/{scan_id}/", json=data)
         return self._response_to_json(res)
 
     def purge(
@@ -187,5 +187,5 @@ class LiveScan(BaseClient):
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescandiscard
         """
-        res = self.delete(f"/api/v1/livescan/{scanner_id}/{scan_id}/")
+        res = self._delete(f"/api/v1/livescan/{scanner_id}/{scan_id}/")
         return self._response_to_json(res)

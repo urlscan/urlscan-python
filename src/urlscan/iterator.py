@@ -8,7 +8,19 @@ if TYPE_CHECKING:
 MAX_TOTAL = 10_000
 
 
-class SearchIterator:
+class BaseIterator:
+    """
+    Base iterator.
+    """
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        raise NotImplementedError()
+
+
+class SearchIterator(BaseIterator):
     """
     Search iterator.
 

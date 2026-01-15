@@ -1,6 +1,7 @@
 from urlscan.client import BASE_URL, USER_AGENT, BaseClient, TimeoutTypes
 from urlscan.iterator import SearchIterator
 
+from .hostname import HostnameIterator
 from .incident import Incident
 from .livescan import LiveScan
 from .saved_search import SavedSearch
@@ -107,4 +108,31 @@ class Pro(BaseClient):
             q=q,
             size=size,
             search_after=search_after,
+        )
+
+    def hostname(
+        self,
+        hostname: str,
+        *,
+        size: int = 1000,
+        limit: int | None = None,
+        page_state: str | None = None,
+    ) -> HostnameIterator:
+        """Get the historical observations for a specific hostname.
+
+        Args:
+            hostname (str): The hostname to query.
+            page_state (str | None, optional): Page state for pagination. Defaults to None.
+            size (int, optional): Number of results returned in a search. Defaults to 1000.
+            limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
+
+        Returns:
+            HostnameIterator: Hostname iterator.
+        """
+        return HostnameIterator(
+            client=self,
+            hostname=hostname,
+            size=size,
+            limit=limit,
+            page_state=page_state,
         )

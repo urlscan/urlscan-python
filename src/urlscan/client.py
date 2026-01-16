@@ -318,6 +318,10 @@ class BaseClient:
             BytesIO: File content.
         """
         res = self._get(path, params=params)
+        error = self._get_error(res)
+        if error:
+            raise error
+
         file.write(res.content)
         return
 

@@ -14,7 +14,7 @@ from httpx._types import QueryParamTypes, RequestData, TimeoutTypes
 from ._version import version
 from .error import APIError, RateLimitError, RateLimitRemainingError
 from .iterator import SearchIterator
-from .types import ActionType, VisibilityType
+from .types import ActionType, SearchDataSource, VisibilityType
 from .utils import _compact, parse_datetime
 
 logger = logging.getLogger("urlscan-python")
@@ -428,6 +428,8 @@ class Client(BaseClient):
         size: int = 100,
         limit: int | None = None,
         search_after: str | None = None,
+        datasource: SearchDataSource | None = None,
+        collapse: str | None = None,
     ) -> SearchIterator:
         """Search.
 
@@ -436,6 +438,8 @@ class Client(BaseClient):
             size (int, optional): Number of results returned in a search. Defaults to 100.
             limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
             search_after (str | None, optional): Search after to retrieve next results. Defaults to None.
+            datasource (SearchDataSource | None, optional): Datasources to search: scans (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.
+            collapse (str | None, optional): Field to collapse results on. Only works on current page of results. Defaults to None.
 
         Returns:
             SearchIterator: Search iterator.
@@ -450,6 +454,8 @@ class Client(BaseClient):
             size=size,
             limit=limit,
             search_after=search_after,
+            datasource=datasource,
+            collapse=collapse,
         )
 
     def scan(

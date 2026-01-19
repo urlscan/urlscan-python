@@ -125,10 +125,10 @@ class Pro(BaseClient):
         Examples:
             >>> from urlscan import Pro
             >>> with Pro("<your_api_key>") as pro, open("downloaded_file.zip", "wb") as f:
-            >>>     pro.file.download(
-            >>>         file_hash="<file_hash>",
-            >>>         file=f,
-            >>>     )
+            ...     pro.file.download(
+            ...         file_hash="<file_hash>",
+            ...         file=f,
+            ...     )
 
         Args:
             file_hash (str): The hash of the file to download.

@@ -14,7 +14,7 @@ class SearchIterator:
 
     Examples:
         >>> from urlscan import Client
-        >>>> with Client("<your_api_key>") as client:
+        >>> with Client("<your_api_key>") as client:
         >>>     for result in client.search("page.domain:example.com"):
         >>>         print(result["_id"], result["page"]["url"])
     """

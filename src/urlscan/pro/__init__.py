@@ -1,6 +1,7 @@
 from urlscan.client import BASE_URL, USER_AGENT, BaseClient, TimeoutTypes
 from urlscan.iterator import SearchIterator
 
+from .datadump import DataDump
 from .incident import Incident
 from .livescan import LiveScan
 from .saved_search import SavedSearch
@@ -75,6 +76,17 @@ class Pro(BaseClient):
         )
 
         self.incident = Incident(
+            api_key=api_key,
+            base_url=base_url,
+            user_agent=user_agent,
+            trust_env=trust_env,
+            timeout=timeout,
+            proxy=proxy,
+            verify=verify,
+            retry=retry,
+        )
+
+        self.datadump = DataDump(
             api_key=api_key,
             base_url=base_url,
             user_agent=user_agent,

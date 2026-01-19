@@ -20,7 +20,7 @@ class DataDump(BaseClient):
         Examples:
             >>> from urlscan import Pro
             >>> with Pro("<your_api_key>") as client:
-            >>>     result = client.datadump.get_list("days/api/20260101")
+            ...     result = client.datadump.get_list("days/api/20260101")
         """
         return self.get_json(urljoin("/api/v1/datadump/list/", path))
 

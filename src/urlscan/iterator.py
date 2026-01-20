@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from .types import SearchDataSource
 from .utils import _compact
 
 if TYPE_CHECKING:
@@ -26,9 +27,9 @@ class SearchIterator(BaseIterator):
 
     Examples:
         >>> from urlscan import Client
-        >>>> with Client("<your_api_key>") as client:
-        >>>     for result in client.search("page.domain:example.com"):
-        >>>         print(result["_id"], result["page"]["url"])
+        >>> with Client("<your_api_key>") as client:
+        ...     for result in client.search("page.domain:example.com"):
+        ...         print(result["_id"], result["page"]["url"])
     """
 
     def __init__(
@@ -40,6 +41,8 @@ class SearchIterator(BaseIterator):
         search_after: str | None = None,
         size: int = 100,
         limit: int | None = None,
+        datasource: SearchDataSource | None = None,
+        collapse: str | None = None,
     ):
         """
         Args:
@@ -48,12 +51,16 @@ class SearchIterator(BaseIterator):
             search_after (str | None, optional): Search after to retrieve next results. Defaults to None.
             size (int, optional): Number of results returned in a search. Defaults to 100.
             limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
+            datasource (SearchDataSource | None, optional): Datasources to search: scans (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.
+            collapse (str | None, optional): Field to collapse results on. Only works on current page of results. Defaults to None.
         """
         self._client = client
         self._path = path
         self._size = size
         self._q = q
         self._search_after = search_after
+        self._datasource = datasource
+        self._collapse = collapse
 
         self._results: list[dict] = []
         self._limit = limit
@@ -74,6 +81,8 @@ class SearchIterator(BaseIterator):
                     "q": self._q,
                     "size": self._size,
                     "search_after": self._search_after,
+                    "datasource": self._datasource,
+                    "collapse": self._collapse,
                 }
             ),
         )

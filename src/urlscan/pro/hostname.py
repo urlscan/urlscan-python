@@ -1,3 +1,5 @@
+"""Hostname API client module."""
+
 from urllib.parse import urljoin
 
 from urlscan.client import BaseClient
@@ -6,14 +8,14 @@ from urlscan.utils import _compact
 
 
 class HostnameIterator(BaseIterator):
-    """
-    Hostname iterator.
+    """Hostname iterator.
 
     Examples:
         >>> from urlscan import Pro
         >>> with Pro("<your_api_key>") as client:
         >>>     for result in client.hostname("example.com"):
         >>>         print(result["sub_id"], result["data"])
+
     """
 
     def __init__(
@@ -25,13 +27,15 @@ class HostnameIterator(BaseIterator):
         size: int = 1_000,
         limit: int | None = None,
     ):
-        """
+        """Initialize the hostname iterator.
+
         Args:
             client (Client): Client.
             hostname (str): Hostname to query.
             page_state (str | None, optional): Page state for pagination. Defaults to None.
             size (int, optional): Number of results returned in a search. Defaults to 1000.
             limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
+
         """
         self._client = client
         self._path = urljoin("/api/v1/hostname/", hostname)
@@ -60,6 +64,7 @@ class HostnameIterator(BaseIterator):
         return self._parse_response(data)
 
     def __next__(self):
+        """Return the next hostname observation result."""
         if self._limit and self._count >= self._limit:
             raise StopIteration()
 

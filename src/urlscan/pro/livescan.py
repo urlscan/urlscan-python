@@ -1,3 +1,5 @@
+"""Live scanning API client module."""
+
 from typing import Any
 
 from urlscan.client import BaseClient, _compact
@@ -5,6 +7,8 @@ from urlscan.types import LiveScanResourceType, VisibilityType
 
 
 class LiveScan(BaseClient):
+    """Live scanning API client."""
+
     def get_scanners(self) -> dict:
         """Get a list of available Live Scanning nodes along with their current metadata.
 
@@ -13,6 +17,7 @@ class LiveScan(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscanners
+
         """
         return self.get_json("/api/v1/livescan/scanners/")
 
@@ -47,6 +52,7 @@ class LiveScan(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescantask
+
         """
         task: dict[str, Any] = _compact(
             {
@@ -97,6 +103,7 @@ class LiveScan(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscan
+
         """
         task: dict[str, Any] = _compact(
             {
@@ -137,6 +144,7 @@ class LiveScan(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescangetresource
+
         """
         path = f"/api/v1/livescan/{scanner_id}/{resource_type}/{resource_id}"
 
@@ -167,6 +175,7 @@ class LiveScan(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanstore
+
         """
         data = {"task": {"visibility": visibility}}
         res = self._put(f"/api/v1/livescan/{scanner_id}/{scan_id}/", json=data)
@@ -186,6 +195,7 @@ class LiveScan(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescandiscard
+
         """
         res = self._delete(f"/api/v1/livescan/{scanner_id}/{scan_id}/")
         return self._response_to_json(res)

@@ -1,3 +1,5 @@
+"""Data dump API client module."""
+
 from typing import BinaryIO
 from urllib.parse import urljoin
 
@@ -5,6 +7,8 @@ from urlscan.client import BaseClient
 
 
 class DataDump(BaseClient):
+    """Data dump API client."""
+
     def get_list(self, path: str):
         """List available data dump files for a specific time window, file type, and date.
 
@@ -21,6 +25,7 @@ class DataDump(BaseClient):
             >>> from urlscan import Pro
             >>> with Pro("<your_api_key>") as client:
             ...     result = client.datadump.get_list("days/api/20260101")
+
         """
         return self.get_json(urljoin("/api/v1/datadump/list/", path))
 
@@ -29,11 +34,12 @@ class DataDump(BaseClient):
         path: str,
         file: BinaryIO,
     ):
-        """Download the datadump file
+        """Download the datadump file.
 
         Args:
             path (str): Path to API endpoint.
             file (BinaryIO): File object to write to.
+
         """
         return super().download(
             urljoin("/api/v1/datadump/link/", path),

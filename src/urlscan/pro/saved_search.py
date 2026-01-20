@@ -1,3 +1,5 @@
+"""Saved search API client module."""
+
 from typing import Any
 
 from urlscan.client import BaseClient, _compact
@@ -5,6 +7,8 @@ from urlscan.types import PermissionType, SavedSearchDataSource, TLPType
 
 
 class SavedSearch(BaseClient):
+    """Saved Search API client."""
+
     def get_list(self) -> dict:
         """Get a list of Saved Searches for the current user.
 
@@ -13,6 +17,7 @@ class SavedSearch(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-get
+
         """
         return self.get_json("/api/v1/user/searches/")
 
@@ -54,6 +59,7 @@ class SavedSearch(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-post
+
         """
         data: dict[str, Any] = _compact(
             {
@@ -111,6 +117,7 @@ class SavedSearch(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-put
+
         """
         data: dict[str, Any] = _compact(
             {
@@ -139,6 +146,7 @@ class SavedSearch(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-delete
+
         """
         res = super()._delete(f"/api/v1/user/searches/{search_id}/")
         return self._response_to_json(res)
@@ -155,5 +163,6 @@ class SavedSearch(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-results
+
         """
         return self.get_json(f"/api/v1/user/searches/{search_id}/results/")

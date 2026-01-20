@@ -1,3 +1,5 @@
+"""Notification channel API client module."""
+
 from typing import Any
 
 from urlscan.client import BaseClient, _compact
@@ -10,6 +12,8 @@ from urlscan.types import (
 
 
 class Channel(BaseClient):
+    """Client API client."""
+
     def get_channels(self) -> dict:
         """Get a list of notification channels for the current user.
 
@@ -18,6 +22,7 @@ class Channel(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/channels/channels
+
         """
         return self.get_json("/api/v1/user/channels/")
 
@@ -56,6 +61,7 @@ class Channel(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/channels/channelscreate
+
         """
         channel: dict[str, Any] = _compact(
             {
@@ -88,6 +94,7 @@ class Channel(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsget
+
         """
         return self.get_json(f"/api/v1/user/channels/{channel_id}/")
 
@@ -129,6 +136,7 @@ class Channel(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsupdate
+
         """
         channel: dict[str, Any] = _compact(
             {

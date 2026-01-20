@@ -1,3 +1,5 @@
+"""urlscan.io Pro API client module."""
+
 from urlscan.client import BASE_URL, USER_AGENT, BaseClient, TimeoutTypes
 from urlscan.iterator import SearchIterator
 
@@ -12,6 +14,8 @@ from .subscription import Subscription
 
 
 class Pro(BaseClient):
+    """urlscan.io Pro API client."""
+
     def __init__(
         self,
         api_key: str,
@@ -23,7 +27,8 @@ class Pro(BaseClient):
         verify: bool = True,
         retry: bool = False,
     ):
-        """
+        """Initialize the Pro client.
+
         Args:
             api_key (str): Your urlscan.io API key.
             base_url (str, optional): Base URL. Defaults to BASE_URL.
@@ -33,6 +38,7 @@ class Pro(BaseClient):
             proxy (str | None, optional): Proxy URL where all the traffic should be routed. Defaults to None.
             verify (bool, optional): Either `True` to use an SSL context with the default CA bundle, `False` to disable verification. Defaults to True.
             retry (bool, optional): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry. Defaults to False.
+
         """
         super().__init__(
             api_key,
@@ -130,13 +136,14 @@ class Pro(BaseClient):
         size: int = 100,
         search_after: str | None = None,
     ) -> SearchIterator:
-        """Get results structurally similar to a specific scan
+        """Get results structurally similar to a specific scan.
 
         Args:
             scan_id (str): The original scan to compare to.
             q (str | None, optional): Additional query filter.
             size (int): Maximum results per call. Defaults to 100.
             search_after (str | None, optional): Parameter to iterate over older results. Defaults to None.
+
         """
         return SearchIterator(
             client=self,
@@ -164,6 +171,7 @@ class Pro(BaseClient):
 
         Returns:
             HostnameIterator: Hostname iterator.
+
         """
         return HostnameIterator(
             client=self,

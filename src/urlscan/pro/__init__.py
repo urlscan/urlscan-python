@@ -1,7 +1,10 @@
 from urlscan.client import BASE_URL, USER_AGENT, BaseClient, TimeoutTypes
 from urlscan.iterator import SearchIterator
 
+from .brand import Brand
+from .channel import Channel
 from .datadump import DataDump
+from .hostname import HostnameIterator
 from .incident import Incident
 from .livescan import LiveScan
 from .saved_search import SavedSearch
@@ -33,6 +36,17 @@ class Pro(BaseClient):
         """
         super().__init__(
             api_key,
+            base_url=base_url,
+            user_agent=user_agent,
+            trust_env=trust_env,
+            timeout=timeout,
+            proxy=proxy,
+            verify=verify,
+            retry=retry,
+        )
+
+        self.channel = Channel(
+            api_key=api_key,
             base_url=base_url,
             user_agent=user_agent,
             trust_env=trust_env,
@@ -86,6 +100,17 @@ class Pro(BaseClient):
             retry=retry,
         )
 
+        self.brand = Brand(
+            api_key=api_key,
+            base_url=base_url,
+            user_agent=user_agent,
+            trust_env=trust_env,
+            timeout=timeout,
+            proxy=proxy,
+            verify=verify,
+            retry=retry,
+        )
+
         self.datadump = DataDump(
             api_key=api_key,
             base_url=base_url,
@@ -119,4 +144,31 @@ class Pro(BaseClient):
             q=q,
             size=size,
             search_after=search_after,
+        )
+
+    def hostname(
+        self,
+        hostname: str,
+        *,
+        size: int = 1000,
+        limit: int | None = None,
+        page_state: str | None = None,
+    ) -> HostnameIterator:
+        """Get the historical observations for a specific hostname.
+
+        Args:
+            hostname (str): The hostname to query.
+            page_state (str | None, optional): Page state for pagination. Defaults to None.
+            size (int, optional): Number of results returned in a search. Defaults to 1000.
+            limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
+
+        Returns:
+            HostnameIterator: Hostname iterator.
+        """
+        return HostnameIterator(
+            client=self,
+            hostname=hostname,
+            size=size,
+            limit=limit,
+            page_state=page_state,
         )

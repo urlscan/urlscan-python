@@ -1,5 +1,8 @@
 from typing import Literal
 
+SearchDataSource = Literal[
+    "scans", "hostnames", "incidents", "notifications", "certificates"
+]
 VisibilityType = Literal["public", "private", "unlisted"]
 SearchType = Literal["search"]
 RetrieveType = Literal["retrieve"]

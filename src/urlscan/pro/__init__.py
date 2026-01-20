@@ -1,6 +1,8 @@
 """urlscan.io Pro API client module."""
 
-from urlscan.client import BASE_URL, USER_AGENT, BaseClient, TimeoutTypes
+from functools import cached_property
+
+from urlscan.client import BaseClient
 from urlscan.iterator import SearchIterator
 
 from .brand import Brand
@@ -16,116 +18,137 @@ from .subscription import Subscription
 class Pro(BaseClient):
     """urlscan.io Pro API client."""
 
-    def __init__(
-        self,
-        api_key: str,
-        base_url: str = BASE_URL,
-        user_agent: str = USER_AGENT,
-        trust_env: bool = False,
-        timeout: TimeoutTypes = 60,
-        proxy: str | None = None,
-        verify: bool = True,
-        retry: bool = False,
-    ):
-        """Initialize the Pro client.
+    @cached_property
+    def brand(self) -> Brand:
+        """Brand API client instance.
 
-        Args:
-            api_key (str): Your urlscan.io API key.
-            base_url (str, optional): Base URL. Defaults to BASE_URL.
-            user_agent (str, optional): User agent. Defaults to USER_AGENT.
-            trust_env (bool, optional): Enable or disable usage of environment variables for configuration. Defaults to False.
-            timeout (TimeoutTypes, optional): timeout configuration to use when sending request. Defaults to 60.
-            proxy (str | None, optional): Proxy URL where all the traffic should be routed. Defaults to None.
-            verify (bool, optional): Either `True` to use an SSL context with the default CA bundle, `False` to disable verification. Defaults to True.
-            retry (bool, optional): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry. Defaults to False.
+        Returns:
+            Brand: Brand API client instance.
 
         """
-        super().__init__(
-            api_key,
-            base_url=base_url,
-            user_agent=user_agent,
-            trust_env=trust_env,
-            timeout=timeout,
-            proxy=proxy,
-            verify=verify,
-            retry=retry,
+        return Brand(
+            api_key=self._api_key,
+            base_url=self._base_url,
+            user_agent=self._user_agent,
+            trust_env=self._trust_env,
+            timeout=self._timeout,
+            proxy=self._proxy,
+            verify=self._verify,
+            retry=self._retry,
         )
 
-        self.channel = Channel(
-            api_key=api_key,
-            base_url=base_url,
-            user_agent=user_agent,
-            trust_env=trust_env,
-            timeout=timeout,
-            proxy=proxy,
-            verify=verify,
-            retry=retry,
+    @cached_property
+    def channel(self) -> Channel:
+        """Channel API client instance.
+
+        Returns:
+            Channel: Channel API client instance.
+
+        """
+        return Channel(
+            api_key=self._api_key,
+            base_url=self._base_url,
+            user_agent=self._user_agent,
+            trust_env=self._trust_env,
+            timeout=self._timeout,
+            proxy=self._proxy,
+            verify=self._verify,
+            retry=self._retry,
         )
 
-        self.livescan = LiveScan(
-            api_key=api_key,
-            base_url=base_url,
-            user_agent=user_agent,
-            trust_env=trust_env,
-            timeout=timeout,
-            proxy=proxy,
-            verify=verify,
-            retry=retry,
+    @cached_property
+    def datadump(self) -> DataDump:
+        """Data dump API client instance.
+
+        Returns:
+            DataDump: Data dump API client instance.
+
+        """
+        return DataDump(
+            api_key=self._api_key,
+            base_url=self._base_url,
+            user_agent=self._user_agent,
+            trust_env=self._trust_env,
+            timeout=self._timeout,
+            proxy=self._proxy,
+            verify=self._verify,
+            retry=self._retry,
         )
 
-        self.saved_search = SavedSearch(
-            api_key=api_key,
-            base_url=base_url,
-            user_agent=user_agent,
-            trust_env=trust_env,
-            timeout=timeout,
-            proxy=proxy,
-            verify=verify,
-            retry=retry,
+    @cached_property
+    def incident(self) -> Incident:
+        """Incident API client instance.
+
+        Returns:
+            Incident: Incident API client instance.
+
+        """
+        return Incident(
+            api_key=self._api_key,
+            base_url=self._base_url,
+            user_agent=self._user_agent,
+            trust_env=self._trust_env,
+            timeout=self._timeout,
+            proxy=self._proxy,
+            verify=self._verify,
+            retry=self._retry,
         )
 
-        self.subscription = Subscription(
-            api_key=api_key,
-            base_url=base_url,
-            user_agent=user_agent,
-            trust_env=trust_env,
-            timeout=timeout,
-            proxy=proxy,
-            verify=verify,
-            retry=retry,
+    @cached_property
+    def livescan(self) -> LiveScan:
+        """Live scan API client instance.
+
+        Returns:
+            LiveScan: Live scan API client instance.
+
+        """
+        return LiveScan(
+            api_key=self._api_key,
+            base_url=self._base_url,
+            user_agent=self._user_agent,
+            trust_env=self._trust_env,
+            timeout=self._timeout,
+            proxy=self._proxy,
+            verify=self._verify,
+            retry=self._retry,
         )
 
-        self.incident = Incident(
-            api_key=api_key,
-            base_url=base_url,
-            user_agent=user_agent,
-            trust_env=trust_env,
-            timeout=timeout,
-            proxy=proxy,
-            verify=verify,
-            retry=retry,
+    @cached_property
+    def saved_search(self) -> SavedSearch:
+        """Saved Search API client instance.
+
+        Returns:
+            SavedSearch: Saved Search API client instance.
+
+        """
+        return SavedSearch(
+            api_key=self._api_key,
+            base_url=self._base_url,
+            user_agent=self._user_agent,
+            trust_env=self._trust_env,
+            timeout=self._timeout,
+            proxy=self._proxy,
+            verify=self._verify,
+            retry=self._retry,
         )
 
-        self.brand = Brand(
-            api_key=api_key,
-            base_url=base_url,
-            user_agent=user_agent,
-            trust_env=trust_env,
-            timeout=timeout,
-            proxy=proxy,
-            verify=verify,
-            retry=retry,
-        )
+    @cached_property
+    def subscription(self) -> Subscription:
+        """Subscription API client instance.
 
-        self.datadump = DataDump(
-            api_key=api_key,
-            base_url=base_url,
-            user_agent=user_agent,
-            trust_env=trust_env,
-            timeout=timeout,
-            proxy=proxy,
-            verify=verify,
-            retry=retry,
+        Returns:
+            Subscription: Subscription API client instance.
+
+        """
+        return Subscription(
+            api_key=self._api_key,
+            base_url=self._base_url,
+            user_agent=self._user_agent,
+            trust_env=self._trust_env,
+            timeout=self._timeout,
+            proxy=self._proxy,
+            verify=self._verify,
+            retry=self._retry,
         )
 
     def structure_search(

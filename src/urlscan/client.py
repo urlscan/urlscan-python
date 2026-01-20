@@ -101,6 +101,7 @@ class BaseClient:
         proxy: str | None = None,
         verify: bool = True,
         retry: bool = False,
+        follow_redirects: bool = True,
     ):
         """
         Args:
@@ -112,6 +113,7 @@ class BaseClient:
             proxy (str | None, optional): Proxy URL where all the traffic should be routed. Defaults to None.
             verify (bool, optional): Either `True` to use an SSL context with the default CA bundle, `False` to disable verification. Defaults to True.
             retry (bool, optional): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry. Defaults to False.
+            follow_redirects (bool, optional): Whether to follow redirects. Defaults to True.
         """
         self._api_key = api_key
         self._base_url = base_url
@@ -121,6 +123,7 @@ class BaseClient:
         self._proxy = proxy
         self._verify = verify
         self._retry = retry
+        self._follow_redirects = follow_redirects
 
         self._session: httpx.Client | None = None
         self._rate_limit_memo: RateLimitMemo = {
@@ -166,6 +169,7 @@ class BaseClient:
             verify=self._verify,
             trust_env=self._trust_env,
             transport=transport,
+            follow_redirects=self._follow_redirects,
         )
         return self._session
 

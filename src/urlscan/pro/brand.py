@@ -1,15 +1,20 @@
+"""Brand API client module."""
+
 from urlscan.client import BaseClient
 
 
 class Brand(BaseClient):
+    """Brand API client."""
+
     def get_available_brands(self) -> dict:
-        """Get a list of brands that are tracked as part of urlscan's brand and phishing detection.
+        """Get a list of brands that are tracked as part of urlscan's brand detection.
 
         Returns:
             dict: Response containing a list of brand objects.
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/brands/availablebrands
+
         """
         return self.get_json("/api/v1/pro/availableBrands")
 
@@ -23,5 +28,6 @@ class Brand(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/brands/brandsummary
+
         """
         return self.get_json("/api/v1/pro/brands")

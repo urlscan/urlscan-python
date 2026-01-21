@@ -1,3 +1,5 @@
+"""Type definitions for urlscan.io API."""
+
 from typing import Literal
 
 SearchDataSource = Literal[

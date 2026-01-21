@@ -1,3 +1,5 @@
+"""Incident management API client module."""
+
 from typing import Any
 
 from urlscan.client import BaseClient, _compact
@@ -9,6 +11,8 @@ from urlscan.types import (
 
 
 class Incident(BaseClient):
+    """Incident API client."""
+
     def create(
         self,
         *,
@@ -56,6 +60,7 @@ class Incident(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/incidents/createincident
+
         """
         incident: dict[str, Any] = _compact(
             {
@@ -94,6 +99,7 @@ class Incident(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/incidents/getincident
+
         """
         return super().get_json(f"/api/v1/user/incidents/{incident_id}")
 
@@ -146,6 +152,7 @@ class Incident(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/incidents/updateincident
+
         """
         incident: dict[str, Any] = _compact(
             {
@@ -184,6 +191,7 @@ class Incident(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/incidents/closeincident
+
         """
         res = self._put(f"/api/v1/user/incidents/{incident_id}/close", json={})
         return self._response_to_json(res)
@@ -201,6 +209,7 @@ class Incident(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/incidents/restartincident
+
         """
         res = self._put(f"/api/v1/user/incidents/{incident_id}/restart", json={})
         return self._response_to_json(res)
@@ -216,6 +225,7 @@ class Incident(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/incidents/copyincident
+
         """
         res = self._post(f"/api/v1/user/incidents/{incident_id}/copy", json={})
         return self._response_to_json(res)
@@ -231,6 +241,7 @@ class Incident(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/incidents/forkincident
+
         """
         res = self._post(f"/api/v1/user/incidents/{incident_id}/fork", json={})
         return self._response_to_json(res)
@@ -243,6 +254,7 @@ class Incident(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/incidents/getwatchableattributes
+
         """
         return self.get_json("/api/v1/user/watchableAttributes")
 
@@ -257,5 +269,6 @@ class Incident(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/incidents/getincidentstates
+
         """
         return self.get_json(f"/api/v1/user/incidentstates/{incident_id}/")

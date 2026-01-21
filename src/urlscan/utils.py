@@ -1,3 +1,5 @@
+"""Utility functions for urlscan.io API client."""
+
 import datetime
 import gzip
 import os
@@ -12,11 +14,13 @@ def _compact(d: dict) -> dict:
 
 
 def parse_datetime(s: str) -> datetime.datetime:
+    """Parse an ISO 8601 datetime string to a datetime object."""
     dt = datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S.%fZ")
     return dt.replace(tzinfo=datetime.timezone.utc)
 
 
 def extract(path: StrOrBytesPath, outdir: StrOrBytesPath):
+    """Extract a compressed file to the specified output directory."""
     basename = os.path.basename(str(path))
     if basename.endswith(".tar.gz"):
         with tarfile.open(path, mode="r:*", ignore_zeros=True) as tar:

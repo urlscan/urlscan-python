@@ -1,3 +1,5 @@
+"""The official Python API client for urlscan.io."""
+
 try:
     from ._version import version
 

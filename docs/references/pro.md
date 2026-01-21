@@ -1,5 +1,9 @@
 ::: urlscan.Pro
 
+::: urlscan.pro.Brand
+
+::: urlscan.pro.Channel
+
 ::: urlscan.pro.DataDump
 
 Note: you can use `extract` function in the utils module to extract a downloaded data dump file.
@@ -24,3 +28,13 @@ with Pro("<your_api_key>") as pro:
 
         extract(basename, "/tmp")
 ```
+
+::: urlscan.pro.HostnameIterator
+
+::: urlscan.pro.Incident
+
+::: urlscan.pro.LiveScan
+
+::: urlscan.pro.SavedSearch
+
+::: urlscan.pro.Subscription

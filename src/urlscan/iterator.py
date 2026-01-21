@@ -1,3 +1,5 @@
+"""Iterator classes for paginated API responses."""
+
 from typing import TYPE_CHECKING
 
 from .types import SearchDataSource
@@ -10,26 +12,26 @@ MAX_TOTAL = 10_000
 
 
 class BaseIterator:
-    """
-    Base iterator.
-    """
+    """Base iterator."""
 
     def __iter__(self):
+        """Return the iterator object."""
         return self
 
     def __next__(self):
+        """Return the next item from the iterator."""
         raise NotImplementedError()
 
 
 class SearchIterator(BaseIterator):
-    """
-    Search iterator.
+    """Search iterator.
 
     Examples:
         >>> from urlscan import Client
         >>> with Client("<your_api_key>") as client:
         ...     for result in client.search("page.domain:example.com"):
         ...         print(result["_id"], result["page"]["url"])
+
     """
 
     def __init__(
@@ -44,15 +46,18 @@ class SearchIterator(BaseIterator):
         datasource: SearchDataSource | None = None,
         collapse: str | None = None,
     ):
-        """
+        """Initialize the search iterator.
+
         Args:
             client (Client): Client.
+            path (str): API path for the search endpoint.
             q (str | None, optional): Search query. Defaults to None.
             search_after (str | None, optional): Search after to retrieve next results. Defaults to None.
             size (int, optional): Number of results returned in a search. Defaults to 100.
             limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
             datasource (SearchDataSource | None, optional): Datasources to search: scans (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.
             collapse (str | None, optional): Field to collapse results on. Only works on current page of results. Defaults to None.
+
         """
         self._client = client
         self._path = path
@@ -89,9 +94,11 @@ class SearchIterator(BaseIterator):
         return self._parse_response(data)
 
     def __iter__(self):
+        """Return the iterator object."""
         return self
 
     def __next__(self):
+        """Return the next search result."""
         if self._limit and self._count >= self._limit:
             raise StopIteration()
 

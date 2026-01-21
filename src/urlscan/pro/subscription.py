@@ -1,3 +1,5 @@
+"""Subscription management API client module."""
+
 from typing import Any
 
 from urlscan.client import BaseClient, _compact
@@ -12,6 +14,8 @@ from urlscan.types import (
 
 
 class Subscription(BaseClient):
+    """Subscription API client."""
+
     def get_subscriptions(self) -> dict:
         """Get a list of Subscriptions for the current user.
 
@@ -20,6 +24,7 @@ class Subscription(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptions
+
         """
         return self.get_json("/api/v1/user/subscriptions/")
 
@@ -66,6 +71,7 @@ class Subscription(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionscreate
+
         """
         subscription: dict[str, Any] = _compact(
             {
@@ -136,6 +142,7 @@ class Subscription(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsget
+
         """
         subscription: dict[str, Any] = _compact(
             {
@@ -172,6 +179,7 @@ class Subscription(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsdelete
+
         """
         res = self._delete(f"/api/v1/user/subscriptions/{subscription_id}/")
         return self._response_to_json(res)
@@ -188,6 +196,7 @@ class Subscription(BaseClient):
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsresults
+
         """
         return self.get_json(
             f"/api/v1/user/subscriptions/{subscription_id}/results/{datasource}/"

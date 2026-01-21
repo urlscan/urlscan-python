@@ -1,3 +1,5 @@
+"""Client module for urlscan.io API."""
+
 import contextlib
 import datetime
 import json
@@ -24,7 +26,10 @@ USER_AGENT = f"urlscan-py/{version}"
 
 
 class RetryTransport(httpx.HTTPTransport):
+    """HTTP transport with automatic retry on rate limit (429) responses."""
+
     def handle_request(self, request: httpx.Request) -> httpx.Response:
+        """Handle request with automatic retry on rate limit."""
         res = super().handle_request(request)
         if res.status_code == 429:
             rate_limit_reset_after: str | None = res.headers.get(
@@ -43,43 +48,57 @@ class RetryTransport(httpx.HTTPTransport):
 
 
 class ClientResponse:
+    """Wrapper for httpx.Response providing a simplified interface."""
+
     def __init__(self, res: httpx.Response):
+        """Initialize with an httpx Response object."""
         self._res = res
 
     @property
     def basename(self) -> str:
+        """Return the basename of the response URL path."""
         return os.path.basename(self._res.url.path)
 
     @property
     def content(self) -> bytes:
+        """Return the response content as bytes."""
         return self._res.content
 
     def json(self) -> Any:
+        """Return the response content parsed as JSON."""
         return self._res.json()
 
     @property
     def text(self) -> str:
+        """Return the response content as text."""
         return self._res.text
 
     @property
     def headers(self):
+        """Return the response headers."""
         return self._res.headers
 
     @property
     def status_code(self) -> int:
+        """Return the HTTP status code."""
         return self._res.status_code
 
     def raise_for_status(self) -> None:
+        """Raise an exception for HTTP error responses."""
         self._res.raise_for_status()
 
 
 @dataclass
 class RateLimit:
+    """Data class representing rate limit information."""
+
     remaining: int
     reset: datetime.datetime
 
 
 class RateLimitMemo(TypedDict):
+    """TypedDict for storing rate limit information by action type."""
+
     public: RateLimit | None
     private: RateLimit | None
     unlisted: RateLimit | None
@@ -91,6 +110,8 @@ RateLimitKey = Literal["public", "private", "unlisted", "retrieve", "search"]
 
 
 class BaseClient:
+    """Base client for urlscan.io API with common HTTP operations."""
+
     def __init__(
         self,
         api_key: str,
@@ -101,8 +122,10 @@ class BaseClient:
         proxy: str | None = None,
         verify: bool = True,
         retry: bool = False,
+        follow_redirects: bool = True,
     ):
-        """
+        """Initialize the base client.
+
         Args:
             api_key (str): Your urlscan.io API key.
             base_url (str, optional): Base URL. Defaults to BASE_URL.
@@ -112,6 +135,8 @@ class BaseClient:
             proxy (str | None, optional): Proxy URL where all the traffic should be routed. Defaults to None.
             verify (bool, optional): Either `True` to use an SSL context with the default CA bundle, `False` to disable verification. Defaults to True.
             retry (bool, optional): Whether to use automatic X-Rate-Limit-Reset-After HTTP header based retry. Defaults to False.
+            follow_redirects (bool, optional): Whether to follow redirects. Defaults to True.
+
         """
         self._api_key = api_key
         self._base_url = base_url
@@ -121,6 +146,7 @@ class BaseClient:
         self._proxy = proxy
         self._verify = verify
         self._retry = retry
+        self._follow_redirects = follow_redirects
 
         self._session: httpx.Client | None = None
         self._rate_limit_memo: RateLimitMemo = {
@@ -134,9 +160,11 @@ class BaseClient:
         self._scan_uuid_timestamp_memo: dict[str, float] = {}
 
     def __enter__(self):
+        """Enter the context manager."""
         return self
 
     def __exit__(self, item_type: Any, value: Any, traceback: Any):
+        """Exit the context manager and close the session."""
         self._close()
 
     def _close(self):
@@ -166,6 +194,7 @@ class BaseClient:
             verify=self._verify,
             trust_env=self._trust_env,
             transport=transport,
+            follow_redirects=self._follow_redirects,
         )
         return self._session
 
@@ -234,12 +263,14 @@ class BaseClient:
 
         Returns:
             ClientResponse: Response.
+
         """
         session = self._get_session()
         req = session.build_request("GET", path, params=params)
         return self._send_request(session, req)
 
     def get_json(self, path: str, params: QueryParamTypes | None = None) -> dict:
+        """Send a GET request and return the JSON response."""
         res = self._get(path, params=params)
         return self._response_to_json(res)
 
@@ -258,6 +289,7 @@ class BaseClient:
 
         Returns:
             ClientResponse: Response.
+
         """
         session = self._get_session()
         req = session.build_request("POST", path, json=json, data=data)
@@ -278,6 +310,7 @@ class BaseClient:
 
         Returns:
             ClientResponse: Response.
+
         """
         session = self._get_session()
         req = session.build_request("PUT", path, json=json, data=data)
@@ -296,6 +329,7 @@ class BaseClient:
 
         Returns:
             ClientResponse: Response.
+
         """
         session = self._get_session()
         req = session.build_request("DELETE", path, params=params)
@@ -316,6 +350,7 @@ class BaseClient:
 
         Returns:
             BytesIO: File content.
+
         """
         res = self._get(path, params=params)
         error = self._get_error(res)
@@ -326,10 +361,12 @@ class BaseClient:
         return
 
     def get_content(self, path: str, params: QueryParamTypes | None = None) -> bytes:
+        """Send a GET request and return the response content as bytes."""
         res = self._get(path, params=params)
         return self._response_to_content(res)
 
     def get_text(self, path: str, params: QueryParamTypes | None = None) -> str:
+        """Send a GET request and return the response content as text."""
         res = self._get(path, params=params)
         return self._response_to_str(res)
 
@@ -381,6 +418,8 @@ class BaseClient:
 
 
 class Client(BaseClient):
+    """Main client for urlscan.io API."""
+
     def get_result(self, uuid: str) -> dict:
         """Get a result of a scan by UUID.
 
@@ -392,6 +431,7 @@ class Client(BaseClient):
 
         Reference:
             https://urlscan.io/docs/api/#result
+
         """
         return self.get_json(f"/api/v1/result/{uuid}/")
 
@@ -406,6 +446,7 @@ class Client(BaseClient):
 
         Reference:
             https://urlscan.io/docs/api/#screenshot
+
         """
         res = self._get(f"/screenshots/{uuid}.png")
         bio = BytesIO(res.content)
@@ -423,6 +464,7 @@ class Client(BaseClient):
 
         Reference:
             https://urlscan.io/docs/api/#dom
+
         """
         return self.get_text(f"/dom/{uuid}/")
 
@@ -450,6 +492,7 @@ class Client(BaseClient):
 
         Reference:
             https://urlscan.io/docs/api/#search
+
         """
         return SearchIterator(
             self,
@@ -489,6 +532,7 @@ class Client(BaseClient):
 
         Reference:
             https://urlscan.io/docs/api/#scan
+
         """
         data = _compact(
             {
@@ -542,6 +586,7 @@ class Client(BaseClient):
 
         Reference:
             https://urlscan.io/docs/api/#scan
+
         """
 
         def inner(url: str) -> dict | Exception:
@@ -574,6 +619,7 @@ class Client(BaseClient):
             timeout (float, optional): Timeout in seconds. Defaults to 60.0.
             interval (float, optional): Interval in seconds. Defaults to 1.0.
             initial_wait (float | None, optional): Initial wait time in seconds. Set None to disable. Defaults to 10.0.
+
         """
         session = self._get_session()
         req = session.build_request("HEAD", f"/api/v1/result/{uuid}/")
@@ -628,6 +674,7 @@ class Client(BaseClient):
 
         Reference:
             https://urlscan.io/docs/api/#scan
+
         """
         res = self.scan(
             url,
@@ -676,8 +723,8 @@ class Client(BaseClient):
 
         Reference:
             https://urlscan.io/docs/api/#scan
-        """
 
+        """
         responses = self.bulk_scan(
             urls,
             visibility=visibility,

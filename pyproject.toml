@@ -67,6 +67,7 @@ packages = ["src/urlscan"]
 select = [
   "B",   # flake8-bugbear
   "C",   # flake8-comprehensions
+  "D",   # pydocstyle
   "E",   # pycodestyle errors
   "F",   # pyflakes
   "FA",  # flake8-future-annotations
@@ -81,6 +82,13 @@ select = [
 ignore = [
   "E501", # line too long
 ]
+
+[tool.ruff.lint.per-file-ignores]
+# ignore tests, scripts and examples directories from docstring checks
+# (ref. https://github.com/astral-sh/ruff/issues/8471
+"tests/**" = ["D"]
+"scripts/**" = ["D"]
+"examples/**" = ["D"]
 
 [tool.mypy]
 ignore_missing_imports = true

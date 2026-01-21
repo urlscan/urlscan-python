@@ -1,9 +1,11 @@
 """urlscan.io Pro API client module."""
 
 from functools import cached_property
+from typing import BinaryIO
 
 from urlscan.client import BaseClient
 from urlscan.iterator import SearchIterator
+from urlscan.utils import _compact
 
 from .brand import Brand
 from .channel import Channel
@@ -203,3 +205,39 @@ class Pro(BaseClient):
             limit=limit,
             page_state=page_state,
         )
+
+    def download_file(
+        self,
+        file_hash: str,
+        *,
+        file: BinaryIO,
+        password: str | None = None,
+        filename: str | None = None,
+    ):
+        """Download a file by its hash.
+
+        Examples:
+            >>> from urlscan import Pro
+            >>> with Pro("<your_api_key>") as pro, open("downloaded_file.zip", "wb") as f:
+            ...     pro.download_file(
+            ...         file_hash="<file_hash>",
+            ...         file=f,
+            ...     )
+
+        Args:
+            file_hash (str): The hash of the file to download.
+            file (BinaryIO): File object to write to.
+            password (str | None, optional): The password to use to encrypt the ZIP file. The default password is "urlscan!" if it's not provided. Defaults to None.
+            filename (str | None, optional): Specify the name of the ZIP file that should be downloaded. This does not change the name of files within the ZIP archive. The default filename is {file_hash}.zip if it's not provided. Defaults to None.
+
+        Reference:
+            https://docs.urlscan.io/apis/urlscan-openapi/files/downloadfile
+
+        """
+        params: dict[str, str] = _compact(
+            {
+                "password": password,
+                "filename": filename,
+            }
+        )
+        return self.download(f"/downloads/{file_hash}", params=params, file=file)

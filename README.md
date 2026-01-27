@@ -67,6 +67,19 @@ Alternatively, you can use `_and_get_result(s)` suffixed methods to do scan, wai
 >>>     print(result["_id"])
 ```
 
+### Pro
+
+Use `Pro` class to interact with the pro API endpoints:
+
+```py
+from urlscan import Pro
+
+with Pro("<your_api_key>") as client:
+    res = client.livescan.scan("<url>", scanner_id="us01")
+    resource_id: str = res["uuid"]
+    result = client.livescan.get_resource(scanner_id="us01", resource_id=resource_id, resource_type="result")
+```
+
 ## Examples
 
 See [Examples](https://github.com/urlscan/urlscan-python/tree/main/examples/).
@@ -75,6 +88,7 @@ See [Examples](https://github.com/urlscan/urlscan-python/tree/main/examples/).
 
 - [Client](https://urlscan.github.io/urlscan-python/references/client/)
 - [Iterator](https://urlscan.github.io/urlscan-python/references/iterator/)
+- [Pro](https://urlscan.github.io/urlscan-python/references/pro/)
 - [Errors](https://urlscan.github.io/urlscan-python/references/errors/)
 
 ## Help Wanted?

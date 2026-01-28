@@ -160,6 +160,7 @@ class Pro(BaseClient):
         q: str | None = None,
         size: int = 100,
         search_after: str | None = None,
+        limit: int | None = None,
     ) -> SearchIterator:
         """Get results structurally similar to a specific scan.
 
@@ -168,6 +169,7 @@ class Pro(BaseClient):
             q (str | None, optional): Additional query filter.
             size (int): Maximum results per call. Defaults to 100.
             search_after (str | None, optional): Parameter to iterate over older results. Defaults to None.
+            limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
 
         """
         return SearchIterator(
@@ -176,6 +178,7 @@ class Pro(BaseClient):
             q=q,
             size=size,
             search_after=search_after,
+            limit=limit,
         )
 
     def hostname(

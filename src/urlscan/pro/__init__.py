@@ -241,3 +241,15 @@ class Pro(BaseClient):
             }
         )
         return self.download(f"/downloads/{file_hash}", params=params, file=file)
+
+    def get_user(self) -> dict:
+        """Get information about the current user or API key making the request.
+
+        Returns:
+            dict: User information.
+
+        Reference:
+            https://docs.urlscan.io/apis/urlscan-openapi/generic/prousername
+
+        """
+        return self.get_json("/api/v1/pro/username")

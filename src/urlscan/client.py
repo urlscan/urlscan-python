@@ -746,3 +746,39 @@ class Client(BaseClient):
             return self.get_result(uuid)
 
         return [(url, mapping(res_or_error)) for url, res_or_error in responses]
+
+    def get_available_countries(self) -> dict:
+        """Retrieve countries available for scanning using the Scan API.
+
+        Returns:
+            dict: Available countries.
+
+        Reference:
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/availablecountries
+
+        """
+        return self.get_json("/api/v1/availableCountries")
+
+    def get_user_agents(self) -> dict:
+        """Get grouped user agents to use with the Scan API.
+
+        Returns:
+            dict: Available user agents.
+
+        Reference:
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/useragents
+
+        """
+        return self.get_json("/api/v1/userAgents")
+
+    def get_quotas(self) -> dict:
+        """Get available and used API quotas.
+
+        Returns:
+            dict: API quotas.
+
+        Reference:
+            https://docs.urlscan.io/apis/urlscan-openapi/generic/quotas
+
+        """
+        return self.get_json("/api/v1/quotas")

@@ -341,3 +341,79 @@ def test_bulk_scan_and_get_results(client: Client, httpserver: HTTPServer):
     for r in results:
         assert isinstance(r, dict)
         assert r["task"]["uuid"] == "dummy"
+
+
+def test_get_available_countries(client: Client, httpserver: HTTPServer):
+    data = {
+        "countries": [
+            "de",
+            "us",
+            "jp",
+        ]
+    }
+    httpserver.expect_request(
+        "/api/v1/availableCountries",
+        method="GET",
+    ).respond_with_json(data)
+
+    got = client.get_available_countries()
+    assert got == data
+
+
+def test_get_user_agents(client: Client, httpserver: HTTPServer):
+    data = {
+        "userAgents": [
+            {
+                "group": "Chrome",
+                "useragents": [
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"
+                ],
+            },
+            {
+                "group": "iOS",
+                "useragents": [
+                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Mobile/15E148 Safari/604.1"
+                ],
+            },
+        ]
+    }
+    httpserver.expect_request(
+        "/api/v1/userAgents",
+        method="GET",
+    ).respond_with_json(data)
+
+    got = client.get_user_agents()
+    assert got == data
+
+
+def test_get_quotas(client: Client, httpserver: HTTPServer):
+    data = {
+        "scope": "team",
+        "limits": {
+            "private": {
+                "day": {"limit": 20000, "used": 0, "remaining": 20000, "percent": 0},
+            },
+            "search": {
+                "day": {
+                    "limit": 500000,
+                    "used": 1389,
+                    "remaining": 498611,
+                    "reset": "2023-09-30T00:00:00.000Z",
+                    "percent": 0,
+                },
+            },
+            "unlisted": {
+                "day": {"limit": 40000, "used": 0, "remaining": 40000, "percent": 0},
+            },
+            "livescan": {
+                "day": {"limit": 10000, "used": 0, "remaining": 10000, "percent": 0},
+            },
+        },
+    }
+    httpserver.expect_request(
+        "/api/v1/quotas",
+        method="GET",
+    ).respond_with_json(data)
+
+    got = client.get_quotas()
+    assert got == data

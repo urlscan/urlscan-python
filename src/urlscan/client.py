@@ -14,7 +14,7 @@ import httpx
 from httpx._types import QueryParamTypes, RequestData, TimeoutTypes
 
 from ._version import version
-from .error import APIError, RateLimitError, RateLimitRemainingError
+from .error import APIError, ItemError, RateLimitError, RateLimitRemainingError
 from .iterator import SearchIterator
 from .types import ActionType, SearchDataSource, VisibilityType
 from .utils import _compact, parse_datetime
@@ -377,7 +377,10 @@ class BaseClient:
             data: dict = exc.response.json()
             message: str = data["message"]
             description: str | None = data.get("description")
-            status: int = data["status"]
+            code: str | None = data.get("code")
+            type_: str | None = data.get("type")
+            # fallback to HTTP status code if "status" is missing
+            status: int = data.get("status") or exc.response.status_code
 
             # ref. https://urlscan.io/docs/api/#ratelimit
             if status == 429:
@@ -391,7 +394,32 @@ class BaseClient:
                     rate_limit_reset_after=rate_limit_reset_after,
                 )
 
-            return APIError(message, description=description, status=status)
+            def mapper(d: dict) -> ItemError:
+                title: str = d["title"]
+                status: int = d["status"]
+                code: str | None = d.get("code")
+                description: str | None = d.get("description")
+                detail: str | None = d.get("detail")
+                return ItemError(
+                    title=title,
+                    description=description,
+                    detail=detail,
+                    status=status,
+                    code=code,
+                )
+
+            errors: list[ItemError] | None = None
+            if "errors" in data:
+                errors = [mapper(item) for item in data["errors"]]
+
+            return APIError(
+                message,
+                description=description,
+                status=status,
+                code=code,
+                type=type_,
+                errors=errors,
+            )
 
         return None
 

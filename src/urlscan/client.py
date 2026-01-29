@@ -417,7 +417,7 @@ class BaseClient:
                 description=description,
                 status=status,
                 code=code,
-                type=type_,
+                type_=type_,
                 errors=errors,
             )
 

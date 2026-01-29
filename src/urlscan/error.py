@@ -46,7 +46,7 @@ class APIError(URLScanError):
         description: str | None = None,
         errors: list[ItemError] | None = None,
         code: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
     ):
         """Initialize the API error.
 
@@ -56,7 +56,7 @@ class APIError(URLScanError):
             description (str | None, optional): error description. Defaults to None.
             errors (list[ErrorItem] | None, optional): error items. Defaults to None.
             code (str | None, optional): error code. Defaults to None.
-            type (str | None, optional): error type. Defaults to None.
+            type_ (str | None, optional): error type. Defaults to None.
 
         """
         self.message = message
@@ -64,7 +64,7 @@ class APIError(URLScanError):
         self.status = status
         self.errors = errors
         self.code = code
-        self.type = type
+        self.type = type_
         super().__init__(message)
 
 

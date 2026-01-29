@@ -1,0 +1,35 @@
+import pytest
+
+from urlscan import Pro
+
+SCANNER_ID = "us01"
+
+
+@pytest.mark.integration
+def test_get_scanners(pro: Pro):
+    scanners = pro.livescan.get_scanners()
+    assert isinstance(scanners, dict)
+    assert "scanners" in scanners
+
+
+@pytest.mark.integration
+def test_scan_get_result_dom_and_purge(pro: Pro):
+    # Scan a URL
+    result = pro.livescan.scan("https://example.com", scanner_id=SCANNER_ID)
+    uuid = result["uuid"]
+
+    # Get the result
+    scan_result = pro.livescan.get_resource(
+        scanner_id=SCANNER_ID, resource_type="result", resource_id=uuid
+    )
+    assert scan_result is not None
+
+    # Get the DOM
+    dom = pro.livescan.get_resource(
+        scanner_id=SCANNER_ID, resource_type="dom", resource_id=uuid
+    )
+    assert dom is not None
+
+    # Purge the scan
+    purge_result = pro.livescan.purge(scanner_id=SCANNER_ID, scan_id=uuid)
+    assert purge_result is not None

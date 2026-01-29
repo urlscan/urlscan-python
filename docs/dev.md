@@ -26,8 +26,20 @@ uv run lefthook install
 
 This project uses [pytest](https://docs.pytest.org/en/stable/) as a testing framework.
 
+### Unit Test
+
+Unite tests use a mock HTTP server ([csernazs/pytest-httpserver](https://github.com/csernazs/pytest-httpserver)) and located under `tests/unit/`.
+
 ```bash
 uv run pytest
+```
+
+### Integration Test
+
+Integration tests require having `URLSCAN_API_KEY` as an environment variable and located under `tests/integration/`.
+
+```bash
+uv run pytest --run-optional-tests=integration
 ```
 
 ## Docs

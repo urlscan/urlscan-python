@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+import datetime
 
 import pytest
 
@@ -7,7 +7,7 @@ from urlscan import Pro
 
 @pytest.fixture
 def today() -> str:
-    return datetime.now(tz=UTC).strftime("%Y%m%d")
+    return datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y%m%d")
 
 
 @pytest.mark.integration

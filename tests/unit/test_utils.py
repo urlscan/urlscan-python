@@ -23,7 +23,7 @@ def test_parse_datetime(input_str: str, expected: datetime.datetime):
 
 @pytest.fixture
 def gz():
-    return "tests/fixtures/test.gz"
+    return "tests/unit/fixtures/test.gz"
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def tar_gz():
     # $ gtar -cf 2.tar 2.txt
     # $ cat 1.tar 2.tar > test.tar
     # $ gzip test.tar
-    return "tests/fixtures/test.tar.gz"
+    return "tests/unit/fixtures/test.tar.gz"
 
 
 def test_extract_with_gz(gz: str):

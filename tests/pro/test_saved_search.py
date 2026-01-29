@@ -40,9 +40,11 @@ def test_create_minimal(pro: Pro, httpserver: HTTPServer):
         "/api/v1/user/searches/",
         method="POST",
         json={
-            "datasource": "scans",
-            "query": "page.domain:example.com",
-            "name": "Example Search",
+            "search": {
+                "datasource": "scans",
+                "query": "page.domain:example.com",
+                "name": "Example Search",
+            },
         },
     ).respond_with_json(data)
 
@@ -72,14 +74,16 @@ def test_create_with_all_params(pro: Pro, httpserver: HTTPServer):
         "/api/v1/user/searches/",
         method="POST",
         json={
-            "datasource": "hostnames",
-            "query": "hostname:*.example.com",
-            "name": "Hostname Search",
-            "description": "Short description",
-            "longDescription": "Detailed description of the search",
-            "tlp": "amber",
-            "userTags": ["tag1", "tag2"],
-            "permissions": ["public:read", "team:write"],
+            "search": {
+                "datasource": "hostnames",
+                "query": "hostname:*.example.com",
+                "name": "Hostname Search",
+                "description": "Short description",
+                "longDescription": "Detailed description of the search",
+                "tlp": "amber",
+                "userTags": ["tag1", "tag2"],
+                "permissions": ["public:read", "team:write"],
+            }
         },
     ).respond_with_json(data)
 
@@ -110,9 +114,11 @@ def test_update_minimal(pro: Pro, httpserver: HTTPServer):
         f"/api/v1/user/searches/{search_id}/",
         method="PUT",
         json={
-            "datasource": "scans",
-            "query": "page.domain:updated.com",
-            "name": "Updated Search",
+            "search": {
+                "datasource": "scans",
+                "query": "page.domain:updated.com",
+                "name": "Updated Search",
+            }
         },
     ).respond_with_json(data)
 
@@ -144,14 +150,16 @@ def test_update_with_all_params(pro: Pro, httpserver: HTTPServer):
         f"/api/v1/user/searches/{search_id}/",
         method="PUT",
         json={
-            "datasource": "hostnames",
-            "query": "hostname:*.updated.com",
-            "name": "Updated Hostname Search",
-            "description": "Updated short description",
-            "longDescription": "Updated detailed description",
-            "tlp": "green",
-            "userTags": ["updated-tag"],
-            "permissions": ["team:read"],
+            "search": {
+                "datasource": "hostnames",
+                "query": "hostname:*.updated.com",
+                "name": "Updated Hostname Search",
+                "description": "Updated short description",
+                "longDescription": "Updated detailed description",
+                "tlp": "green",
+                "userTags": ["updated-tag"],
+                "permissions": ["team:read"],
+            }
         },
     ).respond_with_json(data)
 

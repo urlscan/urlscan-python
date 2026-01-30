@@ -28,7 +28,7 @@ This project uses [pytest](https://docs.pytest.org/en/stable/) as a testing fram
 
 ### Unit Test
 
-Unite tests use a mock HTTP server ([csernazs/pytest-httpserver](https://github.com/csernazs/pytest-httpserver)) and located under `tests/unit/`.
+Unit tests use a mock HTTP server ([csernazs/pytest-httpserver](https://github.com/csernazs/pytest-httpserver)) and are located under `tests/unit/`
 
 ```bash
 uv run pytest

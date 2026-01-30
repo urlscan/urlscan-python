@@ -9,7 +9,7 @@ from urlscan.client import BaseClient
 class DataDump(BaseClient):
     """Data dump API client."""
 
-    def get_list(self, path: str):
+    def get_list(self, path: str) -> dict:
         """List available data dump files for a specific time window, file type, and date.
 
         Args:

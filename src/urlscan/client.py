@@ -682,7 +682,7 @@ class Client(BaseClient):
         timeout: float = 60.0,
         interval: float = 1.0,
         initial_wait: float | None = 10.0,
-    ):
+    ) -> dict:
         """Scan a given URL, wait for a result and get it.
 
         Args:

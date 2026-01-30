@@ -8,7 +8,7 @@ from pytest_httpserver import HTTPServer
 from werkzeug import Request, Response
 
 from urlscan import Client
-from urlscan.error import RateLimitError, RateLimitRemainingError
+from urlscan.error import APIError, RateLimitError, RateLimitRemainingError
 
 
 def test_get(client: Client, httpserver: HTTPServer):
@@ -417,3 +417,116 @@ def test_get_quotas(client: Client, httpserver: HTTPServer):
 
     got = client.get_quotas()
     assert got == data
+
+
+def test_error_1(client: Client, httpserver: HTTPServer):
+    # basic error
+    httpserver.expect_request(
+        "/error",
+        method="GET",
+    ).respond_with_json(
+        {
+            "message": "DNS Error - Could not resolve domain",
+            "description": "The domain foo.bar could not be resolved to a valid IPv4/IPv6 address. We won't try to load it in the browser.",
+            "status": 400,
+            "errors": [
+                {
+                    "title": "DNS Error - Could not resolve domain",
+                    "detail": "The domain foo.bar could not be resolved to a valid IPv4/IPv6 address. We won't try to load it in the browser.",
+                    "status": 400,
+                }
+            ],
+        },
+        status=400,
+    )
+    with pytest.raises(APIError) as exc_info:
+        client.get_json("/error")
+
+    exc = exc_info.value
+    assert exc.status == 400
+    assert (
+        exc.description
+        == "The domain foo.bar could not be resolved to a valid IPv4/IPv6 address. We won't try to load it in the browser."
+    )
+    assert len(exc.errors or []) == 1
+
+    error_item = (exc.errors or [])[0]
+    assert error_item.title == "DNS Error - Could not resolve domain"
+    assert error_item.status == 400
+    assert (
+        error_item.detail
+        == "The domain foo.bar could not be resolved to a valid IPv4/IPv6 address. We won't try to load it in the browser."
+    )
+
+
+def test_error_2(client: Client, httpserver: HTTPServer):
+    # validation error
+    httpserver.expect_request(
+        "/error",
+        method="GET",
+    ).respond_with_json(
+        {
+            "code": "validationerror",
+            "type": "body",
+            "message": 'ValidationError: "url" is required. "foo" is not allowed',
+            "errors": [
+                {
+                    "code": "validationerror",
+                    "title": "Field Validation Error",
+                    "description": 'ValidationError: "url" is required. "foo" is not allowed',
+                    "status": 400,
+                }
+            ],
+        },
+        status=400,
+    )
+    with pytest.raises(APIError) as exc_info:
+        client.get_json("/error")
+
+    exc = exc_info.value
+    assert exc.status == 400
+    assert exc.code == "validationerror"
+    assert exc.type == "body"
+    assert exc.message == 'ValidationError: "url" is required. "foo" is not allowed'
+    assert len(exc.errors or []) == 1
+    error_item = (exc.errors or [])[0]
+    assert error_item.code == "validationerror"
+    assert error_item.title == "Field Validation Error"
+    assert (
+        error_item.description
+        == 'ValidationError: "url" is required. "foo" is not allowed'
+    )
+
+
+def test_error_3(client: Client, httpserver: HTTPServer):
+    # basic error without description
+    httpserver.expect_request(
+        "/error",
+        method="GET",
+    ).respond_with_json(
+        {
+            "message": 'No API key supplied. Please supply a valid API key in the "api-key" HTTP header.',
+            "status": 401,
+            "errors": [
+                {
+                    "title": 'No API key supplied. Please supply a valid API key in the "api-key" HTTP header.',
+                    "detail": 'No API key supplied. Please supply a valid API key in the "api-key" HTTP header.',
+                    "status": 401,
+                }
+            ],
+        },
+        status=401,
+    )
+    with pytest.raises(APIError) as exc_info:
+        client.get_json("/error")
+
+    exc = exc_info.value
+    assert exc.status == 401
+    assert (
+        exc.message
+        == 'No API key supplied. Please supply a valid API key in the "api-key" HTTP header.'
+    )
+    assert exc.description is None
+    assert exc.code is None
+    assert exc.type is None
+    assert exc.errors is not None

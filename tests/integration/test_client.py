@@ -4,8 +4,8 @@ from urlscan import Client
 
 
 @pytest.mark.integration
-def test_scan_and_get_result(client: Client):
-    result = client.scan("http://example.com", visibility="private")
+def test_scan_and_get_result(client: Client, url: str):
+    result = client.scan(url, visibility="private")
     uuid: str = result["uuid"]
     client.wait_for_result(uuid)
 

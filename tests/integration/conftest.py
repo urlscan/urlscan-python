@@ -24,3 +24,8 @@ def client(api_key: str):
 def pro(api_key: str):
     with Pro(api_key) as client:
         yield client
+
+
+@pytest.fixture
+def url() -> str:
+    return "https://httpbin.org/html"

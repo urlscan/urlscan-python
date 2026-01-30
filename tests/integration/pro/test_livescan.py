@@ -8,6 +8,7 @@ def test_get_scanners(pro: Pro):
     scanners = pro.livescan.get_scanners()
     assert isinstance(scanners, dict)
     assert "scanners" in scanners
+    assert len(scanners["scanners"]) > 0
 
 
 @pytest.fixture

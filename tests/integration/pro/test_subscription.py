@@ -51,3 +51,5 @@ def test_subscription_crud(pro: Pro):
 def test_subscription_list(pro: Pro):
     result = pro.subscription.get_subscriptions()
     assert isinstance(result, dict)
+    assert "subscriptions" in result
+    assert len(result["subscriptions"]) > 0

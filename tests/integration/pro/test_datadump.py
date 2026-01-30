@@ -14,6 +14,8 @@ def today() -> str:
 def test_datadump_list(pro: Pro, today: str):
     result = pro.datadump.get_list(f"hours/api/{today}")
     assert isinstance(result, dict)
+    assert "files" in result
+    assert len(result["files"]) > 0
 
 
 @pytest.mark.integration

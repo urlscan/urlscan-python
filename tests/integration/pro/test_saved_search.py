@@ -36,3 +36,5 @@ def test_saved_search_crud(pro: Pro):
 def test_saved_search_list(pro: Pro):
     result = pro.saved_search.get_list()
     assert isinstance(result, dict)
+    assert "searches" in result
+    assert len(result["searches"]) > 0

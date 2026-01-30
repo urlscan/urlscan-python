@@ -22,6 +22,8 @@ def channel_id() -> str:
 def test_get_channels(pro: Pro):
     channels = pro.channel.get_channels()
     assert isinstance(channels, dict)
+    assert "channels" in channels
+    assert len(channels["channels"]) > 0
 
 
 @pytest.mark.integration

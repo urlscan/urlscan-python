@@ -36,7 +36,7 @@ uv run pytest
 
 ### Integration Test
 
-Integration tests require having `URLSCAN_API_KEY` as an environment variable and located under `tests/integration/`.
+Integration tests require the environment variable `URLSCAN_API_KEY` and located under `tests/integration/`
 
 ```bash
 uv run pytest --run-optional-tests=integration

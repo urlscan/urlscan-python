@@ -61,7 +61,7 @@ class SavedSearch(BaseClient):
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-post
 
         """
-        data: dict[str, Any] = _compact(
+        search: dict[str, Any] = _compact(
             {
                 "datasource": datasource,
                 "query": query,
@@ -73,6 +73,7 @@ class SavedSearch(BaseClient):
                 "permissions": permissions,
             }
         )
+        data: dict[str, Any] = {"search": search}
 
         res = self._post("/api/v1/user/searches/", json=data)
         return self._response_to_json(res)
@@ -119,7 +120,7 @@ class SavedSearch(BaseClient):
             https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-put
 
         """
-        data: dict[str, Any] = _compact(
+        search: dict[str, Any] = _compact(
             {
                 "datasource": datasource,
                 "query": query,
@@ -131,6 +132,7 @@ class SavedSearch(BaseClient):
                 "permissions": permissions,
             }
         )
+        data: dict[str, Any] = {"search": search}
 
         res = self._put(f"/api/v1/user/searches/{search_id}/", json=data)
         return self._response_to_json(res)

@@ -934,6 +934,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-optional-tests"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b3/0d/e0ed3c137ac8b604d0a90aa4a23e50ef21a66320b50a6a9b2c5f41e5a986/pytest-optional-tests-0.1.1.tar.gz", hash = "sha256:7f4411bf1551b556ae24a7e1385c4832d7520ccef109c374929aa71afe8c6754", size = 7569, upload-time = "2019-07-09T01:24:30.627Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/4a/7726bed4f1fda2f4af35d1b8d774169aa0103f0141abe3fb3ba7761efa86/pytest_optional_tests-0.1.1-py3-none-any.whl", hash = "sha256:ededc9d2aa7051d1af8ff5e757119b5758d86c7f24e73e1bb7dd5f19cd2031fa", size = 5466, upload-time = "2019-07-09T01:24:29.102Z" },
+]
+
+[[package]]
 name = "pytest-pretty"
 version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -980,6 +992,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3", size = 342432, upload-time = "2024-03-01T18:36:20.211Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427", size = 229892, upload-time = "2024-03-01T18:36:18.57Z" },
+]
+
+[[package]]
+name = "python-dotenv"
+version = "1.2.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f0/26/19cadc79a718c5edbec86fd4919a6b6d3f681039a2f6d66d14be94e75fb9/python_dotenv-1.2.1.tar.gz", hash = "sha256:42667e897e16ab0d66954af0e60a9caa94f0fd4ecf3aaf6d2d260eec1aa36ad6", size = 44221, upload-time = "2025-10-26T15:12:10.434Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/14/1b/a298b06749107c305e1fe0f814c6c74aea7b2f1e10989cb30f544a1b3253/python_dotenv-1.2.1-py3-none-any.whl", hash = "sha256:b81ee9561e9ca4004139c6cbba3a238c32b03e4894671e181b671e8cb8425d61", size = 21230, upload-time = "2025-10-26T15:12:09.109Z" },
 ]
 
 [[package]]
@@ -1388,9 +1409,11 @@ dev = [
     { name = "pytest" },
     { name = "pytest-freezer" },
     { name = "pytest-httpserver" },
+    { name = "pytest-optional-tests" },
     { name = "pytest-pretty" },
     { name = "pytest-randomly" },
     { name = "pytest-timeout" },
+    { name = "python-dotenv" },
     { name = "ruff" },
     { name = "uv-sort" },
 ]
@@ -1415,9 +1438,11 @@ dev = [
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest-freezer", specifier = ">=0.4.9" },
     { name = "pytest-httpserver", specifier = ">=1.1.3" },
+    { name = "pytest-optional-tests", specifier = "==0.1.1" },
     { name = "pytest-pretty", specifier = ">=1.3.0" },
     { name = "pytest-randomly", specifier = ">=4.0.1" },
     { name = "pytest-timeout", specifier = ">=2.4.0" },
+    { name = "python-dotenv", specifier = ">=1.2.1" },
     { name = "ruff", specifier = ">=0.14.14" },
     { name = "uv-sort", specifier = ">=0.7.0" },
 ]

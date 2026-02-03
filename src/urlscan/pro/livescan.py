@@ -132,7 +132,7 @@ class LiveScan(BaseClient):
         resource_type: LiveScanResourceType,
         resource_id: str,
     ) -> Any:
-        """Get the historical observations for a specific hostname in the "Hostnames" data source.
+        """Retrieve the resource for a particular scan ID or SHA256 from this live scanner.
 
         Args:
             scanner_id (str): Scanner ID (e.g., "de01" for Germany).

@@ -4,6 +4,7 @@ from typing import Any
 
 from urlscan.client import BaseClient, _compact
 from urlscan.types import PermissionType, SavedSearchDataSource, TLPType
+from urlscan.utils import _merge
 
 
 class SavedSearch(BaseClient):
@@ -32,6 +33,7 @@ class SavedSearch(BaseClient):
         tlp: TLPType | None = None,
         user_tags: list[str] | None = None,
         permissions: list[PermissionType] | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Create a Saved Search.
 
@@ -53,6 +55,7 @@ class SavedSearch(BaseClient):
             permissions (list[PermissionType] | None, optional): Determine whether only
                 other users on the same team or everyone on urlscan Pro can see the search.
                 Valid values: "public:read", "team:read", "team:write". Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Created Saved Search object containing the search properties and unique _id.
@@ -62,16 +65,19 @@ class SavedSearch(BaseClient):
 
         """
         search: dict[str, Any] = _compact(
-            {
-                "datasource": datasource,
-                "query": query,
-                "name": name,
-                "description": description,
-                "longDescription": long_description,
-                "tlp": tlp,
-                "userTags": user_tags,
-                "permissions": permissions,
-            }
+            _merge(
+                {
+                    "datasource": datasource,
+                    "query": query,
+                    "name": name,
+                    "description": description,
+                    "longDescription": long_description,
+                    "tlp": tlp,
+                    "userTags": user_tags,
+                    "permissions": permissions,
+                },
+                kwargs,
+            )
         )
         data: dict[str, Any] = {"search": search}
 
@@ -90,6 +96,7 @@ class SavedSearch(BaseClient):
         tlp: TLPType | None = None,
         user_tags: list[str] | None = None,
         permissions: list[PermissionType] | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Update a Saved Search.
 
@@ -112,6 +119,7 @@ class SavedSearch(BaseClient):
             permissions (list[PermissionType] | None, optional): Determine whether only
                 other users on the same team or everyone on urlscan Pro can see the search.
                 Valid values: "public:read", "team:read", "team:write". Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Updated Saved Search object containing the search properties and unique _id.
@@ -121,16 +129,19 @@ class SavedSearch(BaseClient):
 
         """
         search: dict[str, Any] = _compact(
-            {
-                "datasource": datasource,
-                "query": query,
-                "name": name,
-                "description": description,
-                "longDescription": long_description,
-                "tlp": tlp,
-                "userTags": user_tags,
-                "permissions": permissions,
-            }
+            _merge(
+                {
+                    "datasource": datasource,
+                    "query": query,
+                    "name": name,
+                    "description": description,
+                    "longDescription": long_description,
+                    "tlp": tlp,
+                    "userTags": user_tags,
+                    "permissions": permissions,
+                },
+                kwargs,
+            )
         )
         data: dict[str, Any] = {"search": search}
 

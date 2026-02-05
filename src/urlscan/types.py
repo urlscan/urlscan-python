@@ -28,7 +28,6 @@ IncidentWatchKeyType = Literal[
     "scans/page.ip",
     "scans/page.apexDomain",
     "hostnames/hostname",
-    "hostnames/ip",
     "hostnames/domain",
 ]
 ScanIntervalModeType = Literal["automatic", "manual"]

@@ -4,6 +4,7 @@ from typing import Any
 
 from urlscan.client import BaseClient, _compact
 from urlscan.types import LiveScanResourceType, VisibilityType
+from urlscan.utils import _merge
 
 
 class LiveScan(BaseClient):
@@ -32,6 +33,7 @@ class LiveScan(BaseClient):
         extra_headers: dict[str, str] | None = None,
         enable_features: list[str] | None = None,
         disable_features: list[str] | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Task a URL to be scanned.
 
@@ -46,6 +48,7 @@ class LiveScan(BaseClient):
             extra_headers (dict[str, str] | None, optional): Extra HTTP headers. Defaults to None.
             enable_features (list[str] | None, optional): Features to enable. Defaults to None.
             disable_features (list[str] | None, optional): Features to disable. Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Response containing the scan UUID.
@@ -61,15 +64,18 @@ class LiveScan(BaseClient):
             }
         )
         scanner: dict[str, Any] = _compact(
-            {
-                "pageTimeout": page_timeout,
-                "captureDelay": capture_delay,
-                "extraHeaders": extra_headers,
-                "enableFeatures": enable_features,
-                "disableFeatures": disable_features,
-            }
+            _merge(
+                {
+                    "pageTimeout": page_timeout,
+                    "captureDelay": capture_delay,
+                    "extraHeaders": extra_headers,
+                    "enableFeatures": enable_features,
+                    "disableFeatures": disable_features,
+                },
+                kwargs,
+            )
         )
-        data: dict[str, Any] = _compact({"task": task, "scanner": scanner})
+        data: dict[str, Any] = {"task": task, "scanner": scanner}
 
         res = self._post(f"/api/v1/livescan/{scanner_id}/task/", json=data)
         return self._response_to_json(res)
@@ -85,6 +91,7 @@ class LiveScan(BaseClient):
         extra_headers: dict[str, str] | None = None,
         enable_features: list[str] | None = None,
         disable_features: list[str] | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Task a URL to be scanned. The HTTP request will block until the scan has finished.
 
@@ -97,6 +104,7 @@ class LiveScan(BaseClient):
             extra_headers (dict[str, str] | None, optional): Extra HTTP headers. Defaults to None.
             enable_features (list[str] | None, optional): Features to enable. Defaults to None.
             disable_features (list[str] | None, optional): Features to disable. Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Response containing the scan UUID.
@@ -112,15 +120,18 @@ class LiveScan(BaseClient):
             }
         )
         scanner: dict[str, Any] = _compact(
-            {
-                "pageTimeout": page_timeout,
-                "captureDelay": capture_delay,
-                "extraHeaders": extra_headers,
-                "enableFeatures": enable_features,
-                "disableFeatures": disable_features,
-            }
+            _merge(
+                {
+                    "pageTimeout": page_timeout,
+                    "captureDelay": capture_delay,
+                    "extraHeaders": extra_headers,
+                    "enableFeatures": enable_features,
+                    "disableFeatures": disable_features,
+                },
+                kwargs,
+            )
         )
-        data: dict[str, Any] = _compact({"task": task, "scanner": scanner})
+        data: dict[str, Any] = {"task": task, "scanner": scanner}
 
         res = self._post(f"/api/v1/livescan/{scanner_id}/scan/", json=data)
         return self._response_to_json(res)

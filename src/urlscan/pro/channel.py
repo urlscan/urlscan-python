@@ -2,13 +2,14 @@
 
 from typing import Any
 
-from urlscan.client import BaseClient, _compact
+from urlscan.client import BaseClient
 from urlscan.types import (
     ChannelPermissionType,
     ChannelTypeType,
     FrequencyType,
     WeekDaysType,
 )
+from urlscan.utils import _compact, _merge
 
 
 class Channel(BaseClient):
@@ -40,6 +41,7 @@ class Channel(BaseClient):
         ignore_time: bool | None = None,
         week_days: list[WeekDaysType] | None = None,
         permissions: list[ChannelPermissionType] | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Create a new channel.
 
@@ -55,6 +57,7 @@ class Channel(BaseClient):
             ignore_time (bool | None, optional): Whether to ignore time constraints. Defaults to None.
             week_days (list[WeekDaysType] | None, optional): Days of the week alerts will be generated (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday). Defaults to None.
             permissions (list[ChannelPermissionType] | None, optional): Permissions associated with this channel (team:read, team:write). Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Object containing the created channel.
@@ -64,19 +67,22 @@ class Channel(BaseClient):
 
         """
         channel: dict[str, Any] = _compact(
-            {
-                "type": channel_type,
-                "name": name,
-                "webhookURL": webhook_url,
-                "frequency": frequency,
-                "emailAddresses": email_addresses,
-                "utcTime": utc_time,
-                "isActive": is_active,
-                "isDefault": is_default,
-                "ignoreTime": ignore_time,
-                "weekDays": week_days,
-                "permissions": permissions,
-            }
+            _merge(
+                {
+                    "type": channel_type,
+                    "name": name,
+                    "webhookURL": webhook_url,
+                    "frequency": frequency,
+                    "emailAddresses": email_addresses,
+                    "utcTime": utc_time,
+                    "isActive": is_active,
+                    "isDefault": is_default,
+                    "ignoreTime": ignore_time,
+                    "weekDays": week_days,
+                    "permissions": permissions,
+                },
+                kwargs,
+            )
         )
         data = {"channel": channel}
 
@@ -113,6 +119,7 @@ class Channel(BaseClient):
         ignore_time: bool | None = None,
         week_days: list[WeekDaysType] | None = None,
         permissions: list[ChannelPermissionType] | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Update an existing channel.
 
@@ -129,29 +136,32 @@ class Channel(BaseClient):
             ignore_time (bool | None, optional): Whether to ignore time constraints. Defaults to None.
             week_days (list[WeekDaysType] | None, optional): Days of the week alerts will be generated (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday). Defaults to None.
             permissions (list[ChannelPermissionType] | None, optional): Permissions associated with this channel (team:read, team:write). Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Object containing the updated channel.
-
 
         Reference:
             https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsupdate
 
         """
         channel: dict[str, Any] = _compact(
-            {
-                "type": channel_type,
-                "name": name,
-                "webhookURL": webhook_url,
-                "frequency": frequency,
-                "emailAddresses": email_addresses,
-                "utcTime": utc_time,
-                "isActive": is_active,
-                "isDefault": is_default,
-                "ignoreTime": ignore_time,
-                "weekDays": week_days,
-                "permissions": permissions,
-            }
+            _merge(
+                {
+                    "type": channel_type,
+                    "name": name,
+                    "webhookURL": webhook_url,
+                    "frequency": frequency,
+                    "emailAddresses": email_addresses,
+                    "utcTime": utc_time,
+                    "isActive": is_active,
+                    "isDefault": is_default,
+                    "ignoreTime": ignore_time,
+                    "weekDays": week_days,
+                    "permissions": permissions,
+                },
+                kwargs,
+            )
         )
         data = {"channel": channel}
 

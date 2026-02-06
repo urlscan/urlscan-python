@@ -4,7 +4,22 @@ from pathlib import Path
 
 import pytest
 
-from urlscan.utils import extract, parse_datetime
+from urlscan.utils import _merge, extract, parse_datetime
+
+
+def test_merge():
+    def inner(**kwargs):
+        return _merge({"a": 1, "b": 2}, kwargs)
+
+    assert inner(c=3, d=4) == {"a": 1, "b": 2, "c": 3, "d": 4}
+
+
+def test_merge_with_duplication():
+    def inner(**kwargs):
+        return _merge({"a": 1, "b": 2}, kwargs)
+
+    with pytest.raises(ValueError):
+        inner(b=3)
 
 
 @pytest.mark.parametrize(

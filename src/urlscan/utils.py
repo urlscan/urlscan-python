@@ -4,6 +4,7 @@ import datetime
 import gzip
 import os
 import tarfile
+from typing import Any
 
 StrOrBytesPath = str | bytes | os.PathLike[str] | os.PathLike[bytes]
 
@@ -11,6 +12,18 @@ StrOrBytesPath = str | bytes | os.PathLike[str] | os.PathLike[bytes]
 def _compact(d: dict) -> dict:
     """Remove empty values from a dictionary."""
     return {k: v for k, v in d.items() if v is not None}
+
+
+def _merge(d: dict, kwargs: dict[str, Any]) -> dict:
+    """Merge a dictionary with additional key-value pairs."""
+    result = d.copy()
+    for k, v in kwargs.items():
+        if k in result:
+            raise ValueError(f"Recived multiple values for key: {k}")
+
+        result[k] = v
+
+    return result
 
 
 def parse_datetime(s: str) -> datetime.datetime:

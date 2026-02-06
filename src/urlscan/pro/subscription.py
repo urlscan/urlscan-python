@@ -11,6 +11,7 @@ from urlscan.types import (
     SubscriptionPermissionType,
     WeekDaysType,
 )
+from urlscan.utils import _merge
 
 
 class Subscription(BaseClient):
@@ -46,6 +47,7 @@ class Subscription(BaseClient):
         incident_visibility: IncidentVisibilityType | None = None,
         incident_creation_mode: IncidentCreationModeType | None = None,
         incident_watch_keys: IncidentWatchKeyType | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Create a new subscription.
 
@@ -65,6 +67,7 @@ class Subscription(BaseClient):
             incident_visibility (IncidentVisibilityType | None, optional): Incident visibility for this subscription ("unlisted" or "private"). Defaults to None.
             incident_creation_mode (IncidentCreationModeType | None, optional): Incident creation rule for this subscription ("none", "default", "always", or "ignore-if-exists"). Defaults to None.
             incident_watch_keys (IncidentWatchKeyType | None, optional): Source/key to watch in the incident (scans/page.url, scans/page.domain, scans/page.ip, scans/page.apexDomain, hostnames/hostname, hostnames/ip, hostnames/domain). Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Response containing the created subscription with an '_id' field.
@@ -74,23 +77,26 @@ class Subscription(BaseClient):
 
         """
         subscription: dict[str, Any] = _compact(
-            {
-                "searchIds": search_ids,
-                "frequency": frequency,
-                "emailAddresses": email_addresses,
-                "name": name,
-                "description": description,
-                "isActive": is_active,
-                "ignoreTime": ignore_time,
-                "weekDays": week_days,
-                "permissions": permissions,
-                "channelIds": channel_ids,
-                "incidentChannelIds": incident_channel_ids,
-                "incidentProfileId": incident_profile_id,
-                "incidentVisibility": incident_visibility,
-                "incidentCreationMode": incident_creation_mode,
-                "incidentWatchKeys": incident_watch_keys,
-            }
+            _merge(
+                {
+                    "searchIds": search_ids,
+                    "frequency": frequency,
+                    "emailAddresses": email_addresses,
+                    "name": name,
+                    "description": description,
+                    "isActive": is_active,
+                    "ignoreTime": ignore_time,
+                    "weekDays": week_days,
+                    "permissions": permissions,
+                    "channelIds": channel_ids,
+                    "incidentChannelIds": incident_channel_ids,
+                    "incidentProfileId": incident_profile_id,
+                    "incidentVisibility": incident_visibility,
+                    "incidentCreationMode": incident_creation_mode,
+                    "incidentWatchKeys": incident_watch_keys,
+                },
+                kwargs,
+            )
         )
         data = {"subscription": subscription}
 
@@ -116,6 +122,7 @@ class Subscription(BaseClient):
         incident_visibility: IncidentVisibilityType | None = None,
         incident_creation_mode: IncidentCreationModeType | None = None,
         incident_watch_keys: IncidentWatchKeyType | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Update the settings for a subscription.
 
@@ -136,6 +143,7 @@ class Subscription(BaseClient):
             incident_visibility (IncidentVisibilityType | None, optional): Incident visibility for this subscription ("unlisted" or "private"). Defaults to None.
             incident_creation_mode (IncidentCreationModeType | None, optional): Incident creation rule for this subscription ("none", "default", "always", or "ignore-if-exists"). Defaults to None.
             incident_watch_keys (IncidentWatchKeyType | None, optional): Source/key to watch in the incident (scans/page.url, scans/page.domain, scans/page.ip, scans/page.apexDomain, hostnames/hostname, hostnames/ip, hostnames/domain). Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Response containing the updated subscription with an '_id' field.
@@ -145,23 +153,26 @@ class Subscription(BaseClient):
 
         """
         subscription: dict[str, Any] = _compact(
-            {
-                "searchIds": search_ids,
-                "frequency": frequency,
-                "emailAddresses": email_addresses,
-                "name": name,
-                "description": description,
-                "isActive": is_active,
-                "ignoreTime": ignore_time,
-                "weekDays": week_days,
-                "permissions": permissions,
-                "channelIds": channel_ids,
-                "incidentChannelIds": incident_channel_ids,
-                "incidentProfileId": incident_profile_id,
-                "incidentVisibility": incident_visibility,
-                "incidentCreationMode": incident_creation_mode,
-                "incidentWatchKeys": incident_watch_keys,
-            }
+            _merge(
+                {
+                    "searchIds": search_ids,
+                    "frequency": frequency,
+                    "emailAddresses": email_addresses,
+                    "name": name,
+                    "description": description,
+                    "isActive": is_active,
+                    "ignoreTime": ignore_time,
+                    "weekDays": week_days,
+                    "permissions": permissions,
+                    "channelIds": channel_ids,
+                    "incidentChannelIds": incident_channel_ids,
+                    "incidentProfileId": incident_profile_id,
+                    "incidentVisibility": incident_visibility,
+                    "incidentCreationMode": incident_creation_mode,
+                    "incidentWatchKeys": incident_watch_keys,
+                },
+                kwargs,
+            )
         )
         data = {"subscription": subscription}
 

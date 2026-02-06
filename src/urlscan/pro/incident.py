@@ -8,6 +8,7 @@ from urlscan.types import (
     ScanIntervalModeType,
     WatchedAttributeType,
 )
+from urlscan.utils import _merge
 
 
 class Incident(BaseClient):
@@ -33,6 +34,7 @@ class Incident(BaseClient):
         scan_interval_after_malicious: int | None = None,
         incident_profile: str | None = None,
         expire_after: int | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Create an incident with specific options.
 
@@ -54,6 +56,7 @@ class Incident(BaseClient):
             scan_interval_after_malicious (int | None, optional): How to change the scan interval after the observable became malicious. Defaults to None.
             incident_profile (str | None, optional): ID of the incident profile to use when creating this incident. Defaults to None.
             expire_after (int | None, optional): Seconds until the incident will automatically be closed. Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Incident body.
@@ -63,25 +66,28 @@ class Incident(BaseClient):
 
         """
         incident: dict[str, Any] = _compact(
-            {
-                "observable": observable,
-                "visibility": visibility,
-                "channels": channels,
-                "scanInterval": scan_interval,
-                "scanIntervalMode": scan_interval_mode,
-                "watchedAttributes": watched_attributes,
-                "userAgents": user_agents,
-                "userAgentsPerInterval": user_agents_per_interval,
-                "countries": countries,
-                "countriesPerInterval": countries_per_interval,
-                "stopDelaySuspended": stop_delay_suspended,
-                "stopDelayInactive": stop_delay_inactive,
-                "stopDelayMalicious": stop_delay_malicious,
-                "scanIntervalAfterSuspended": scan_interval_after_suspended,
-                "scanIntervalAfterMalicious": scan_interval_after_malicious,
-                "incidentProfile": incident_profile,
-                "expireAfter": expire_after,
-            }
+            _merge(
+                {
+                    "observable": observable,
+                    "visibility": visibility,
+                    "channels": channels,
+                    "scanInterval": scan_interval,
+                    "scanIntervalMode": scan_interval_mode,
+                    "watchedAttributes": watched_attributes,
+                    "userAgents": user_agents,
+                    "userAgentsPerInterval": user_agents_per_interval,
+                    "countries": countries,
+                    "countriesPerInterval": countries_per_interval,
+                    "stopDelaySuspended": stop_delay_suspended,
+                    "stopDelayInactive": stop_delay_inactive,
+                    "stopDelayMalicious": stop_delay_malicious,
+                    "scanIntervalAfterSuspended": scan_interval_after_suspended,
+                    "scanIntervalAfterMalicious": scan_interval_after_malicious,
+                    "incidentProfile": incident_profile,
+                    "expireAfter": expire_after,
+                },
+                kwargs,
+            )
         )
         data = {"incident": incident}
 
@@ -124,6 +130,7 @@ class Incident(BaseClient):
         scan_interval_after_malicious: int | None = None,
         incident_profile: str | None = None,
         expire_after: int | None = None,
+        **kwargs: Any,
     ) -> dict:
         """Update specific runtime options of the incident.
 
@@ -146,6 +153,7 @@ class Incident(BaseClient):
             scan_interval_after_malicious (int | None, optional): How to change the scan interval after the observable became malicious. Defaults to None.
             incident_profile (str | None, optional): ID of the incident profile to use when creating this incident. Defaults to None.
             expire_after (int | None, optional): Seconds until the incident will automatically be closed. Defaults to None.
+            **kwargs: Additional parameters to include in the request payload.
 
         Returns:
             dict: Incident body.
@@ -155,25 +163,28 @@ class Incident(BaseClient):
 
         """
         incident: dict[str, Any] = _compact(
-            {
-                "observable": observable,
-                "visibility": visibility,
-                "channels": channels,
-                "scanInterval": scan_interval,
-                "scanIntervalMode": scan_interval_mode,
-                "watchedAttributes": watched_attributes,
-                "userAgents": user_agents,
-                "userAgentsPerInterval": user_agents_per_interval,
-                "countries": countries,
-                "countriesPerInterval": countries_per_interval,
-                "stopDelaySuspended": stop_delay_suspended,
-                "stopDelayInactive": stop_delay_inactive,
-                "stopDelayMalicious": stop_delay_malicious,
-                "scanIntervalAfterSuspended": scan_interval_after_suspended,
-                "scanIntervalAfterMalicious": scan_interval_after_malicious,
-                "incidentProfile": incident_profile,
-                "expireAfter": expire_after,
-            }
+            _merge(
+                {
+                    "observable": observable,
+                    "visibility": visibility,
+                    "channels": channels,
+                    "scanInterval": scan_interval,
+                    "scanIntervalMode": scan_interval_mode,
+                    "watchedAttributes": watched_attributes,
+                    "userAgents": user_agents,
+                    "userAgentsPerInterval": user_agents_per_interval,
+                    "countries": countries,
+                    "countriesPerInterval": countries_per_interval,
+                    "stopDelaySuspended": stop_delay_suspended,
+                    "stopDelayInactive": stop_delay_inactive,
+                    "stopDelayMalicious": stop_delay_malicious,
+                    "scanIntervalAfterSuspended": scan_interval_after_suspended,
+                    "scanIntervalAfterMalicious": scan_interval_after_malicious,
+                    "incidentProfile": incident_profile,
+                    "expireAfter": expire_after,
+                },
+                kwargs,
+            )
         )
         data = {"incident": incident}
 

@@ -530,3 +530,12 @@ def test_error_3(client: Client, httpserver: HTTPServer):
     assert exc.code is None
     assert exc.type is None
     assert exc.errors is not None
+
+
+def test_get_response(client: Client, httpserver: HTTPServer):
+    httpserver.expect_request("/responses/dummy/", method="GET").respond_with_data(
+        "dummy", content_type="text/plain"
+    )
+
+    got = client.get_response("dummy")
+    assert got == "dummy"

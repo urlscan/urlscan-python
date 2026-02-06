@@ -496,6 +496,21 @@ class Client(BaseClient):
         """
         return self.get_text(f"/dom/{uuid}/")
 
+    def get_response(self, file_hash: str) -> str:
+        """Get a (Script|Document|Fetch|XHR) response in plain text format by SHA256 hash.
+
+        Args:
+            file_hash (str): SHA256 hash of the response.
+
+        Returns:
+            str: Response content as a string.
+
+        Reference:
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/response
+
+        """
+        return self.get_text(f"/responses/{file_hash}/")
+
     def search(
         self,
         q: str = "",

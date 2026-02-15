@@ -29,19 +29,18 @@ with urlscan.Client("<your_api_key>") as client:
     ...
 ```
 
-!!! NOTE
-
-    The recommended way to use `Client` is as a context manager like the above. This will ensure closing a connection when leaving the with block.
-
-    Alternatively, you can explicitly close the connection pool without block-usage using `._close()`:
-
-    ```py
-    client = urlscan.Client("<your_api_key>")
-    try:
-        ...
-    finally:
-        client._close()
-    ```
+> [!NOTE]
+> The recommended way to use `Client` is as a context manager like the above. This will ensure closing a connection when leaving the with block.
+>
+> Alternatively, you can explicitly close the connection pool without block-usage using `._close()`:
+>
+> ```py
+> client = urlscan.Client("<your_api_key>")
+> try:
+>     ...
+> finally:
+>     client._close()
+> ```
 
 Scan a URL:
 

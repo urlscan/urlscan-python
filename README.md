@@ -16,55 +16,69 @@ pip install urlscan-python
 
 ## Quickstart
 
-Start by importing `urlscan` module
+Start by importing `urlscan` module:
 
 ```py
->>> import urlscan
+import urlscan
 ```
 
 Create a client with your API key:
 
 ```py
->>> client = urlscan.Client("<your_api_key>")
+with urlscan.Client("<your_api_key>") as client:
+    ...
 ```
+
+> [!NOTE]
+> The recommended way to use `Client` is as a context manager like the above. This will ensure closing a connection when leaving the with block.
+>
+> Alternatively, you can explicitly close the connection pool without block-usage using `._close()`:
+>
+> ```py
+> client = urlscan.Client("<your_api_key>")
+> try:
+>     ...
+> finally:
+>     client._close()
+> ```
 
 Scan a URL:
 
 ```py
->>> res = client.scan("<url>", visibility="public")
->>> uuid: str = res["uuid"]
+res = client.scan("<url>", visibility="public")
+uuid: str = res["uuid"]
 ```
 
 Wait for a scan result:
 
 ```py
->>> client.wait_for_result(uuid)
+client.wait_for_result(uuid)
 ```
 
 Get a scan result:
 
 ```py
->>> result = client.get_result(uuid)
+result = client.get_result(uuid)
 ```
 
 Bulk scan:
 
 ```py
->>> client.bulk_scan(["<url>", "<url>"], visibility="public")
+client.bulk_scan(["<url>", "<url>"], visibility="public")
 ```
 
 Alternatively, you can use `_and_get_result(s)` suffixed methods to do scan, wait and get at once.
 
 ```py
->>> client.scan_and_get_result("<url>", visibility="public")
->>> client.bulk_scan_and_get_results(["<url>", "<url>"], visibility="public")
+client.scan_and_get_result("<url>", visibility="public")
+client.bulk_scan_and_get_results(["<url>", "<url>"], visibility="public")
 ```
 
 `urlscan.Client.search()` returns an iterator to iterate search results:
 
 ```py
->>> for result in client.search("page.domain:example.com"):
->>>     print(result["_id"])
+for result in client.search("page.domain:example.com"):
+    print(result["_id"])
 ```
 
 ### Pro

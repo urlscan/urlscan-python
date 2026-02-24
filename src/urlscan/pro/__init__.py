@@ -5,6 +5,7 @@ from typing import BinaryIO
 
 from urlscan.client import BaseClient
 from urlscan.iterator import SearchIterator
+from urlscan.pro.visibility import Visibility
 from urlscan.utils import _compact
 
 from .brand import Brand
@@ -143,6 +144,25 @@ class Pro(BaseClient):
 
         """
         return Subscription(
+            api_key=self._api_key,
+            base_url=self._base_url,
+            user_agent=self._user_agent,
+            trust_env=self._trust_env,
+            timeout=self._timeout,
+            proxy=self._proxy,
+            verify=self._verify,
+            retry=self._retry,
+        )
+
+    @cached_property
+    def visibility(self) -> Visibility:
+        """Visibility API client instance.
+
+        Returns:
+            Visibility: Visibility API client instance.
+
+        """
+        return Visibility(
             api_key=self._api_key,
             base_url=self._base_url,
             user_agent=self._user_agent,

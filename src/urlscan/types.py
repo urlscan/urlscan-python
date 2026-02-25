@@ -6,6 +6,7 @@ SearchDataSource = Literal[
     "scans", "hostnames", "incidents", "notifications", "certificates"
 ]
 VisibilityType = Literal["public", "private", "unlisted"]
+UpdateVisibilityType = VisibilityType | Literal["deleted"]
 SearchType = Literal["search"]
 RetrieveType = Literal["retrieve"]
 ActionType = VisibilityType | SearchType | RetrieveType

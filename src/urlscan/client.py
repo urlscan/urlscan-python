@@ -486,9 +486,9 @@ class Client(BaseClient):
             https://urlscan.io/docs/api/#screenshot
 
         """
-        res = self._get(f"/screenshots/{uuid}.png")
-        bio = BytesIO(res.content)
-        bio.name = res.basename
+        res = self.get_content(f"/screenshots/{uuid}.png")
+        bio = BytesIO(res)
+        bio.name = f"{uuid}.png"
         return bio
 
     def get_dom(self, uuid: str) -> str:

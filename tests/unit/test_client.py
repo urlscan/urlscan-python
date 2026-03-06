@@ -532,6 +532,27 @@ def test_error_3(client: Client, httpserver: HTTPServer):
     assert exc.errors is not None
 
 
+def test_error_4(client: Client, httpserver: HTTPServer):
+    # non JSON error
+    httpserver.expect_request(
+        "/error",
+        method="GET",
+    ).respond_with_data(
+        "Internal Server Error",
+        status=500,
+        content_type="text/plain",
+    )
+    with pytest.raises(APIError) as exc_info:
+        client.get_json("/error")
+
+    exc = exc_info.value
+    assert exc.status == 500
+    assert exc.message == "Internal Server Error"
+    assert exc.code is None
+    assert exc.type is None
+    assert exc.errors is None
+
+
 def test_get_response(client: Client, httpserver: HTTPServer):
     httpserver.expect_request("/responses/dummy/", method="GET").respond_with_data(
         "dummy", content_type="text/plain"

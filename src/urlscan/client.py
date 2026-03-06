@@ -370,56 +370,66 @@ class BaseClient:
         res = self._get(path, params=params)
         return self._response_to_str(res)
 
+    def _map_http_status_error(self, exc: httpx.HTTPStatusError) -> APIError:
+        data: dict = exc.response.json()
+        message: str = data["message"]
+        description: str | None = data.get("description")
+        code: str | None = data.get("code")
+        type_: str | None = data.get("type")
+        # fallback to HTTP status code if "status" is missing
+        status: int = data.get("status") or exc.response.status_code
+
+        # ref. https://urlscan.io/docs/api/#ratelimit
+        if status == 429:
+            rate_limit_reset_after = float(
+                exc.response.headers.get("X-Rate-Limit-Reset-After", 0)
+            )
+            return RateLimitError(
+                message,
+                description=description,
+                status=status,
+                rate_limit_reset_after=rate_limit_reset_after,
+            )
+
+        def mapper(d: dict) -> ItemError:
+            title: str = d["title"]
+            status: int = d["status"]
+            code: str | None = d.get("code")
+            description: str | None = d.get("description")
+            detail: str | None = d.get("detail")
+            return ItemError(
+                title=title,
+                description=description,
+                detail=detail,
+                status=status,
+                code=code,
+            )
+
+        errors: list[ItemError] | None = None
+        if "errors" in data:
+            errors = [mapper(item) for item in data["errors"]]
+
+        return APIError(
+            message,
+            description=description,
+            status=status,
+            code=code,
+            type_=type_,
+            errors=errors,
+        )
+
     def _get_error(self, res: ClientResponse) -> APIError | None:
         try:
             res.raise_for_status()
         except httpx.HTTPStatusError as exc:
-            data: dict = exc.response.json()
-            message: str = data["message"]
-            description: str | None = data.get("description")
-            code: str | None = data.get("code")
-            type_: str | None = data.get("type")
-            # fallback to HTTP status code if "status" is missing
-            status: int = data.get("status") or exc.response.status_code
-
-            # ref. https://urlscan.io/docs/api/#ratelimit
-            if status == 429:
-                rate_limit_reset_after = float(
-                    exc.response.headers.get("X-Rate-Limit-Reset-After", 0)
+            try:
+                return self._map_http_status_error(exc)
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                # when error response is not JSON
+                return APIError(
+                    message=exc.response.text,
+                    status=exc.response.status_code,
                 )
-                return RateLimitError(
-                    message,
-                    description=description,
-                    status=status,
-                    rate_limit_reset_after=rate_limit_reset_after,
-                )
-
-            def mapper(d: dict) -> ItemError:
-                title: str = d["title"]
-                status: int = d["status"]
-                code: str | None = d.get("code")
-                description: str | None = d.get("description")
-                detail: str | None = d.get("detail")
-                return ItemError(
-                    title=title,
-                    description=description,
-                    detail=detail,
-                    status=status,
-                    code=code,
-                )
-
-            errors: list[ItemError] | None = None
-            if "errors" in data:
-                errors = [mapper(item) for item in data["errors"]]
-
-            return APIError(
-                message,
-                description=description,
-                status=status,
-                code=code,
-                type_=type_,
-                errors=errors,
-            )
 
         return None
 

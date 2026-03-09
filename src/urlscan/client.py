@@ -470,7 +470,7 @@ class Client(BaseClient):
             uuid (str): UUID.
 
         Returns:
-            : Screenshot (img/png) as bytes.
+            BytesIO: Screenshot (img/png).
 
         Reference:
             https://urlscan.io/docs/api/#screenshot

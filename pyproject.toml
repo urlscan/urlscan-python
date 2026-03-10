@@ -16,28 +16,28 @@ classifiers = [
 
 [dependency-groups]
 dev = [
-  "lefthook>=2.0.15",
+  "lefthook>=2.1.3",
   "loguru>=0.7.3",
   "mypy>=1.19.1",
-  "nbstripout>=0.9.0",
+  "nbstripout>=0.9.1",
   "packaging>=26.0",
   "pytest-freezer>=0.4.9",
-  "pytest-httpserver>=1.1.3",
+  "pytest-httpserver>=1.1.5",
   "pytest-optional-tests==0.1.1",
   "pytest-pretty>=1.3.0",
   "pytest-randomly>=4.0.1",
   "pytest-timeout>=2.4.0",
   "pytest>=9.0.2",
-  "python-dotenv>=1.2.1",
-  "ruff>=0.14.14",
+  "python-dotenv>=1.2.2",
+  "ruff>=0.15.5",
   "uv-sort>=0.7.0",
 ]
 docs = [
-  "mike>=2.1.3",
+  "mike>=2.1.4",
   "mkdocs-include-markdown-plugin>=7.2.1",
-  "mkdocs-material>=9.7.1",
+  "mkdocs-material>=9.7.4",
   "mkdocs>=1.6.1",
-  "mkdocstrings[python]>=1.0.2",
+  "mkdocstrings[python]>=1.0.3",
 ]
 
 [tool.uv]

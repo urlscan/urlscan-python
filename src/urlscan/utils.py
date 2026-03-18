@@ -33,7 +33,16 @@ def parse_datetime(s: str) -> datetime.datetime:
 
 
 def extract(path: StrOrBytesPath, outdir: StrOrBytesPath):
-    """Extract a compressed file to the specified output directory."""
+    """Extract a compressed file to the specified output directory.
+
+    Args:
+        path (StrOrBytesPath): The path to the compressed file.
+        outdir (StrOrBytesPath): The directory to extract the files to.
+
+    Returns:
+        None
+
+    """
     basename = os.path.basename(str(path))
     if basename.endswith(".tar.gz"):
         with tarfile.open(path, mode="r:*", ignore_zeros=True) as tar:

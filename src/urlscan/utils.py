@@ -26,7 +26,7 @@ def _merge(d: dict, kwargs: dict[str, Any]) -> dict:
     return result
 
 
-def parse_datetime(s: str) -> datetime.datetime:
+def _parse_datetime(s: str) -> datetime.datetime:
     """Parse an ISO 8601 datetime string to a datetime object."""
     dt = datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S.%fZ")
     return dt.replace(tzinfo=datetime.timezone.utc)

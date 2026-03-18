@@ -19,7 +19,7 @@ def _merge(d: dict, kwargs: dict[str, Any]) -> dict:
     result = d.copy()
     for k, v in kwargs.items():
         if k in result:
-            raise ValueError(f"Recived multiple values for key: {k}")
+            raise ValueError(f"Received multiple values for key: {k}")
 
         result[k] = v
 

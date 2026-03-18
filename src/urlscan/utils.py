@@ -19,21 +19,30 @@ def _merge(d: dict, kwargs: dict[str, Any]) -> dict:
     result = d.copy()
     for k, v in kwargs.items():
         if k in result:
-            raise ValueError(f"Recived multiple values for key: {k}")
+            raise ValueError(f"Received multiple values for key: {k}")
 
         result[k] = v
 
     return result
 
 
-def parse_datetime(s: str) -> datetime.datetime:
+def _parse_datetime(s: str) -> datetime.datetime:
     """Parse an ISO 8601 datetime string to a datetime object."""
     dt = datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S.%fZ")
     return dt.replace(tzinfo=datetime.timezone.utc)
 
 
 def extract(path: StrOrBytesPath, outdir: StrOrBytesPath):
-    """Extract a compressed file to the specified output directory."""
+    """Extract a compressed file to the specified output directory.
+
+    Args:
+        path (StrOrBytesPath): The path to the compressed file.
+        outdir (StrOrBytesPath): The directory to extract the files to.
+
+    Returns:
+        None
+
+    """
     basename = os.path.basename(str(path))
     if basename.endswith(".tar.gz"):
         with tarfile.open(path, mode="r:*", ignore_zeros=True) as tar:

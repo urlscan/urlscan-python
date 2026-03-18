@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from urlscan.utils import _merge, extract, parse_datetime
+from urlscan.utils import _merge, _parse_datetime, extract
 
 
 def test_merge():
@@ -32,7 +32,7 @@ def test_merge_with_duplication():
     ],
 )
 def test_parse_datetime(input_str: str, expected: datetime.datetime):
-    result = parse_datetime(input_str)
+    result = _parse_datetime(input_str)
     assert result == expected
 
 

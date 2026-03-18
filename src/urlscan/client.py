@@ -17,7 +17,7 @@ from ._version import version
 from .error import APIError, ItemError, RateLimitError, RateLimitRemainingError
 from .iterator import SearchIterator
 from .types import ActionType, SearchDataSource, VisibilityType
-from .utils import _compact, parse_datetime
+from .utils import _compact, _parse_datetime
 
 logger = logging.getLogger("urlscan-python")
 
@@ -249,7 +249,7 @@ class BaseClient:
             if remaining and reset:
                 self._rate_limit_memo[action] = RateLimit(
                     remaining=int(remaining),
-                    reset=parse_datetime(reset),
+                    reset=_parse_datetime(reset),
                 )
 
         return res

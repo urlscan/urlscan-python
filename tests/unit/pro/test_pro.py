@@ -53,5 +53,5 @@ def test_lookup_malicious_observable(pro: Pro, httpserver: HTTPServer):
         method="GET",
     ).respond_with_json(data)
 
-    got = pro.lookup_malicious_observable(type_, value)  # type: ignore
+    got = pro.lookup_malicious_observable(type_, value)  # type: ignore[arg-type]
     assert got == data

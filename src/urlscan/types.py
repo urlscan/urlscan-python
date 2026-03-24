@@ -35,3 +35,4 @@ ScanIntervalModeType = Literal["automatic", "manual"]
 WatchedAttributeType = Literal[
     "detections", "tls", "dns", "labels", "page", "meta", "ip"
 ]
+MaliciousObservableType = Literal["url", "domain", "ip", "hostname"]

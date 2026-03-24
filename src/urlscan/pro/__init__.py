@@ -2,10 +2,12 @@
 
 from functools import cached_property
 from typing import BinaryIO
+from urllib.parse import quote_plus
 
 from urlscan.client import BaseClient
 from urlscan.iterator import SearchIterator
 from urlscan.pro.visibility import Visibility
+from urlscan.types import MaliciousObservableType
 from urlscan.utils import _compact
 
 from .brand import Brand
@@ -276,3 +278,20 @@ class Pro(BaseClient):
 
         """
         return self.get_json("/api/v1/pro/username")
+
+    def lookup_malicious_observable(
+        self,
+        type_: MaliciousObservableType,
+        value: str,
+    ):
+        """Look up how often an observable has been seen in malicious scan results.
+
+        Returns:
+            dict: Malicious observable lookup result.
+
+        Reference:
+            https://docs.urlscan.io/apis/urlscan-openapi/malicious/maliciouslookup
+
+        """
+        path = f"/api/v1/malicious/{type_}/{quote_plus(value)}"
+        return self.get_json(path)

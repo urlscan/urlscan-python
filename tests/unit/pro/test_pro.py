@@ -35,3 +35,23 @@ def test_get_user(pro: Pro, httpserver: HTTPServer):
 
     got = pro.get_user()
     assert got == data
+
+
+def test_lookup_malicious_observable(pro: Pro, httpserver: HTTPServer):
+    type_ = "url"
+    value = "https://example.com"
+    data = {
+        "type": type_,
+        "value": value,
+        "count": 5,
+        "lastSeen": "2024-06-01T12:00:00.000Z",
+        "firstSeen": "2024-01-01T08:00:00.000Z",
+    }
+    httpserver.expect_request(
+        # pytest-httpserver (werkzeug) normalizes URL path so no need to quote_plus it in the test
+        f"/api/v1/malicious/{type_}/{value}",
+        method="GET",
+    ).respond_with_json(data)
+
+    got = pro.lookup_malicious_observable(type_, value)  # type: ignore[arg-type]
+    assert got == data

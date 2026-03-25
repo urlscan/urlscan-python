@@ -284,7 +284,7 @@ class Pro(BaseClient):
         type_: MaliciousObservableType,
         value: str,
     ):
-        """Look up how often an observable has been seen in malicious scan results.
+        """Look up how often an observable has been seen in malicious scan results and when it was first and last seen.
 
         Returns:
             dict: Malicious observable lookup result.

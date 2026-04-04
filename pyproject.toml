@@ -34,8 +34,8 @@ dev = [
 ]
 docs = [
   "mike>=2.1.4",
-  "mkdocs-include-markdown-plugin>=7.2.1",
-  "mkdocs-material>=9.7.4",
+  "mkdocs-include-markdown-plugin>=7.2.2",
+  "mkdocs-material>=9.7.6",
   "mkdocs>=1.6.1",
   "mkdocstrings[python]>=1.0.3",
 ]

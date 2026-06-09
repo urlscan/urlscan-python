@@ -43,6 +43,10 @@ docs = [
 [tool.uv]
 default-groups = ["dev", "docs"]
 
+[tool.uv.pip]
+# ref. https://github.com/lirantal/pypi-security-best-practices#1-prefer-binary-only-installs
+only-binary = [":all:"]
+
 [project.urls]
 Repository = "https://github.com/urlscan/urlscan-python/"
 Homepage = "https://github.com/urlscan/urlscan-python/"

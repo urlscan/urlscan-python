@@ -123,3 +123,25 @@ class SearchIterator(BaseIterator):
         result = self._results.pop(0)
         self._count += 1
         return result
+
+    def count(self) -> int:
+        """Count the total number of matching results without retrieving them.
+
+        Examples:
+            >>> from urlscan import Client
+            >>> with Client("<your_api_key>") as client:
+            ...     client.search("page.domain:example.com").count()
+
+        Returns:
+            int: Total number of matching results.
+
+        """
+        data = self._client.get_json(
+            self._path,
+            params={
+                "q": self._q,
+                "size": 0,
+            },
+        )
+        _, total = self._parse_response(data)
+        return total

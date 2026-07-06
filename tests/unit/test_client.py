@@ -64,6 +64,21 @@ def test_search(client: Client, httpserver: HTTPServer):
     assert len(httpserver.log) == 1
 
 
+def test_search_count(client: Client, httpserver: HTTPServer):
+    q = "foo"
+
+    httpserver.expect_request(
+        "/api/v1/search/",
+        method="GET",
+        query_string={"q": q, "size": "0"},
+    ).respond_with_json({"results": [], "has_more": False, "total": 42})
+
+    it = client.search(q)
+    got = it.count()
+    assert got == 42
+    assert len(httpserver.log) == 1
+
+
 def test_search_with_iteration_within_10000_results(
     client: Client, httpserver: HTTPServer
 ):

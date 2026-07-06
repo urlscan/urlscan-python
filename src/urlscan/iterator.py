@@ -138,12 +138,10 @@ class SearchIterator(BaseIterator):
         """
         data = self._client.get_json(
             self._path,
-            params=_compact(
-                {
-                    "q": self._q,
-                    "size": 0,
-                }
-            ),
+            params={
+                "q": self._q,
+                "size": 0,
+            },
         )
         _, total = self._parse_response(data)
         return total

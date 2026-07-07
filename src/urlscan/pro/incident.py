@@ -34,6 +34,7 @@ class Incident(BaseClient):
         scan_interval_after_malicious: int | None = None,
         incident_profile: str | None = None,
         expire_after: int | None = None,
+        extra_path: str | None = None,
         **kwargs: Any,
     ) -> dict:
         """Create an incident with specific options.
@@ -56,6 +57,7 @@ class Incident(BaseClient):
             scan_interval_after_malicious (int | None, optional): How to change the scan interval after the observable became malicious. Defaults to None.
             incident_profile (str | None, optional): ID of the incident profile to use when creating this incident. Defaults to None.
             expire_after (int | None, optional): Seconds until the incident will automatically be closed. Defaults to None.
+            extra_path (str | None, optional): Optional path appended to hostname type incidents. Defaults to None.
             **kwargs: Additional parameters to include in the request payload.
 
         Returns:
@@ -85,6 +87,7 @@ class Incident(BaseClient):
                     "scanIntervalAfterMalicious": scan_interval_after_malicious,
                     "incidentProfile": incident_profile,
                     "expireAfter": expire_after,
+                    "extraPath": extra_path,
                 },
                 kwargs,
             )
@@ -130,6 +133,7 @@ class Incident(BaseClient):
         scan_interval_after_malicious: int | None = None,
         incident_profile: str | None = None,
         expire_after: int | None = None,
+        extra_path: str | None = None,
         **kwargs: Any,
     ) -> dict:
         """Update specific runtime options of the incident.
@@ -153,6 +157,7 @@ class Incident(BaseClient):
             scan_interval_after_malicious (int | None, optional): How to change the scan interval after the observable became malicious. Defaults to None.
             incident_profile (str | None, optional): ID of the incident profile to use when creating this incident. Defaults to None.
             expire_after (int | None, optional): Seconds until the incident will automatically be closed. Defaults to None.
+            extra_path (str | None, optional): Optional path appended to hostname type incidents. Defaults to None.
             **kwargs: Additional parameters to include in the request payload.
 
         Returns:
@@ -182,6 +187,7 @@ class Incident(BaseClient):
                     "scanIntervalAfterMalicious": scan_interval_after_malicious,
                     "incidentProfile": incident_profile,
                     "expireAfter": expire_after,
+                    "extraPath": extra_path,
                 },
                 kwargs,
             )

@@ -1,6 +1,5 @@
 """Live scanning API client module."""
 
-import warnings
 from typing import Any
 
 from urlscan.client import BaseClient, _compact
@@ -46,11 +45,8 @@ class LiveScan(BaseClient):
         # check for deprecated features
         for feature in disable_features or []:
             if feature in DEPRECATED_FEATURES:
-                warnings.warn(
-                    f"The feature '{feature}' is deprecated.",
-                    # ref. https://sethmlarson.dev/deprecations-via-warnings-dont-work-for-python-libraries
-                    category=FutureWarning,
-                    stacklevel=3,
+                self._warn_deprecation(
+                    f"The feature '{feature}' is deprecated.", stacklevel=4
                 )
         scanner: dict[str, Any] = _compact(
             _merge(

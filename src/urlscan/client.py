@@ -6,6 +6,7 @@ import json
 import logging
 import os
 import time
+import warnings
 from dataclasses import dataclass
 from io import BytesIO
 from typing import Any, BinaryIO, Literal, TypedDict, cast
@@ -453,6 +454,11 @@ class BaseClient:
             raise error
 
         return res.content
+
+    def _warn_deprecation(self, message: str, stacklevel: int) -> None:
+        """Warn about deprecated features."""
+        # ref. https://sethmlarson.dev/deprecations-via-warnings-dont-work-for-python-libraries
+        warnings.warn(message, category=FutureWarning, stacklevel=stacklevel)
 
 
 class Client(BaseClient):

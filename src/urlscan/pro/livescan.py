@@ -6,6 +6,8 @@ from urlscan.client import BaseClient, _compact
 from urlscan.types import LiveScanResourceType, VisibilityType
 from urlscan.utils import _merge
 
+DEPRECATED_FEATURES: set[str] = {"stealth"}
+
 
 class LiveScan(BaseClient):
     """Live scanning API client."""
@@ -21,6 +23,44 @@ class LiveScan(BaseClient):
 
         """
         return self.get_json("/api/v1/livescan/scanners/")
+
+    def _build_scan_payload(
+        self,
+        url: str,
+        visibility: VisibilityType | None = None,
+        page_timeout: int | None = None,
+        capture_delay: int | None = None,
+        extra_headers: dict[str, str] | None = None,
+        enable_features: list[str] | None = None,
+        disable_features: list[str] | None = None,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        """Build the payload for a scan request."""
+        task: dict[str, Any] = _compact(
+            {
+                "url": url,
+                "visibility": visibility,
+            }
+        )
+        # check for deprecated features
+        for feature in disable_features or []:
+            if feature in DEPRECATED_FEATURES:
+                self._warn_deprecation(
+                    f"The feature '{feature}' is deprecated.", stacklevel=4
+                )
+        scanner: dict[str, Any] = _compact(
+            _merge(
+                {
+                    "pageTimeout": page_timeout,
+                    "captureDelay": capture_delay,
+                    "extraHeaders": extra_headers,
+                    "enableFeatures": enable_features,
+                    "disableFeatures": disable_features,
+                },
+                kwargs,
+            )
+        )
+        return {"task": task, "scanner": scanner}
 
     def task(
         self,
@@ -57,26 +97,16 @@ class LiveScan(BaseClient):
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescantask
 
         """
-        task: dict[str, Any] = _compact(
-            {
-                "url": url,
-                "visibility": visibility,
-            }
+        data = self._build_scan_payload(
+            url,
+            visibility=visibility,
+            page_timeout=page_timeout,
+            capture_delay=capture_delay,
+            extra_headers=extra_headers,
+            enable_features=enable_features,
+            disable_features=disable_features,
+            **kwargs,
         )
-        scanner: dict[str, Any] = _compact(
-            _merge(
-                {
-                    "pageTimeout": page_timeout,
-                    "captureDelay": capture_delay,
-                    "extraHeaders": extra_headers,
-                    "enableFeatures": enable_features,
-                    "disableFeatures": disable_features,
-                },
-                kwargs,
-            )
-        )
-        data: dict[str, Any] = {"task": task, "scanner": scanner}
-
         res = self._post(f"/api/v1/livescan/{scanner_id}/task/", json=data)
         return self._response_to_json(res)
 
@@ -113,26 +143,16 @@ class LiveScan(BaseClient):
             https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscan
 
         """
-        task: dict[str, Any] = _compact(
-            {
-                "url": url,
-                "visibility": visibility,
-            }
+        data = self._build_scan_payload(
+            url,
+            visibility=visibility,
+            page_timeout=page_timeout,
+            capture_delay=capture_delay,
+            extra_headers=extra_headers,
+            enable_features=enable_features,
+            disable_features=disable_features,
+            **kwargs,
         )
-        scanner: dict[str, Any] = _compact(
-            _merge(
-                {
-                    "pageTimeout": page_timeout,
-                    "captureDelay": capture_delay,
-                    "extraHeaders": extra_headers,
-                    "enableFeatures": enable_features,
-                    "disableFeatures": disable_features,
-                },
-                kwargs,
-            )
-        )
-        data: dict[str, Any] = {"task": task, "scanner": scanner}
-
         res = self._post(f"/api/v1/livescan/{scanner_id}/scan/", json=data)
         return self._response_to_json(res)
 

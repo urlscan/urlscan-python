@@ -13,7 +13,7 @@ class Brand(BaseClient):
             dict: Response containing a list of brand objects.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/brands/availablebrands
+            https://docs.urlscan.io/apis/urlscan-openapi/brands/getavailablebrands
 
         """
         return self.get_json("/api/v1/pro/availableBrands")
@@ -27,7 +27,7 @@ class Brand(BaseClient):
             dict: Response containing a list of brand object with detection statistics.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/brands/brandsummary
+            https://docs.urlscan.io/apis/urlscan-openapi/brands/getbrandsummary
 
         """
         return self.get_json("/api/v1/pro/brands")

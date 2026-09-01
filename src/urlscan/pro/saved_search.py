@@ -17,7 +17,7 @@ class SavedSearch(BaseClient):
             dict: Response containing an array of Saved Search objects with their properties.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-get
+            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/listsavedsearches
 
         """
         return self.get_json("/api/v1/user/searches/")
@@ -61,7 +61,7 @@ class SavedSearch(BaseClient):
             dict: Created Saved Search object containing the search properties and unique _id.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-post
+            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/createsavedsearch
 
         """
         search: dict[str, Any] = _compact(
@@ -125,7 +125,7 @@ class SavedSearch(BaseClient):
             dict: Updated Saved Search object containing the search properties and unique _id.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-put
+            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/updatesavedsearch
 
         """
         search: dict[str, Any] = _compact(
@@ -158,7 +158,7 @@ class SavedSearch(BaseClient):
             dict: Empty JSON object on success.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-delete
+            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/deletesavedsearch
 
         """
         res = super()._delete(f"/api/v1/user/searches/{search_id}/")
@@ -175,7 +175,7 @@ class SavedSearch(BaseClient):
                 datasource (hostnames or scans) specified in the saved search.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-results
+            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/getsavedsearchresults
 
         """
         return self.get_json(f"/api/v1/user/searches/{search_id}/results/")

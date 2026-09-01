@@ -24,7 +24,7 @@ class Subscription(BaseClient):
             dict: List of subscriptions.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptions
+            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/listsubscriptions
 
         """
         return self.get_json("/api/v1/user/subscriptions/")
@@ -73,7 +73,7 @@ class Subscription(BaseClient):
             dict: Response containing the created subscription with an '_id' field.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionscreate
+            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/createsubscription
 
         """
         subscription: dict[str, Any] = _compact(
@@ -149,7 +149,7 @@ class Subscription(BaseClient):
             dict: Response containing the updated subscription with an '_id' field.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsget
+            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/updatesubscription
 
         """
         subscription: dict[str, Any] = _compact(
@@ -189,7 +189,7 @@ class Subscription(BaseClient):
             dict: Empty response object confirming deletion.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsdelete
+            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/deletesubscription
 
         """
         res = self._delete(f"/api/v1/user/subscriptions/{subscription_id}/")
@@ -206,7 +206,7 @@ class Subscription(BaseClient):
             dict: Search results.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsresults
+            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/getsubscriptionresults
 
         """
         return self.get_json(

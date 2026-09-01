@@ -274,7 +274,7 @@ class Pro(BaseClient):
             dict: User information.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/generic/prousername
+            https://docs.urlscan.io/apis/urlscan-openapi/generic/getusername
 
         """
         return self.get_json("/api/v1/pro/username")
@@ -290,7 +290,7 @@ class Pro(BaseClient):
             dict: Malicious observable lookup result.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/malicious/maliciouslookup
+            https://docs.urlscan.io/apis/urlscan-openapi/malicious/lookupmaliciousobservable
 
         """
         path = f"/api/v1/malicious/{type_}/{quote_plus(value)}"

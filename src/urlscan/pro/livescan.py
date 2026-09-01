@@ -19,7 +19,7 @@ class LiveScan(BaseClient):
             dict: List of available scanners with metadata.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscanners
+            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanscanners
 
         """
         return self.get_json("/api/v1/livescan/scanners/")
@@ -94,7 +94,7 @@ class LiveScan(BaseClient):
             dict: Response containing the scan UUID.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescantask
+            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescantask
 
         """
         data = self._build_scan_payload(
@@ -140,7 +140,7 @@ class LiveScan(BaseClient):
             dict: Response containing the scan UUID.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscan
+            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescanscan
 
         """
         data = self._build_scan_payload(
@@ -174,7 +174,7 @@ class LiveScan(BaseClient):
             Any: Resource content. Returns dict for "result", str for "dom", bytes for binary resources.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescangetresource
+            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanresource
 
         """
         path = f"/api/v1/livescan/{scanner_id}/{resource_type}/{resource_id}"
@@ -205,7 +205,7 @@ class LiveScan(BaseClient):
             visibility (VisibilityType): Visibility for the stored scan ("public", "private", or "unlisted").
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanstore
+            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/storelivescanresult
 
         """
         data = {"task": {"visibility": visibility}}
@@ -225,7 +225,7 @@ class LiveScan(BaseClient):
             scan_id (str): Scan UUID.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescandiscard
+            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/discardlivescanresult
 
         """
         res = self._delete(f"/api/v1/livescan/{scanner_id}/{scan_id}/")

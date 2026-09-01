@@ -380,7 +380,7 @@ class BaseClient:
         # fallback to HTTP status code if "status" is missing
         status: int = data.get("status") or exc.response.status_code
 
-        # ref. https://urlscan.io/docs/api/#ratelimit
+        # ref. https://docs.urlscan.io/pages/api-rate-limits
         if status == 429:
             rate_limit_reset_after = float(
                 exc.response.headers.get("X-Rate-Limit-Reset-After", 0)
@@ -474,7 +474,7 @@ class Client(BaseClient):
             Dict: Scan result.
 
         Reference:
-            https://urlscan.io/docs/api/#result
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresult
 
         """
         return self.get_json(f"/api/v1/result/{uuid}/")
@@ -489,7 +489,7 @@ class Client(BaseClient):
             BytesIO: Screenshot (img/png).
 
         Reference:
-            https://urlscan.io/docs/api/#screenshot
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getscreenshot
 
         """
         res = self.get_content(f"/screenshots/{uuid}.png")
@@ -507,7 +507,7 @@ class Client(BaseClient):
             str: DOM as a string.
 
         Reference:
-            https://urlscan.io/docs/api/#dom
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getdom
 
         """
         return self.get_text(f"/dom/{uuid}/")
@@ -522,7 +522,7 @@ class Client(BaseClient):
             str: Response content as a string.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/scanning/response
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresponse
 
         """
         return self.get_text(f"/responses/{file_hash}/")
@@ -543,14 +543,14 @@ class Client(BaseClient):
             size (int, optional): Number of results returned in a search. Defaults to 100.
             limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.
             search_after (str | None, optional): Search after to retrieve next results. Defaults to None.
-            datasource (SearchDataSource | None, optional): Datasources to search: scans (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.
+            datasource (SearchDataSource | None, optional): Datasources to search: scans, files (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.
             collapse (str | None, optional): Field to collapse results on. Only works on current page of results. Defaults to None.
 
         Returns:
             SearchIterator: Search iterator.
 
         Reference:
-            https://urlscan.io/docs/api/#search
+            https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource
 
         """
         return SearchIterator(
@@ -590,7 +590,7 @@ class Client(BaseClient):
             dict: Scan response.
 
         Reference:
-            https://urlscan.io/docs/api/#scan
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan
 
         """
         data = _compact(
@@ -644,7 +644,7 @@ class Client(BaseClient):
             list[tuple[str, dict | Exception]]: A list of tuples of (url, scan response or error).
 
         Reference:
-            https://urlscan.io/docs/api/#scan
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan
 
         """
 
@@ -732,7 +732,7 @@ class Client(BaseClient):
             dict: Scan result.
 
         Reference:
-            https://urlscan.io/docs/api/#scan
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan
 
         """
         res = self.scan(
@@ -781,7 +781,7 @@ class Client(BaseClient):
             list[tuple[str, dict | Exception]]: A list of tuples of (url, result or error).
 
         Reference:
-            https://urlscan.io/docs/api/#scan
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan
 
         """
         responses = self.bulk_scan(
@@ -813,7 +813,7 @@ class Client(BaseClient):
             dict: Available countries.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/scanning/availablecountries
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getavailablecountries
 
         """
         return self.get_json("/api/v1/availableCountries")
@@ -825,7 +825,7 @@ class Client(BaseClient):
             dict: Available user agents.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/scanning/useragents
+            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getuseragents
 
         """
         return self.get_json("/api/v1/userAgents")
@@ -837,7 +837,7 @@ class Client(BaseClient):
             dict: API quotas.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/generic/quotas
+            https://docs.urlscan.io/apis/urlscan-openapi/generic/getquotas
 
         """
         return self.get_json("/api/v1/quotas")

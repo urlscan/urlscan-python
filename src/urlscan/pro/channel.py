@@ -22,7 +22,7 @@ class Channel(BaseClient):
             dict: Object containing an array of channels.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/channels/channels
+            https://docs.urlscan.io/apis/urlscan-openapi/channels/listchannels
 
         """
         return self.get_json("/api/v1/user/channels/")
@@ -63,7 +63,7 @@ class Channel(BaseClient):
             dict: Object containing the created channel.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/channels/channelscreate
+            https://docs.urlscan.io/apis/urlscan-openapi/channels/createchannel
 
         """
         channel: dict[str, Any] = _compact(
@@ -99,7 +99,7 @@ class Channel(BaseClient):
             dict: Object containing the channel.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsget
+            https://docs.urlscan.io/apis/urlscan-openapi/channels/getchannel
 
         """
         return self.get_json(f"/api/v1/user/channels/{channel_id}/")
@@ -142,7 +142,7 @@ class Channel(BaseClient):
             dict: Object containing the updated channel.
 
         Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsupdate
+            https://docs.urlscan.io/apis/urlscan-openapi/channels/updatechannel
 
         """
         channel: dict[str, Any] = _compact(

@@ -3,7 +3,7 @@ import pytest
 from urlscan import Pro
 
 # Reference UUID from urlscan.io documentation
-# https://docs.urlscan.io/apis/urlscan-openapi/search/similarsearch
+# https://docs.urlscan.io/apis/urlscan-openapi/search/getsimilarresults
 REFERENCE_UUID = "68e26c59-2eae-437b-aeb1-cf750fafe7d7"
 
 

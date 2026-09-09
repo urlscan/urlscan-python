@@ -3,6 +3,12 @@ name: Publish docs
 on:
   release:
     types: ["created"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to deploy. Leave empty to redeploy the latest release tag."
+        required: false
+        type: string
 
 jobs:
   deploy:
@@ -29,6 +35,14 @@ jobs:
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
       - name: deploy docs by mike
         run: |
-          VERSION=$(uv run python scripts/convert_to_pep440_version.py "${{ github.event.release.tag_name }}")
-          uv run mike deploy "$VERSION" latest --update-aliases --push
+          if [ "${{ github.event_name }}" = "release" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+          else
+            VERSION="${{ github.event.inputs.version }}"
+            if [ -z "$VERSION" ]; then
+              VERSION=$(git describe --tags --abbrev=0)
+            fi
+          fi
+          VERSION=$(uv run python scripts/convert_to_pep440_version.py "$VERSION")
+          uv run mike deploy "$VERSION" latest --update-aliases --push --force
           uv run mike set-default latest --push

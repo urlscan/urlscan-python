@@ -44,5 +44,5 @@ jobs:
             fi
           fi
           VERSION=$(uv run python scripts/convert_to_pep440_version.py "$VERSION")
-          uv run mike deploy "$VERSION" latest --update-aliases --push --force
+          uv run mike deploy "$VERSION" latest --update-aliases --push
           uv run mike set-default latest --push

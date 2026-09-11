@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
       
 
@@ -1300,7 +1300,7 @@
 <span class="sd">            Dict: Scan result.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://urlscan.io/docs/api/#result</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresult</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/result/</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -1315,7 +1315,7 @@
 <span class="sd">            BytesIO: Screenshot (img/png).</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://urlscan.io/docs/api/#screenshot</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getscreenshot</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_content</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/screenshots/</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
@@ -1333,7 +1333,7 @@
 <span class="sd">            str: DOM as a string.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://urlscan.io/docs/api/#dom</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getdom</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/dom/</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -1348,7 +1348,7 @@
 <span class="sd">            str: Response content as a string.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/response</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresponse</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/responses/</span><span class="si">{</span><span class="n">file_hash</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -1369,14 +1369,14 @@
 <span class="sd">            size (int, optional): Number of results returned in a search. Defaults to 100.</span>
 <span class="sd">            limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.</span>
 <span class="sd">            search_after (str | None, optional): Search after to retrieve next results. Defaults to None.</span>
-<span class="sd">            datasource (SearchDataSource | None, optional): Datasources to search: scans (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.</span>
+<span class="sd">            datasource (SearchDataSource | None, optional): Datasources to search: scans, files (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.</span>
 <span class="sd">            collapse (str | None, optional): Field to collapse results on. Only works on current page of results. Defaults to None.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            SearchIterator: Search iterator.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://urlscan.io/docs/api/#search</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">SearchIterator</span><span class="p">(</span>
@@ -1416,7 +1416,7 @@
 <span class="sd">            dict: Scan response.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://urlscan.io/docs/api/#scan</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -1470,7 +1470,7 @@
 <span class="sd">            list[tuple[str, dict | Exception]]: A list of tuples of (url, scan response or error).</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://urlscan.io/docs/api/#scan</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -1558,7 +1558,7 @@
 <span class="sd">            dict: Scan result.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://urlscan.io/docs/api/#scan</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
@@ -1607,7 +1607,7 @@
 <span class="sd">            list[tuple[str, dict | Exception]]: A list of tuples of (url, result or error).</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://urlscan.io/docs/api/#scan</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">responses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bulk_scan</span><span class="p">(</span>
@@ -1639,7 +1639,7 @@
 <span class="sd">            dict: Available countries.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/availablecountries</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getavailablecountries</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/availableCountries&quot;</span><span class="p">)</span>
@@ -1651,7 +1651,7 @@
 <span class="sd">            dict: Available user agents.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/useragents</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getuseragents</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/userAgents&quot;</span><span class="p">)</span>
@@ -1663,7 +1663,7 @@
 <span class="sd">            dict: API quotas.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/generic/quotas</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/generic/getquotas</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/quotas&quot;</span><span class="p">)</span>
@@ -1849,7 +1849,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://urlscan.io/docs/api/#scan">https://urlscan.io/docs/api/#scan</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan">https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -1924,7 +1924,7 @@
 <span class="sd">        list[tuple[str, dict | Exception]]: A list of tuples of (url, scan response or error).</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://urlscan.io/docs/api/#scan</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -2163,7 +2163,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://urlscan.io/docs/api/#scan">https://urlscan.io/docs/api/#scan</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan">https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -2253,7 +2253,7 @@
 <span class="sd">        list[tuple[str, dict | Exception]]: A list of tuples of (url, result or error).</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://urlscan.io/docs/api/#scan</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">responses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bulk_scan</span><span class="p">(</span>
@@ -2322,7 +2322,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/availablecountries">https://docs.urlscan.io/apis/urlscan-openapi/scanning/availablecountries</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/getavailablecountries">https://docs.urlscan.io/apis/urlscan-openapi/scanning/getavailablecountries</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -2344,7 +2344,7 @@
 <span class="sd">        dict: Available countries.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/availablecountries</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/getavailablecountries</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/availableCountries&quot;</span><span class="p">)</span>
@@ -2424,7 +2424,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://urlscan.io/docs/api/#dom">https://urlscan.io/docs/api/#dom</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/getdom">https://docs.urlscan.io/apis/urlscan-openapi/scanning/getdom</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -2452,7 +2452,7 @@
 <span class="sd">        str: DOM as a string.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://urlscan.io/docs/api/#dom</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/getdom</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/dom/</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -2501,7 +2501,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/generic/quotas">https://docs.urlscan.io/apis/urlscan-openapi/generic/quotas</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/generic/getquotas">https://docs.urlscan.io/apis/urlscan-openapi/generic/getquotas</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -2523,7 +2523,7 @@
 <span class="sd">        dict: API quotas.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/generic/quotas</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/generic/getquotas</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/quotas&quot;</span><span class="p">)</span>
@@ -2603,7 +2603,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/response">https://docs.urlscan.io/apis/urlscan-openapi/scanning/response</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresponse">https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresponse</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -2631,7 +2631,7 @@
 <span class="sd">        str: Response content as a string.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/response</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresponse</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/responses/</span><span class="si">{</span><span class="n">file_hash</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -2711,7 +2711,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://urlscan.io/docs/api/#result">https://urlscan.io/docs/api/#result</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresult">https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresult</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -2739,7 +2739,7 @@
 <span class="sd">        Dict: Scan result.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://urlscan.io/docs/api/#result</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresult</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/result/</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -2819,7 +2819,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://urlscan.io/docs/api/#screenshot">https://urlscan.io/docs/api/#screenshot</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/getscreenshot">https://docs.urlscan.io/apis/urlscan-openapi/scanning/getscreenshot</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -2850,7 +2850,7 @@
 <span class="sd">        BytesIO: Screenshot (img/png).</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://urlscan.io/docs/api/#screenshot</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/getscreenshot</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_content</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/screenshots/</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
@@ -2902,7 +2902,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/useragents">https://docs.urlscan.io/apis/urlscan-openapi/scanning/useragents</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/getuseragents">https://docs.urlscan.io/apis/urlscan-openapi/scanning/getuseragents</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -2924,7 +2924,7 @@
 <span class="sd">        dict: Available user agents.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/useragents</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/getuseragents</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/userAgents&quot;</span><span class="p">)</span>
@@ -3100,7 +3100,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://urlscan.io/docs/api/#scan">https://urlscan.io/docs/api/#scan</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan">https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -3183,7 +3183,7 @@
 <span class="sd">        dict: Scan response.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://urlscan.io/docs/api/#scan</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -3430,7 +3430,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://urlscan.io/docs/api/#scan">https://urlscan.io/docs/api/#scan</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan">https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -3513,7 +3513,7 @@
 <span class="sd">        dict: Scan result.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://urlscan.io/docs/api/#scan</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/scanning/submitscan</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
@@ -3634,7 +3634,7 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Datasources to search: scans (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.</p>
+                <p>Datasources to search: scans, files (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.</p>
               </div>
             </td>
             <td>
@@ -3686,7 +3686,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://urlscan.io/docs/api/#search">https://urlscan.io/docs/api/#search</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource">https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -3742,14 +3742,14 @@
 <span class="sd">        size (int, optional): Number of results returned in a search. Defaults to 100.</span>
 <span class="sd">        limit (int | None, optional): Maximum number of results that will be returned by the iterator. Defaults to None.</span>
 <span class="sd">        search_after (str | None, optional): Search after to retrieve next results. Defaults to None.</span>
-<span class="sd">        datasource (SearchDataSource | None, optional): Datasources to search: scans (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.</span>
+<span class="sd">        datasource (SearchDataSource | None, optional): Datasources to search: scans, files (urlscan.io), hostnames, incidents, notifications, certificates (urlscan Pro). Defaults to None.</span>
 <span class="sd">        collapse (str | None, optional): Field to collapse results on. Only works on current page of results. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        SearchIterator: Search iterator.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://urlscan.io/docs/api/#search</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">SearchIterator</span><span class="p">(</span>
@@ -4010,7 +4010,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

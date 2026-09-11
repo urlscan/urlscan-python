@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
       
 
@@ -2478,7 +2478,7 @@
 <span class="sd">            dict: User information.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/generic/prousername</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/generic/getusername</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/pro/username&quot;</span><span class="p">)</span>
@@ -2494,7 +2494,7 @@
 <span class="sd">            dict: Malicious observable lookup result.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/malicious/maliciouslookup</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/malicious/lookupmaliciousobservable</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/api/v1/malicious/</span><span class="si">{</span><span class="n">type_</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">quote_plus</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -3107,7 +3107,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/generic/prousername">https://docs.urlscan.io/apis/urlscan-openapi/generic/prousername</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/generic/getusername">https://docs.urlscan.io/apis/urlscan-openapi/generic/getusername</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -3129,7 +3129,7 @@
 <span class="sd">        dict: User information.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/generic/prousername</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/generic/getusername</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/pro/username&quot;</span><span class="p">)</span>
@@ -3354,7 +3354,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/malicious/maliciouslookup">https://docs.urlscan.io/apis/urlscan-openapi/malicious/maliciouslookup</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/malicious/lookupmaliciousobservable">https://docs.urlscan.io/apis/urlscan-openapi/malicious/lookupmaliciousobservable</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -3385,7 +3385,7 @@
 <span class="sd">        dict: Malicious observable lookup result.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/malicious/maliciouslookup</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/malicious/lookupmaliciousobservable</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/api/v1/malicious/</span><span class="si">{</span><span class="n">type_</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">quote_plus</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -3639,7 +3639,7 @@
 <span class="sd">            dict: Response containing a list of brand objects.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/brands/availablebrands</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/brands/getavailablebrands</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/pro/availableBrands&quot;</span><span class="p">)</span>
@@ -3653,7 +3653,7 @@
 <span class="sd">            dict: Response containing a list of brand object with detection statistics.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/brands/brandsummary</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/brands/getbrandsummary</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/pro/brands&quot;</span><span class="p">)</span>
@@ -3712,7 +3712,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/brands/availablebrands">https://docs.urlscan.io/apis/urlscan-openapi/brands/availablebrands</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/brands/getavailablebrands">https://docs.urlscan.io/apis/urlscan-openapi/brands/getavailablebrands</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -3734,7 +3734,7 @@
 <span class="sd">        dict: Response containing a list of brand objects.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/brands/availablebrands</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/brands/getavailablebrands</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/pro/availableBrands&quot;</span><span class="p">)</span>
@@ -3784,7 +3784,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/brands/brandsummary">https://docs.urlscan.io/apis/urlscan-openapi/brands/brandsummary</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/brands/getbrandsummary">https://docs.urlscan.io/apis/urlscan-openapi/brands/getbrandsummary</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -3810,7 +3810,7 @@
 <span class="sd">        dict: Response containing a list of brand object with detection statistics.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/brands/brandsummary</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/brands/getbrandsummary</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/pro/brands&quot;</span><span class="p">)</span>
@@ -4020,7 +4020,7 @@
 <span class="sd">            dict: Object containing an array of channels.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/channels/channels</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/channels/listchannels</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/user/channels/&quot;</span><span class="p">)</span>
@@ -4061,7 +4061,7 @@
 <span class="sd">            dict: Object containing the created channel.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/channels/channelscreate</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/channels/createchannel</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">channel</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -4097,7 +4097,7 @@
 <span class="sd">            dict: Object containing the channel.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsget</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/channels/getchannel</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/user/channels/</span><span class="si">{</span><span class="n">channel_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -4140,7 +4140,7 @@
 <span class="sd">            dict: Object containing the updated channel.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsupdate</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/channels/updatechannel</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">channel</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -4427,7 +4427,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/channels/channelscreate">https://docs.urlscan.io/apis/urlscan-openapi/channels/channelscreate</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/channels/createchannel">https://docs.urlscan.io/apis/urlscan-openapi/channels/createchannel</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -4528,7 +4528,7 @@
 <span class="sd">        dict: Object containing the created channel.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/channels/channelscreate</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/channels/createchannel</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">channel</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -4629,7 +4629,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsget">https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsget</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/channels/getchannel">https://docs.urlscan.io/apis/urlscan-openapi/channels/getchannel</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -4657,7 +4657,7 @@
 <span class="sd">        dict: Object containing the channel.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsget</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/channels/getchannel</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/user/channels/</span><span class="si">{</span><span class="n">channel_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -4706,7 +4706,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/channels/channels">https://docs.urlscan.io/apis/urlscan-openapi/channels/channels</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/channels/listchannels">https://docs.urlscan.io/apis/urlscan-openapi/channels/listchannels</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -4728,7 +4728,7 @@
 <span class="sd">        dict: Object containing an array of channels.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/channels/channels</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/channels/listchannels</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/user/channels/&quot;</span><span class="p">)</span>
@@ -5000,7 +5000,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsupdate">https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsupdate</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/channels/updatechannel">https://docs.urlscan.io/apis/urlscan-openapi/channels/updatechannel</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -5105,7 +5105,7 @@
 <span class="sd">        dict: Object containing the updated channel.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/channels/channelsupdate</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/channels/updatechannel</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">channel</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -8623,7 +8623,7 @@
 <span class="sd">            dict: List of available scanners with metadata.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscanners</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanscanners</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/livescan/scanners/&quot;</span><span class="p">)</span>
@@ -8698,7 +8698,7 @@
 <span class="sd">            dict: Response containing the scan UUID.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescantask</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescantask</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_scan_payload</span><span class="p">(</span>
@@ -8744,7 +8744,7 @@
 <span class="sd">            dict: Response containing the scan UUID.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscan</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescanscan</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_scan_payload</span><span class="p">(</span>
@@ -8778,7 +8778,7 @@
 <span class="sd">            Any: Resource content. Returns dict for &quot;result&quot;, str for &quot;dom&quot;, bytes for binary resources.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescangetresource</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanresource</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/api/v1/livescan/</span><span class="si">{</span><span class="n">scanner_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">resource_type</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">resource_id</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -8809,7 +8809,7 @@
 <span class="sd">            visibility (VisibilityType): Visibility for the stored scan (&quot;public&quot;, &quot;private&quot;, or &quot;unlisted&quot;).</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanstore</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/storelivescanresult</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;visibility&quot;</span><span class="p">:</span> <span class="n">visibility</span><span class="p">}}</span>
@@ -8829,7 +8829,7 @@
 <span class="sd">            scan_id (str): Scan UUID.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescandiscard</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/discardlivescanresult</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/livescan/</span><span class="si">{</span><span class="n">scanner_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">scan_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -8952,7 +8952,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescangetresource">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescangetresource</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanresource">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanresource</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -9007,7 +9007,7 @@
 <span class="sd">        Any: Resource content. Returns dict for &quot;result&quot;, str for &quot;dom&quot;, bytes for binary resources.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescangetresource</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanresource</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/api/v1/livescan/</span><span class="si">{</span><span class="n">scanner_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">resource_type</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">resource_id</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -9067,7 +9067,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscanners">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscanners</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanscanners">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanscanners</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -9089,7 +9089,7 @@
 <span class="sd">        dict: List of available scanners with metadata.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscanners</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/getlivescanscanners</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/livescan/scanners/&quot;</span><span class="p">)</span>
@@ -9162,7 +9162,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescandiscard">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescandiscard</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/discardlivescanresult">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/discardlivescanresult</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -9197,7 +9197,7 @@
 <span class="sd">        scan_id (str): Scan UUID.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescandiscard</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/discardlivescanresult</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/livescan/</span><span class="si">{</span><span class="n">scanner_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">scan_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -9406,7 +9406,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscan">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscan</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescanscan">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescanscan</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -9485,7 +9485,7 @@
 <span class="sd">        dict: Response containing the scan UUID.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanscan</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescanscan</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_scan_payload</span><span class="p">(</span>
@@ -9585,7 +9585,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanstore">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanstore</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/storelivescanresult">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/storelivescanresult</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -9625,7 +9625,7 @@
 <span class="sd">        visibility (VisibilityType): Visibility for the stored scan (&quot;public&quot;, &quot;private&quot;, or &quot;unlisted&quot;).</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescanstore</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/storelivescanresult</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;visibility&quot;</span><span class="p">:</span> <span class="n">visibility</span><span class="p">}}</span>
@@ -9836,7 +9836,7 @@
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescantask">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescantask</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescantask">https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescantask</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -9919,7 +9919,7 @@
 <span class="sd">        dict: Response containing the scan UUID.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/livescantask</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/live-scanning/createlivescantask</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_scan_payload</span><span class="p">(</span>
@@ -10157,7 +10157,7 @@
 <span class="sd">            dict: Response containing an array of Saved Search objects with their properties.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-get</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/listsavedsearches</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/user/searches/&quot;</span><span class="p">)</span>
@@ -10201,7 +10201,7 @@
 <span class="sd">            dict: Created Saved Search object containing the search properties and unique _id.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-post</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/createsavedsearch</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">search</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -10265,7 +10265,7 @@
 <span class="sd">            dict: Updated Saved Search object containing the search properties and unique _id.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-put</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/updatesavedsearch</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">search</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -10298,7 +10298,7 @@
 <span class="sd">            dict: Empty JSON object on success.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-delete</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/deletesavedsearch</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/user/searches/</span><span class="si">{</span><span class="n">search_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -10315,7 +10315,7 @@
 <span class="sd">                datasource (hostnames or scans) specified in the saved search.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-results</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/getsavedsearchresults</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/user/searches/</span><span class="si">{</span><span class="n">search_id</span><span class="si">}</span><span class="s2">/results/&quot;</span><span class="p">)</span>
@@ -10542,7 +10542,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-post">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-post</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/createsavedsearch">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/createsavedsearch</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -10646,7 +10646,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">        dict: Created Saved Search object containing the search properties and unique _id.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-post</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/createsavedsearch</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">search</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -10713,7 +10713,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-get">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-get</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/listsavedsearches">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/listsavedsearches</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -10735,7 +10735,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">        dict: Response containing an array of Saved Search objects with their properties.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-get</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/listsavedsearches</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/user/searches/&quot;</span><span class="p">)</span>
@@ -10816,7 +10816,7 @@ datasource (hostnames or scans) specified in the saved search.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-results">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-results</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/getsavedsearchresults">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/getsavedsearchresults</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -10846,7 +10846,7 @@ datasource (hostnames or scans) specified in the saved search.</p>
 <span class="sd">            datasource (hostnames or scans) specified in the saved search.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-results</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/getsavedsearchresults</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/user/searches/</span><span class="si">{</span><span class="n">search_id</span><span class="si">}</span><span class="s2">/results/&quot;</span><span class="p">)</span>
@@ -10926,7 +10926,7 @@ datasource (hostnames or scans) specified in the saved search.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-delete">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-delete</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/deletesavedsearch">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/deletesavedsearch</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -10955,7 +10955,7 @@ datasource (hostnames or scans) specified in the saved search.</p>
 <span class="sd">        dict: Empty JSON object on success.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-delete</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/deletesavedsearch</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/user/searches/</span><span class="si">{</span><span class="n">search_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -11189,7 +11189,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-put">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-put</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/updatesavedsearch">https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/updatesavedsearch</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -11297,7 +11297,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">        dict: Updated Saved Search object containing the search properties and unique _id.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/savedsearches-put</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/saved-searches/updatesavedsearch</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">search</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -11568,7 +11568,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">            dict: List of subscriptions.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptions</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/listsubscriptions</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/user/subscriptions/&quot;</span><span class="p">)</span>
@@ -11617,7 +11617,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">            dict: Response containing the created subscription with an &#39;_id&#39; field.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionscreate</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/createsubscription</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">subscription</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -11693,7 +11693,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">            dict: Response containing the updated subscription with an &#39;_id&#39; field.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsget</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/updatesubscription</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">subscription</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -11733,7 +11733,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">            dict: Empty response object confirming deletion.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsdelete</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/deletesubscription</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/user/subscriptions/</span><span class="si">{</span><span class="n">subscription_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -11750,7 +11750,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">            dict: Search results.</span>
 
 <span class="sd">        Reference:</span>
-<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsresults</span>
+<span class="sd">            https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/getsubscriptionresults</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span>
@@ -12082,7 +12082,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionscreate">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionscreate</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/createsubscription">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/createsubscription</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -12203,7 +12203,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">        dict: Response containing the created subscription with an &#39;_id&#39; field.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionscreate</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/createsubscription</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">subscription</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -12308,7 +12308,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsdelete">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsdelete</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/deletesubscription">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/deletesubscription</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -12337,7 +12337,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">        dict: Empty response object confirming deletion.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsdelete</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/deletesubscription</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/api/v1/user/subscriptions/</span><span class="si">{</span><span class="n">subscription_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -12434,7 +12434,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsresults">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsresults</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/getsubscriptionresults">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/getsubscriptionresults</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -12466,7 +12466,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">        dict: Search results.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsresults</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/getsubscriptionresults</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span>
@@ -12517,7 +12517,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptions">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptions</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/listsubscriptions">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/listsubscriptions</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -12539,7 +12539,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">        dict: List of subscriptions.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptions</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/listsubscriptions</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="s2">&quot;/api/v1/user/subscriptions/&quot;</span><span class="p">)</span>
@@ -12875,7 +12875,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 
 <details class="reference" open>
   <summary>Reference</summary>
-  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsget">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsget</a></p>
+  <p><a href="https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/updatesubscription">https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/updatesubscription</a></p>
 </details>
 
             <details class="mkdocstrings-source">
@@ -13000,7 +13000,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
 <span class="sd">        dict: Response containing the updated subscription with an &#39;_id&#39; field.</span>
 
 <span class="sd">    Reference:</span>
-<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/subscriptionsget</span>
+<span class="sd">        https://docs.urlscan.io/apis/urlscan-openapi/subscriptions/updatesubscription</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">subscription</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_compact</span><span class="p">(</span>
@@ -13105,7 +13105,7 @@ Valid values: "public:read", "team:read", "team:write". Defaults to None.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

@@ -818,18 +818,6 @@ class Client(BaseClient):
         """
         return self.get_json("/api/v1/availableCountries")
 
-    def get_user_agents(self) -> dict:
-        """Get grouped user agents to use with the Scan API.
-
-        Returns:
-            dict: Available user agents.
-
-        Reference:
-            https://docs.urlscan.io/apis/urlscan-openapi/scanning/getuseragents
-
-        """
-        return self.get_json("/api/v1/userAgents")
-
     def get_quotas(self) -> dict:
         """Get available and used API quotas.
 

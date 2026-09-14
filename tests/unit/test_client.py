@@ -375,32 +375,6 @@ def test_get_available_countries(client: Client, httpserver: HTTPServer):
     assert got == data
 
 
-def test_get_user_agents(client: Client, httpserver: HTTPServer):
-    data = {
-        "userAgents": [
-            {
-                "group": "Chrome",
-                "useragents": [
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"
-                ],
-            },
-            {
-                "group": "iOS",
-                "useragents": [
-                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Mobile/15E148 Safari/604.1"
-                ],
-            },
-        ]
-    }
-    httpserver.expect_request(
-        "/api/v1/userAgents",
-        method="GET",
-    ).respond_with_json(data)
-
-    got = client.get_user_agents()
-    assert got == data
-
-
 def test_get_quotas(client: Client, httpserver: HTTPServer):
     data = {
         "scope": "team",

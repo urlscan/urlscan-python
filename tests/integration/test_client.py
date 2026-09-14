@@ -42,13 +42,6 @@ def test_get_available_countries(client: Client):
 
 
 @pytest.mark.integration
-def test_get_user_agents(client: Client):
-    user_agents = client.get_user_agents()
-    assert isinstance(user_agents, dict)
-    assert len(user_agents) > 0
-
-
-@pytest.mark.integration
 def test_get_response(client: Client):
     # hash of an empty content/string
     res = client.get_response(

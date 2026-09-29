@@ -240,6 +240,32 @@ def test_rate_limit_remaining_error(
         client.get_result("dummy")
 
 
+@pytest.mark.freeze_time("2020-01-01")
+def test_rate_limit_remaining_error_message(client: Client, httpserver: HTTPServer):
+    httpserver.expect_request(
+        "/api/v1/result/dummy/",
+        method="GET",
+    ).respond_with_response(
+        Response(
+            "{}",
+            status=200,
+            headers={
+                "X-Rate-Limit-Action": "retrieve",
+                "X-Rate-Limit-Remaining": "0",
+                "X-Rate-Limit-Reset": "2020-01-02T00:00:00.000Z",
+            },
+        )
+    )
+
+    assert client.get_result("dummy") is not None
+    # the message should contain the reset time, not the current time
+    with pytest.raises(
+        RateLimitRemainingError,
+        match=r"Wait until 2020-01-02 00:00:00\+00:00",
+    ):
+        client.get_result("dummy")
+
+
 def test_scan(client: Client, httpserver: HTTPServer):
     httpserver.expect_request(
         "/api/v1/scan/",
